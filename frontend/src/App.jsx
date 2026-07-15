@@ -5,6 +5,7 @@ import Typing from "./pages/Typing.jsx";
 import Admin from "./pages/Admin.jsx";
 import Owner from "./pages/Owner.jsx";
 import Auth from "./pages/Auth.jsx";
+import Quiz from "./pages/Quiz.jsx";
 
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
@@ -36,6 +37,9 @@ function App() {
           <nav className="nav">
             <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")}>
               មេរៀន
+            </NavLink>
+            <NavLink to="/quiz" className={({ isActive }) => (isActive ? "active" : "")}>
+              ឆ្លើយសំណួរ
             </NavLink>
             {(user?.role === "admin" || user?.role === "owner") && (
               <NavLink to="/admin" className={({ isActive }) => (isActive ? "active" : "")}>
@@ -81,6 +85,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/lesson/:id" element={<Typing />} />
           <Route path="/auth" element={<Auth setUser={setUser} />} />
+          <Route path="/quiz" element={<Quiz />} />
           <Route 
             path="/admin" 
             element={(user?.role === "admin" || user?.role === "owner") ? <Admin /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>អ្នកមិនមានសិទ្ធិចូលទំព័រនេះទេ! (Access Denied)</h2></div>} 
