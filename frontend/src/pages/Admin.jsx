@@ -149,13 +149,15 @@ export default function Admin() {
         </div>
 
         <div className="admin-form">
-        <label className="field">
-          <span>ចំណងជើងមេរៀន</span>
-          <input value={title} onChange={(e) => setTitle(e.target.value)} lang="km" />
-        </label>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-end', flexWrap: 'wrap', marginBottom: '24px' }}>
+          <label className="field" style={{ flex: 1, margin: 0 }}>
+            <span>ចំណងជើងមេរៀន</span>
+            <input value={title} onChange={(e) => setTitle(e.target.value)} lang="km" />
+          </label>
 
-        <div className={`word-count ${wordCountWarning ? "warn" : "ok"}`}>
-          ចំនួនពាក្យបច្ចុប្បន្ន: {words.length} {wordCountWarning ? "(គួរមាន ៣០ ពាក្យ)" : "✓"}
+          <div className={`word-count ${wordCountWarning ? "warn" : "ok"}`} style={{ margin: 0 }}>
+            ចំនួនពាក្យបច្ចុប្បន្ន: {words.length} {wordCountWarning ? "(គួរមាន ៣០ ពាក្យ)" : "✓"}
+          </div>
         </div>
 
         <div className="admin-columns">
