@@ -19,6 +19,10 @@ export default function Owner({ currentUser }) {
   }, []);
 
   const fetchData = () => {
+    if (currentUser?.role !== 'owner') {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     Promise.all([getUsers(), getStats()])
       .then(([usersData, statsData]) => {
@@ -215,8 +219,10 @@ export default function Owner({ currentUser }) {
             </form>
           </div>
 
-          <h2 style={{ marginBottom: '16px' }}>បញ្ជីអ្នកប្រើប្រាស់</h2>
-          <div className="lesson-list">
+          {currentUser?.role === 'owner' && (
+            <>
+              <h2 style={{ marginBottom: '16px' }}>បញ្ជីអ្នកប្រើប្រាស់</h2>
+              <div className="lesson-list">
             <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--surface)", borderRadius: "12px", overflow: "hidden" }}>
               <thead>
                 <tr style={{ background: "var(--primary)", color: "white" }}>
@@ -285,6 +291,8 @@ export default function Owner({ currentUser }) {
               </tbody>
             </table>
           </div>
+            </>
+          )}
         </>
       )}
     </div>

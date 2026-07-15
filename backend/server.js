@@ -111,7 +111,7 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
-app.get('/api/users', authenticateToken, isAdmin, async (req, res) => {
+app.get('/api/users', authenticateToken, isOwner, async (req, res) => {
   try {
     const users = await User.find({}, 'username role status _id');
     res.json(users.map(u => ({ id: u._id, username: u.username, role: u.role, status: u.status })));
@@ -120,7 +120,7 @@ app.get('/api/users', authenticateToken, isAdmin, async (req, res) => {
   }
 });
 
-app.get('/api/stats', authenticateToken, isAdmin, async (req, res) => {
+app.get('/api/stats', authenticateToken, isOwner, async (req, res) => {
   try {
     const totalUsers = await User.countDocuments({ role: 'user' });
     const totalAdmins = await User.countDocuments({ role: { $in: ['admin', 'owner'] } });
