@@ -180,7 +180,7 @@ export default function Owner({ currentUser }) {
                   value={newUsername} 
                   onChange={(e) => setNewUsername(e.target.value)} 
                   placeholder="បញ្ជូលឈ្មោះ..." 
-                  style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }}
+                  style={{ width: '100%', height: '48px', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', boxSizing: 'border-box' }}
                 />
               </div>
               <div style={{ flex: 1, minWidth: '200px' }}>
@@ -191,7 +191,7 @@ export default function Owner({ currentUser }) {
                     value={newPassword} 
                     onChange={(e) => setNewPassword(e.target.value)} 
                     placeholder="បញ្ជូលពាក្យសម្ងាត់..." 
-                    style={{ width: '100%', padding: '12px', paddingRight: '40px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }}
+                    style={{ width: '100%', height: '48px', padding: '12px', paddingRight: '40px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', boxSizing: 'border-box' }}
                   />
                   <button 
                     type="button" 
@@ -213,9 +213,11 @@ export default function Owner({ currentUser }) {
                   </button>
                 </div>
               </div>
-              <button type="submit" className="btn primary" disabled={isCreating} style={{ padding: '12px 24px', height: 'max-content' }}>
-                {isCreating ? "កំពុងបង្កើត..." : "បង្កើតគណនី"}
-              </button>
+              <div style={{ flex: 1, minWidth: '200px' }}>
+                <button type="submit" className="btn primary" disabled={isCreating} style={{ width: '100%', height: '48px', padding: '12px 24px', boxSizing: 'border-box' }}>
+                  {isCreating ? "កំពុងបង្កើត..." : "បង្កើតគណនី"}
+                </button>
+              </div>
             </form>
           </div>
 
