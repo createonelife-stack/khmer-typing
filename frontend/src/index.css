@@ -714,28 +714,8 @@ input[type="password"] {
 .word-row .delete-word-btn {
   display: flex;
   align-items: center;
-  gap: 0;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-.word-row .delete-word-btn .delete-text {
-  max-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  opacity: 0;
-  /* Typewriter step animation */
-  transition: max-width 0.4s steps(4, end), opacity 0.3s ease;
-}
-.word-row:hover .delete-word-btn {
   gap: 6px;
-}
-.word-row .delete-word-btn:hover {
-  background: var(--danger);
-  color: var(--white-absolute);
-}
-.word-row:hover .delete-word-btn .delete-text {
-  max-width: 40px;
-  opacity: 1;
+  justify-content: center;
 }
 
 .bulk-editor textarea {
