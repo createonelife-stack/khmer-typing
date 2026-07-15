@@ -582,6 +582,8 @@ input[type="password"] {
   letter-spacing: 0.5px;
 }
 .field input {
+  width: 100%;
+  box-sizing: border-box;
   padding: 14px 16px;
   border-radius: 12px;
   border: 2px solid transparent;
