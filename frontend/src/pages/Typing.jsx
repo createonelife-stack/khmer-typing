@@ -129,7 +129,7 @@ export default function Typing() {
 
   function handleKeyDown(e) {
     if (status !== "running") return;
-    if (e.key === " " || e.key === "Enter") {
+    if (e.key === "Enter") {
       e.preventDefault();
       submitWord();
     }
