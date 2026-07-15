@@ -30,7 +30,7 @@ function App() {
 
   return (
     <div className="app-shell">
-      <header className="topbar">
+      <header className="topbar container">
         <div className="brand">
           <span className="brand-kh">វាយអក្សរខ្មែរ</span>
         </div>
