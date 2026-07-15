@@ -38,10 +38,10 @@ function App() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <nav className="nav">
             <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")}>
-              មេរៀន
+              ប្រឡងវាយពាក្យ
             </NavLink>
             <a href="#" onClick={(e) => { e.preventDefault(); setShowDevModal(true); }}>
-              ឆ្លើយសំណួរ
+              ប្រឡងសំនួរជ្រើសរើស
             </a>
             {(user?.role === "admin" || user?.role === "owner") && (
               <NavLink to="/admin" className={({ isActive }) => (isActive ? "active" : "")}>
