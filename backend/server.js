@@ -229,7 +229,7 @@ app.put('/api/lessons/:id', authenticateToken, isAdmin, async (req, res) => {
     const { title, words } = req.body;
     const lesson = await Lesson.findByIdAndUpdate(req.params.id, { title, words }, { new: true });
     if (!lesson) return res.status(404).json({ error: 'Lesson not found' });
-    res.json({ success: true });
+    res.json({ id: lesson._id, title: lesson.title, words: lesson.words });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
