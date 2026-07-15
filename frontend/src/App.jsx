@@ -11,6 +11,7 @@ import QuizSession from "./pages/QuizSession.jsx";
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("currentUser")) || null);
+  const [showDevModal, setShowDevModal] = useState(false);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -39,9 +40,9 @@ function App() {
             <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")}>
               មេរៀន
             </NavLink>
-            <NavLink to="/quiz" className={({ isActive }) => (isActive ? "active" : "")}>
+            <a href="#" onClick={(e) => { e.preventDefault(); setShowDevModal(true); }}>
               ឆ្លើយសំណួរ
-            </NavLink>
+            </a>
             {(user?.role === "admin" || user?.role === "owner") && (
               <NavLink to="/admin" className={({ isActive }) => (isActive ? "active" : "")}>
                 គ្រប់គ្រង
@@ -106,6 +107,15 @@ function App() {
         <span className="dot" style={{ fontFamily: 'var(--en)' }}>•</span>
         <span className="designer">រចនាដោយ <strong>លោកសាស្ត្រាចារ្យ ពៅ សាមុត</strong></span>
       </footer>
+      {showDevModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2 style={{ color: 'var(--primary)', marginBottom: '16px' }}>កំពុងអភិវឌ្ឍ (Under Development)</h2>
+            <p style={{ marginBottom: '24px' }}>មុខងារ "ឆ្លើយសំណួរ" កំពុងស្ថិតក្នុងការអភិវឌ្ឍនៅឡើយ។ សូមរង់ចាំការធ្វើបច្ចុប្បន្នភាពនៅពេលក្រោយ!</p>
+            <button className="btn primary" onClick={() => setShowDevModal(false)}>បិទ (Close)</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
