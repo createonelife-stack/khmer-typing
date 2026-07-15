@@ -26,6 +26,42 @@ const questions = [
     options: ["Q W E R T Y U I O P", "Z X C V B N M", "A S D F J K L ;", "1 2 3 4 5 6 7 8 9 0"],
     answer: "A S D F J K L ;",
   },
+  {
+    id: 5,
+    question: "តើម្រាមដៃកូនខាងឆ្វេង គួរដាក់នៅលើអក្សរអ្វី?",
+    options: ["A", "S", "D", "F"],
+    answer: "A",
+  },
+  {
+    id: 6,
+    question: "តើម្រាមដៃកូនខាងស្តាំ គួរដាក់នៅលើសញ្ញាអ្វី?",
+    options: ["J", "K", "L", "; (សញ្ញាចុចក្បៀស)"],
+    answer: "; (សញ្ញាចុចក្បៀស)",
+  },
+  {
+    id: 7,
+    question: "ដើម្បីវាយអក្សរធំ (Capital Letter) តើយើងត្រូវចុចប៊ូតុងអ្វី?",
+    options: ["Ctrl", "Alt", "Shift", "Tab"],
+    answer: "Shift",
+  },
+  {
+    id: 8,
+    question: "តើប៊ូតុងណាដែលប្រើសម្រាប់លុបអក្សរទៅក្រោយ?",
+    options: ["Delete", "Backspace", "Spacebar", "Enter"],
+    answer: "Backspace",
+  },
+  {
+    id: 9,
+    question: "តើប៊ូតុង Enter (បញ្ជូន) មានតួនាទីជាអ្វីនៅពេលកំពុងវាយអក្សរ?",
+    options: ["លុបអក្សរ", "ចុះបន្ទាត់ថ្មី", "ដកឃ្លា", "ប្តូរភាសា"],
+    answer: "ចុះបន្ទាត់ថ្មី",
+  },
+  {
+    id: 10,
+    question: "តើការអង្គុយវាយអក្សរដែលត្រឹមត្រូវគួរតែមានលក្ខណៈដូចម្តេច?",
+    options: ["ខ្នងកោង មុខកៀកអេក្រង់", "ខ្នងត្រង់ ភ្នែកសម្លឹងអេក្រង់ ជើងរាបស្មើ", "ដេកវាយ", "សម្លឹងមើលតែក្តារចុច"],
+    answer: "ខ្នងត្រង់ ភ្នែកសម្លឹងអេក្រង់ ជើងរាបស្មើ",
+  }
 ];
 
 export default function Quiz() {
@@ -40,7 +76,7 @@ export default function Quiz() {
 
   const handleNext = () => {
     if (selectedAnswer === questions[currentQuestion].answer) {
-      setScore(score + 1);
+      setScore(score + 3); // 3 points per question
     }
     
     const nextQuestion = currentQuestion + 1;
@@ -65,7 +101,7 @@ export default function Quiz() {
         {showScore ? (
           <div className="score-section">
             <h2>លទ្ធផលរបស់អ្នក</h2>
-            <p className="score-text">អ្នកទទួលបាន {score} លើ {questions.length} ពិន្ទុ!</p>
+            <p className="score-text">អ្នកទទួលបានពិន្ទុ {score} / {questions.length * 3}</p>
             <button className="btn primary" onClick={restartQuiz}>ចាប់ផ្តើមម្តងទៀត</button>
           </div>
         ) : (
