@@ -26,8 +26,14 @@ export default function Home() {
           <Link 
             to={`/lesson/${lesson.id}`} 
             key={lesson.id} 
-            className="lesson-card"
+            className={`lesson-card ${lesson.words.length < 30 ? "disabled" : ""}`}
+            style={lesson.words.length < 30 ? { opacity: 0.6, cursor: "not-allowed" } : {}}
             onClick={(e) => {
+              if (lesson.words.length < 30) {
+                e.preventDefault();
+                alert("មេរៀននេះមិនទាន់មានពាក្យគ្រប់គ្រាន់ទេ (ត្រូវការ ៣០ ពាក្យ)!");
+                return;
+              }
               const token = localStorage.getItem("jwt_token");
               if (!token) {
                 e.preventDefault();
@@ -49,7 +55,6 @@ export default function Home() {
               </svg>
             </div>
             <div className="lesson-title">{lesson.title}</div>
-            <div className="lesson-meta">{lesson.words.length} ពាក្យ</div>
           </Link>
         ))}
       </div>
