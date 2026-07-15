@@ -209,7 +209,7 @@ button, input, textarea {
 }
 
 .lesson-card {
-  background: var(--glass-bg);
+  background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('/bg.png') center/cover no-repeat;
   border-radius: 20px;
   padding: 24px;
   border: 1px solid var(--glass-border);
@@ -217,6 +217,10 @@ button, input, textarea {
   text-decoration: none;
   color: var(--text);
   transition: transform 0.15s, box-shadow 0.15s;
+}
+
+[data-theme='dark'] .lesson-card {
+  background: linear-gradient(rgba(30, 41, 59, 0.85), rgba(30, 41, 59, 0.85)), url('/bg.png') center/cover no-repeat;
 }
 .lesson-card:hover {
   transform: translateY(-4px);
