@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { getUsers, updateUserRole, deleteUser, updateUserStatus, getStats, register } from "../api";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
 export default function Owner({ currentUser }) {
   const [users, setUsers] = useState([]);
@@ -84,20 +83,6 @@ export default function Owner({ currentUser }) {
     }
   };
 
-  // Chart Data
-  const roleData = stats ? [
-    { name: 'អ្នកប្រើប្រាស់ (Users)', value: stats.totalUsers },
-    { name: 'អ្នកគ្រប់គ្រង (Admins)', value: stats.totalAdmins },
-  ] : [];
-
-  const statusData = stats ? [
-    { name: 'សកម្ម (Active)', value: (stats.totalUsers + stats.totalAdmins) - stats.totalSuspended },
-    { name: 'បិទ (Suspended)', value: stats.totalSuspended },
-  ] : [];
-
-  const COLORS_ROLE = ['#0088FE', '#00C49F'];
-  const COLORS_STATUS = ['#2ed573', '#ff4757'];
-
   return (
     <div className="admin">
       <div className="admin-header" style={{ marginBottom: "24px" }}>
@@ -128,44 +113,6 @@ export default function Owner({ currentUser }) {
               <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
                 <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>មេរៀនសរុប</h3>
                 <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#8a2be2' }}>{stats.totalLessons}</div>
-              </div>
-            </div>
-          )}
-
-          {stats && (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', marginBottom: '40px' }}>
-              <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)' }}>
-                <h3 style={{ textAlign: 'center', marginBottom: '16px' }}>អត្រាសិទ្ធិអ្នកប្រើប្រាស់ (Roles)</h3>
-                <div style={{ height: '300px' }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie data={roleData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
-                        {roleData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS_ROLE[index % COLORS_ROLE.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                      <Legend />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-              
-              <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)' }}>
-                <h3 style={{ textAlign: 'center', marginBottom: '16px' }}>ស្ថានភាពគណនី (Status)</h3>
-                <div style={{ height: '300px' }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie data={statusData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
-                        {statusData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS_STATUS[index % COLORS_STATUS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                      <Legend />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
               </div>
             </div>
           )}
