@@ -181,7 +181,7 @@ export default function Owner({ currentUser }) {
               </div>
               <div style={{ flex: 1, minWidth: '200px' }}>
                 <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', color: 'var(--text-muted)' }}>ពាក្យសម្ងាត់ (Password)</label>
-                <div style={{ position: 'relative' }}>
+                <div style={{ position: 'relative', width: '100%' }}>
                   <input 
                     type={showPassword ? "text" : "password"} 
                     value={newPassword} 
