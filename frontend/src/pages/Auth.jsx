@@ -36,11 +36,9 @@ export default function Auth({ setUser }) {
 
   return (
     <div className="auth-container">
-      <div className="auth-flip-box">
-        <div className="auth-flip-inner">
-          <div className="auth-flip-front auth-card">
-            <div className="auth-header" style={{ justifyContent: 'center' }}>
-              <button type="button" className="auth-tab active" style={{ cursor: 'default' }}>ចូលគណនី</button>
+      <div className="auth-card" style={{ maxWidth: '480px', width: '100%' }}>
+        <div className="auth-header" style={{ justifyContent: 'center' }}>
+          <button type="button" className="auth-tab active" style={{ cursor: 'default' }}>ចូលគណនី</button>
             </div>
             <div className="auth-body">
               <h2 className="auth-title">សូមស្វាគមន៍ត្រលប់មកវិញ!</h2>
@@ -58,8 +56,6 @@ export default function Auth({ setUser }) {
                   ចូលប្រើប្រាស់
                 </button>
               </form>
-            </div>
-          </div>
         </div>
       </div>
     </div>
