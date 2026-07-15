@@ -6,6 +6,7 @@ import Admin from "./pages/Admin.jsx";
 import Owner from "./pages/Owner.jsx";
 import Auth from "./pages/Auth.jsx";
 import Quiz from "./pages/Quiz.jsx";
+import QuizSession from "./pages/QuizSession.jsx";
 
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
@@ -86,6 +87,7 @@ function App() {
           <Route path="/lesson/:id" element={<Typing />} />
           <Route path="/auth" element={<Auth setUser={setUser} />} />
           <Route path="/quiz" element={<Quiz />} />
+          <Route path="/quiz/:id" element={<QuizSession />} />
           <Route 
             path="/admin" 
             element={(user?.role === "admin" || user?.role === "owner") ? <Admin /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>អ្នកមិនមានសិទ្ធិចូលទំព័រនេះទេ! (Access Denied)</h2></div>} 
