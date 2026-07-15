@@ -84,6 +84,11 @@ button, input, textarea {
   font-family: var(--kh), var(--en);
 }
 
+input[type="password"] {
+  font-family: var(--en), sans-serif;
+  letter-spacing: 2px;
+}
+
 .app-shell {
   min-height: 100svh;
   display: flex;
