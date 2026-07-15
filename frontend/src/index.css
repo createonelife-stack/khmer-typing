@@ -1034,3 +1034,8 @@ input[type="password"] {
   from { transform: scale(0.9); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
+
+/* Noto Serif Khmer Font for Admin/Owner Page */
+.admin {
+  font-family: 'Noto Serif Khmer', serif;
+}
