@@ -156,7 +156,12 @@ input[type="password"] {
   font-size: 0.95rem;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+}
+.nav a svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
 }
 .nav a:hover {
   background: rgba(99, 102, 241, 0.08);
@@ -205,7 +210,12 @@ input[type="password"] {
   font-size: 0.9rem;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+}
+.btn-logout svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
 }
 .btn-logout:hover {
   background: var(--danger-bg);
@@ -224,7 +234,12 @@ input[type="password"] {
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+}
+.btn-login svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
 }
 .btn-login:hover {
   transform: translateY(-2px);

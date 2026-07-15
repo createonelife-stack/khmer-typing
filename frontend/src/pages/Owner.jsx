@@ -12,6 +12,7 @@ export default function Owner({ currentUser }) {
   const [newPassword, setNewPassword] = useState("");
   const [isCreating, setIsCreating] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [successPopup, setSuccessPopup] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -72,9 +73,9 @@ export default function Owner({ currentUser }) {
     setIsCreating(true);
     try {
       await register({ username: newUsername, password: newPassword });
+      setSuccessPopup({ username: newUsername, password: newPassword });
       setNewUsername("");
       setNewPassword("");
-      alert("បង្កើតគណនីថ្មីជោគជ័យ!");
       fetchData();
     } catch (err) {
       alert("មានបញ្ហា៖ " + err.message);
@@ -247,6 +248,31 @@ export default function Owner({ currentUser }) {
             </>
           )}
         </>
+      )}
+
+      {successPopup && (
+        <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+          <div className="modal-content" style={{ background: 'var(--surface)', padding: '32px', borderRadius: '16px', maxWidth: '400px', width: '90%', textAlign: 'center', boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
+            <div style={{ width: '64px', height: '64px', background: 'var(--success-bg)', color: 'var(--success)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h2 style={{ color: 'var(--success)', marginBottom: '12px' }}>គណនីបង្កើតបានជោគជ័យ!</h2>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '24px', lineHeight: '1.6' }}>
+              សូមផ្ញើ account នេះទៅមនុស្សដែលអ្នកចង់អោយគាត់ចូលធ្វើតេស្ត៖
+            </p>
+            <div style={{ background: 'var(--bg)', padding: '16px', borderRadius: '8px', marginBottom: '24px', textAlign: 'left', border: '1px solid var(--border)' }}>
+              <div style={{ marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: 'var(--text-muted)' }}>ឈ្មោះអ្នកប្រើ (Username):</span>
+                <strong style={{ color: 'var(--text)' }}>{successPopup.username}</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: 'var(--text-muted)' }}>ពាក្យសម្ងាត់ (Password):</span>
+                <strong style={{ color: 'var(--text)' }}>{successPopup.password}</strong>
+              </div>
+            </div>
+            <button className="btn primary" onClick={() => setSuccessPopup(null)} style={{ width: '100%', padding: '12px', borderRadius: '8px' }}>បិទ (Close)</button>
+          </div>
+        </div>
       )}
     </div>
   );
