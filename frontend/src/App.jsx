@@ -33,7 +33,6 @@ function App() {
       <header className="topbar">
         <div className="brand">
           <span className="brand-kh">វាយអក្សរខ្មែរ</span>
-          <span className="brand-en">Khmer Typing Master</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <nav className="nav">
