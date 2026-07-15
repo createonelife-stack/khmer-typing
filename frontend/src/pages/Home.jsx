@@ -16,14 +16,7 @@ export default function Home() {
 
   return (
     <div className="home">
-      <h1>ជ្រើសរើសមេរៀន</h1>
-      <p className="subtitle">
-        ១ មេរៀន មាន ៣០ ពាក្យ · រយៈពេល ១០ នាទី · ១ ពាក្យ = ៣ ពិន្ទុ
-      </p>
-      <p className="subtitle small">
-        បញ្ចប់ក្រោម ៥ នាទី បានពិន្ទុបន្ថែម ១០ ពិន្ទុ · បញ្ចប់ក្រោម ៧ នាទី បានពិន្ទុបន្ថែម ៥ ពិន្ទុ
-      </p>
-      
+
       {loading && <p>កំពុងផ្ទុក...</p>}
       {error && <p className="error">មានបញ្ហា៖ {error}</p>}
 
