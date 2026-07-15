@@ -47,7 +47,7 @@ function App() {
                 គ្រប់គ្រង
               </NavLink>
             )}
-            {user?.role === "owner" && (
+            {(user?.role === "admin" || user?.role === "owner") && (
               <NavLink to="/owner" className={({ isActive }) => (isActive ? "active" : "")}>
                 អ្នកប្រើប្រាស់
               </NavLink>
@@ -94,7 +94,7 @@ function App() {
           />
           <Route 
             path="/owner" 
-            element={user?.role === "owner" ? <Owner /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>អ្នកមិនមានសិទ្ធិចូលទំព័រនេះទេ! (Access Denied)</h2></div>} 
+            element={(user?.role === "admin" || user?.role === "owner") ? <Owner currentUser={user} /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>អ្នកមិនមានសិទ្ធិចូលទំព័រនេះទេ! (Access Denied)</h2></div>} 
           />
         </Routes>
       </main>

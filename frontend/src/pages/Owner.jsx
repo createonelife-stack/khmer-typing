@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
-import { getUsers, updateUserRole, deleteUser, updateUserStatus, getStats } from "../api";
+import { getUsers, updateUserRole, deleteUser, updateUserStatus, getStats, register } from "../api";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
-export default function Owner() {
+export default function Owner({ currentUser }) {
   const [users, setUsers] = useState([]);
   const [stats, setStats] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  
+  // New User Form State
+  const [newUsername, setNewUsername] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -51,6 +56,26 @@ export default function Owner() {
       fetchData(); // Refresh the list & stats
     } catch (err) {
       alert("មានបញ្ហា៖ " + err.message);
+    }
+  };
+
+  const handleCreateUser = async (e) => {
+    e.preventDefault();
+    if (!newUsername || !newPassword) {
+      alert("សូមបញ្ចូលឈ្មោះ និងពាក្យសម្ងាត់!");
+      return;
+    }
+    setIsCreating(true);
+    try {
+      await register({ username: newUsername, password: newPassword });
+      setNewUsername("");
+      setNewPassword("");
+      alert("បង្កើតគណនីថ្មីជោគជ័យ!");
+      fetchData();
+    } catch (err) {
+      alert("មានបញ្ហា៖ " + err.message);
+    } finally {
+      setIsCreating(false);
     }
   };
 
@@ -140,6 +165,35 @@ export default function Owner() {
             </div>
           )}
 
+          <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', marginBottom: '40px' }}>
+            <h2 style={{ marginBottom: '16px' }}>បង្កើតគណនីថ្មី</h2>
+            <form onSubmit={handleCreateUser} style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+              <div style={{ flex: 1, minWidth: '200px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', color: 'var(--text-muted)' }}>ឈ្មោះអ្នកប្រើ (Username)</label>
+                <input 
+                  type="text" 
+                  value={newUsername} 
+                  onChange={(e) => setNewUsername(e.target.value)} 
+                  placeholder="បញ្ជូលឈ្មោះ..." 
+                  style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }}
+                />
+              </div>
+              <div style={{ flex: 1, minWidth: '200px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', color: 'var(--text-muted)' }}>ពាក្យសម្ងាត់ (Password)</label>
+                <input 
+                  type="password" 
+                  value={newPassword} 
+                  onChange={(e) => setNewPassword(e.target.value)} 
+                  placeholder="បញ្ជូលពាក្យសម្ងាត់..." 
+                  style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }}
+                />
+              </div>
+              <button type="submit" className="btn primary" disabled={isCreating} style={{ padding: '12px 24px', height: 'max-content' }}>
+                {isCreating ? "កំពុងបង្កើត..." : "បង្កើតគណនី"}
+              </button>
+            </form>
+          </div>
+
           <h2 style={{ marginBottom: '16px' }}>បញ្ជីអ្នកប្រើប្រាស់</h2>
           <div className="lesson-list">
             <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--surface)", borderRadius: "12px", overflow: "hidden" }}>
@@ -178,7 +232,7 @@ export default function Owner() {
                       </span>
                     </td>
                     <td style={{ padding: "12px", textAlign: "center" }}>
-                      {u.role !== 'owner' && (
+                      {u.role !== 'owner' && currentUser?.role === 'owner' && (
                         <div style={{ display: "flex", gap: "8px", justifyContent: "center" }}>
                           {u.role === 'user' && (
                             <button onClick={() => handleRoleChange(u.username, 'admin')} className="btn" style={{ padding: "4px 8px", fontSize: "12px" }}>

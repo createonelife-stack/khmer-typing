@@ -68,7 +68,7 @@ function isOwner(req, res, next) {
 }
 
 // Routes
-app.post('/api/auth/register', async (req, res) => {
+app.post('/api/auth/register', authenticateToken, isAdmin, async (req, res) => {
   try {
     const { username, password } = req.body;
     if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
@@ -85,8 +85,7 @@ app.post('/api/auth/register', async (req, res) => {
     
     await newUser.save();
 
-    const token = jwt.sign({ id: newUser._id, username: newUser.username, role: newUser.role }, JWT_SECRET, { expiresIn: '24h' });
-    res.json({ token, user: { username: newUser.username, role: newUser.role } });
+    res.json({ success: true, message: 'User created successfully', user: { username: newUser.username, role: newUser.role } });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -112,7 +111,7 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
-app.get('/api/users', authenticateToken, isOwner, async (req, res) => {
+app.get('/api/users', authenticateToken, isAdmin, async (req, res) => {
   try {
     const users = await User.find({}, 'username role status _id');
     res.json(users.map(u => ({ id: u._id, username: u.username, role: u.role, status: u.status })));
@@ -121,7 +120,7 @@ app.get('/api/users', authenticateToken, isOwner, async (req, res) => {
   }
 });
 
-app.get('/api/stats', authenticateToken, isOwner, async (req, res) => {
+app.get('/api/stats', authenticateToken, isAdmin, async (req, res) => {
   try {
     const totalUsers = await User.countDocuments({ role: 'user' });
     const totalAdmins = await User.countDocuments({ role: { $in: ['admin', 'owner'] } });

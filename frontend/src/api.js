@@ -24,7 +24,10 @@ export function login(credentials) {
 export function register(credentials) {
   return fetch(`${BASE_URL}/auth/register`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      ...getAuthHeaders()
+    },
     body: JSON.stringify(credentials)
   }).then(handle);
 }
