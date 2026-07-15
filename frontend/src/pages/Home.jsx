@@ -6,6 +6,7 @@ export default function Home() {
   const [lessons, setLessons] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function Home() {
             onClick={(e) => {
               if (lesson.words.length < 30) {
                 e.preventDefault();
-                alert("មេរៀននេះមិនទាន់មានពាក្យគ្រប់គ្រាន់ទេ (ត្រូវការ ៣០ ពាក្យ)!");
+                setShowModal(true);
                 return;
               }
               const token = localStorage.getItem("jwt_token");
@@ -58,6 +59,18 @@ export default function Home() {
           </Link>
         ))}
       </div>
+
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>បដិសេធការចូលប្រើប្រាស់</h3>
+            <p>សូមទាក់ទង admin ដើម្បី ទទួលសិទ្ធ</p>
+            <button type="button" className="btn primary" onClick={() => setShowModal(false)}>
+              យល់ព្រម
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
