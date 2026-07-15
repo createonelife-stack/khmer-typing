@@ -112,8 +112,7 @@ input[type="password"] {
 
 .brand {
   display: flex;
-  flex-direction: column;
-  line-height: 1.2;
+  align-items: center;
 }
 .brand-kh {
   font-size: 22px;
@@ -121,11 +120,8 @@ input[type="password"] {
   background: linear-gradient(135deg, var(--primary), #8a2be2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-.brand-en {
-  font-size: 13px;
-  color: var(--text-muted);
-  font-weight: 500;
+  line-height: 1.6;
+  padding-bottom: 6px;
 }
 
 .nav {
