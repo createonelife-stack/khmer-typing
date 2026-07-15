@@ -117,7 +117,7 @@ input[type="password"] {
 }
 .brand-kh {
   font-size: 22px;
-  font-weight: 700;
+  font-family: 'Moul', serif;
   background: linear-gradient(135deg, var(--primary), #8a2be2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
