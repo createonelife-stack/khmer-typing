@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "owner",
+      "passwordHash": "$2b$10$f20MKf9EQeYKCZ.F9ubfyu/.tNpvvd59nwZUUnCJx1oCCkTnycA0m",
+      "role": "owner",
+      "status": "active"
+    },
+    {
+      "id": 1784086251385,
+      "username": "admin",
+      "passwordHash": "$2b$10$a/lGiV5HxLuw9c./Owj8LuahdJ65EKHOibLRniUK7qmD/4uVnUwQe",
+      "role": "admin",
+      "status": "active"
+    }
+  ]
+}

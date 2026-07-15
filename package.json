@@ -1,0 +1,9 @@
+{
+  "name": "khmer-typing-master",
+  "version": "1.0.0",
+  "description": "Fullstack Typing Master Application",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build && cd ../backend && npm install",
+    "start": "cd backend && node server.js"
+  }
+}
