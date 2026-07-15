@@ -51,8 +51,8 @@ export default function Auth({ setUser }) {
                 </div>
                 <div className="field">
                   <span>ពាក្យសម្ងាត់ (Password)</span>
-                  <div style={{ position: 'relative' }}>
-                    <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="បញ្ជូលពាក្យសម្ងាត់..." style={{ paddingRight: '48px' }} />
+                  <div style={{ position: 'relative', width: '100%' }}>
+                    <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="បញ្ជូលពាក្យសម្ងាត់..." style={{ width: '100%', paddingRight: '48px' }} />
                     <button 
                       type="button" 
                       onClick={() => setShowPassword(!showPassword)}
