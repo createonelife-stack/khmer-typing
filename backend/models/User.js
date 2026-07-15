@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['active', 'suspended'],
     default: 'active'
+  },
+  loginCount: {
+    type: Number,
+    default: 0
   }
 }, { timestamps: true });
 

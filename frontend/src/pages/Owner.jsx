@@ -230,6 +230,7 @@ export default function Owner({ currentUser }) {
                   <th style={{ padding: "12px", textAlign: "left" }}>ឈ្មោះអ្នកប្រើ (Username)</th>
                   <th style={{ padding: "12px", textAlign: "left" }}>សិទ្ធិ (Role)</th>
                   <th style={{ padding: "12px", textAlign: "left" }}>ស្ថានភាព (Status)</th>
+                  <th style={{ padding: "12px", textAlign: "center" }}>ចំនួនដង Login</th>
                   <th style={{ padding: "12px", textAlign: "center" }}>សកម្មភាព (Actions)</th>
                 </tr>
               </thead>
@@ -257,6 +258,9 @@ export default function Owner({ currentUser }) {
                       }}>
                         {u.status === 'suspended' ? 'បិទ' : 'សកម្ម'}
                       </span>
+                    </td>
+                    <td style={{ padding: "12px", textAlign: "center", fontWeight: "bold" }}>
+                      {u.loginCount}
                     </td>
                     <td style={{ padding: "12px", textAlign: "center" }}>
                       {u.role !== 'owner' && currentUser?.role === 'owner' && (

@@ -104,6 +104,9 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(403).json({ error: 'Account is temporarily suspended' });
     }
     
+    user.loginCount = (user.loginCount || 0) + 1;
+    await user.save();
+    
     const token = jwt.sign({ id: user._id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
     res.json({ token, user: { username: user.username, role: user.role } });
   } catch (error) {
@@ -113,8 +116,8 @@ app.post('/api/auth/login', async (req, res) => {
 
 app.get('/api/users', authenticateToken, isOwner, async (req, res) => {
   try {
-    const users = await User.find({}, 'username role status _id');
-    res.json(users.map(u => ({ id: u._id, username: u.username, role: u.role, status: u.status })));
+    const users = await User.find({}, 'username role status loginCount _id');
+    res.json(users.map(u => ({ id: u._id, username: u.username, role: u.role, status: u.status, loginCount: u.loginCount || 0 })));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
