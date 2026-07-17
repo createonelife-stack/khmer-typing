@@ -973,7 +973,10 @@ input[type="password"] {
 
 @media (max-width: 768px) {
   body {
-    width: 95%;
+    width: 100%;
+  }
+  .content {
+    padding: 16px 12px 120px;
   }
   .admin-tab {
     width: 100%;
@@ -991,11 +994,29 @@ input[type="password"] {
   
   /* Mobile Bottom Navigation Bar */
   .topbar {
-    padding: 8px 16px;
-    margin: 0 12px;
+    padding: 8px 12px;
+    margin: 0 8px;
   }
   .header-actions {
-    gap: 12px;
+    gap: 8px;
+  }
+  .brand-kh {
+    font-size: 16px;
+  }
+  .user-profile {
+    padding-left: 8px;
+    gap: 8px;
+  }
+  .user-name {
+    display: none;
+  }
+  .btn-logout, .btn-login {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  .btn-logout svg, .btn-login svg {
+    width: 14px;
+    height: 14px;
   }
   .desktop-nav {
     display: none;
@@ -1035,9 +1056,7 @@ input[type="password"] {
     height: 22px;
   }
   
-  .content {
-    padding-bottom: 120px;
-  }
+  /* Removed duplicate content padding rule since it's added at the top */
   .footer {
     display: none; /* Hide footer on mobile to save space */
   }

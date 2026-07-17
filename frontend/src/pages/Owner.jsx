@@ -172,8 +172,8 @@ export default function Owner({ currentUser }) {
           {currentUser?.role === 'owner' && (
             <>
               <h2 style={{ marginBottom: '16px' }}>បញ្ជីអ្នកប្រើប្រាស់</h2>
-              <div className="lesson-list">
-            <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--surface)", borderRadius: "12px", overflow: "hidden" }}>
+              <div className="lesson-list" style={{ overflowX: 'auto', borderRadius: '12px' }}>
+            <table style={{ width: "100%", minWidth: "700px", borderCollapse: "collapse", background: "var(--surface)", borderRadius: "12px", overflow: "hidden" }}>
               <thead>
                 <tr style={{ background: "var(--primary)", color: "white" }}>
                   <th style={{ padding: "12px", textAlign: "left" }}>លេខរៀង (ID)</th>
