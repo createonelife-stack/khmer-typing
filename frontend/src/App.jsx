@@ -107,15 +107,15 @@ function App() {
           <Route path="/quiz/:id" element={<QuizSession />} />
           <Route 
             path="/admin" 
-            element={(user?.role === "admin" || user?.role === "owner") ? <Admin /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>អ្នកមិនមានសិទ្ធិចូលទំព័រនេះទេ! (Access Denied)</h2></div>} 
+            element={(user?.role === "admin" || user?.role === "owner") ? <Admin /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} 
           />
           <Route 
             path="/admin/quizzes" 
-            element={(user?.role === "admin" || user?.role === "owner") ? <QuizAdmin /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>អ្នកមិនមានសិទ្ធិចូលទំព័រនេះទេ! (Access Denied)</h2></div>} 
+            element={(user?.role === "admin" || user?.role === "owner") ? <QuizAdmin /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} 
           />
           <Route 
             path="/owner" 
-            element={(user?.role === "admin" || user?.role === "owner") ? <Owner currentUser={user} /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>អ្នកមិនមានសិទ្ធិចូលទំព័រនេះទេ! (Access Denied)</h2></div>} 
+            element={(user?.role === "admin" || user?.role === "owner") ? <Owner currentUser={user} /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} 
           />
         </Routes>
       </main>
