@@ -985,6 +985,55 @@ input[type="password"] {
     font-size: 16px;
     padding: 12px;
   }
+  
+  /* Mobile Bottom Navigation Bar */
+  .topbar {
+    padding: 8px 16px;
+    margin: 0 12px;
+  }
+  .header-actions {
+    gap: 12px;
+  }
+  .nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 8px;
+    justify-content: space-around;
+    z-index: 200;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+    margin: 0;
+  }
+  [data-theme='dark'] .nav {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+  }
+  
+  .nav a {
+    flex-direction: column;
+    font-size: 11px;
+    padding: 6px;
+    gap: 4px;
+    border-radius: 12px;
+    flex: 1;
+    justify-content: center;
+    text-align: center;
+  }
+  .nav a svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .content {
+    padding-bottom: 120px;
+  }
+  .footer {
+    display: none; /* Hide footer on mobile to save space */
+  }
 }
 
 /* ---------- Auth Page ---------- */
