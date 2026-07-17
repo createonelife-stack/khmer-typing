@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { getQuizzes, createQuiz, updateQuiz, deleteQuiz, seedQuizzes } from "../api";
-import "./Admin.css"; // Reuse some styles from Admin
 
 export default function QuizAdmin() {
   const [quizzes, setQuizzes] = useState([]);
