@@ -176,7 +176,7 @@ export default function Owner({ currentUser }) {
             <table style={{ width: "100%", minWidth: "700px", borderCollapse: "collapse", background: "var(--surface)", borderRadius: "12px", overflow: "hidden" }}>
               <thead>
                 <tr style={{ background: "var(--primary)", color: "white" }}>
-                  <th style={{ padding: "12px", textAlign: "left" }}>លេខរៀង (ID)</th>
+                  <th style={{ padding: "12px", textAlign: "left" }}>លេខរៀង (No.)</th>
                   <th style={{ padding: "12px", textAlign: "left" }}>ឈ្មោះអ្នកប្រើ (Username)</th>
                   <th style={{ padding: "12px", textAlign: "left" }}>សិទ្ធិ (Role)</th>
                   <th style={{ padding: "12px", textAlign: "left" }}>ស្ថានភាព (Status)</th>
@@ -185,9 +185,9 @@ export default function Owner({ currentUser }) {
                 </tr>
               </thead>
               <tbody>
-                {users.map(u => (
+                {users.map((u, index) => (
                   <tr key={u.id} style={{ borderBottom: "1px solid var(--border)", opacity: u.status === 'suspended' ? 0.6 : 1 }}>
-                    <td style={{ padding: "12px" }}>{u.id}</td>
+                    <td style={{ padding: "12px", fontWeight: "bold" }}>{index + 1}</td>
                     <td style={{ padding: "12px", fontWeight: "bold" }}>{u.username}</td>
                     <td style={{ padding: "12px" }}>
                       <span style={{ 
