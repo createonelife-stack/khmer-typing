@@ -146,6 +146,9 @@ input[type="password"] {
   display: flex;
   gap: 4px;
 }
+.mobile-nav {
+  display: none;
+}
 .nav a {
   padding: 8px 16px;
   border-radius: 100px;
@@ -994,7 +997,11 @@ input[type="password"] {
   .header-actions {
     gap: 12px;
   }
-  .nav {
+  .desktop-nav {
+    display: none;
+  }
+  .nav.mobile-nav {
+    display: flex;
     position: fixed;
     bottom: 0;
     left: 0;

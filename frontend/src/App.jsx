@@ -28,6 +28,31 @@ function App() {
     localStorage.removeItem("jwt_token");
   };
 
+  const navLinks = (
+    <>
+      <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6" y2="8"></line><line x1="10" y1="8" x2="10" y2="8"></line><line x1="14" y1="8" x2="14" y2="8"></line><line x1="18" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="6" y2="12"></line><line x1="10" y1="12" x2="10" y2="12"></line><line x1="14" y1="12" x2="14" y2="12"></line><line x1="18" y1="12" x2="18" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>
+        <span>វាយពាក្យ</span>
+      </NavLink>
+      <a href="#" onClick={(e) => { e.preventDefault(); setShowDevModal(true); }}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        <span>សំនួរ</span>
+      </a>
+      {(user?.role === "admin" || user?.role === "owner") && (
+        <NavLink to="/admin" className={({ isActive }) => (isActive ? "active" : "")}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+          <span>គ្រប់គ្រង</span>
+        </NavLink>
+      )}
+      {(user?.role === "admin" || user?.role === "owner") && (
+        <NavLink to="/owner" className={({ isActive }) => (isActive ? "active" : "")}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <span>អ្នកប្រើប្រាស់</span>
+        </NavLink>
+      )}
+    </>
+  );
+
   return (
     <div className="app-shell">
       <header className="topbar">
@@ -35,27 +60,8 @@ function App() {
           <span className="brand-kh">វាយអក្សរខ្មែរ</span>
         </div>
         <div className="header-actions">
-          <nav className="nav">
-            <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6" y2="8"></line><line x1="10" y1="8" x2="10" y2="8"></line><line x1="14" y1="8" x2="14" y2="8"></line><line x1="18" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="6" y2="12"></line><line x1="10" y1="12" x2="10" y2="12"></line><line x1="14" y1="12" x2="14" y2="12"></line><line x1="18" y1="12" x2="18" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>
-              ប្រឡងវាយពាក្យ
-            </NavLink>
-            <a href="#" onClick={(e) => { e.preventDefault(); setShowDevModal(true); }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-              ប្រឡងសំនួរជ្រើសរើស
-            </a>
-            {(user?.role === "admin" || user?.role === "owner") && (
-              <NavLink to="/admin" className={({ isActive }) => (isActive ? "active" : "")}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-                គ្រប់គ្រង
-              </NavLink>
-            )}
-            {(user?.role === "admin" || user?.role === "owner") && (
-              <NavLink to="/owner" className={({ isActive }) => (isActive ? "active" : "")}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                អ្នកប្រើប្រាស់
-              </NavLink>
-            )}
+          <nav className="nav desktop-nav">
+            {navLinks}
           </nav>
           
           {user ? (
@@ -111,6 +117,10 @@ function App() {
         <span className="dot" style={{ fontFamily: 'var(--en)' }}>•</span>
         <span className="designer">រចនាដោយ <strong>លោកសាស្ត្រាចារ្យ ពៅ សាមុត</strong></span>
       </footer>
+
+      <nav className="nav mobile-nav">
+        {navLinks}
+      </nav>
       {showDevModal && (
         <div className="modal-overlay">
           <div className="modal-content">
