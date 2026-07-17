@@ -12,7 +12,6 @@ import QuizAdmin from "./pages/QuizAdmin.jsx";
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("currentUser")) || null);
-  const [showDevModal, setShowDevModal] = useState(false);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
