@@ -10,6 +10,7 @@ const User = require('./models/User');
 const Lesson = require('./models/Lesson');
 const Result = require('./models/Result');
 const Quiz = require('./models/Quiz');
+const quizzesToSeed = require('./quizDataSeed');
 
 const app = express();
 app.use(cors());
@@ -262,29 +263,6 @@ app.get('/api/quizzes', async (req, res) => {
 
 app.post('/api/quizzes/seed', authenticateToken, isAdmin, async (req, res) => {
   try {
-    const generateQuestions = (quizNumber) => {
-      const questions = [];
-      for (let i = 1; i <= 20; i++) {
-        questions.push({
-          question: `សំណួរទី ${i} សម្រាប់កម្រងសំណួរទី ${quizNumber} (សូមកែប្រែនៅពេលក្រោយ)`,
-          options: [
-            `ចម្លើយទី ១ (កម្រងទី ${quizNumber} សំណួរ ${i})`,
-            `ចម្លើយទី ២ (កម្រងទី ${quizNumber} សំណួរ ${i})`,
-            `ចម្លើយទី ៣ (កម្រងទី ${quizNumber} សំណួរ ${i})`,
-            `ចម្លើយទី ៤ (កម្រងទី ${quizNumber} សំណួរ ${i})`
-          ],
-          answer: `ចម្លើយទី ១ (កម្រងទី ${quizNumber} សំណួរ ${i})`
-        });
-      }
-      return questions;
-    };
-    
-    const quizzesToSeed = [
-      { title: "កម្រងសំនួរជ្រើសរើសទី១", description: "ចំណេះដឹងមូលដ្ឋាន និងការរៀបចំខ្លួន", questions: generateQuestions(1) },
-      { title: "កម្រងសំនួរជ្រើសរើសទី២", description: "ការប្រើប្រាស់ក្តារចុចកម្រិតមធ្យម", questions: generateQuestions(2) },
-      { title: "កម្រងសំនួរជ្រើសរើសទី៣", description: "ការប្រើប្រាស់ក្តារចុចកម្រិតខ្ពស់ និងផ្លូវកាត់", questions: generateQuestions(3) }
-    ];
-    
     await Quiz.deleteMany({});
     await Quiz.insertMany(quizzesToSeed);
     res.json({ success: true, message: "បានបង្កើតកម្រងសំនួរដោយស្វ័យប្រវត្តិរួចរាល់!" });
