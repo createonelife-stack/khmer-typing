@@ -13,6 +13,7 @@ export default function QuizAdmin() {
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const [seeding, setSeeding] = useState(false);
+  const [confirmModal, setConfirmModal] = useState({ isOpen: false, action: null });
 
   useEffect(() => {
     fetchQuizzes();
@@ -64,6 +65,7 @@ export default function QuizAdmin() {
   };
 
   const handleSave = async () => {
+    setConfirmModal({ isOpen: false, action: null });
     setSaving(true);
     setStatus("");
     setError("");
@@ -81,7 +83,7 @@ export default function QuizAdmin() {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm("តើអ្នកពិតជាចង់លុបមេរៀនសំនួរនេះមែនទេ? សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។")) return;
+    setConfirmModal({ isOpen: false, action: null });
     setSaving(true);
     setStatus("");
     setError("");
@@ -244,16 +246,43 @@ export default function QuizAdmin() {
             </div>
 
             <div style={{ display: 'flex', gap: '24px', marginTop: '32px' }}>
-              <button type="button" className="btn primary" onClick={handleSave} disabled={saving}>
+              <button type="button" className="btn primary" onClick={() => setConfirmModal({ isOpen: true, action: 'save' })} disabled={saving}>
                 {saving ? "កំពុងរក្សាទុក..." : "រក្សាទុកកម្រងសំនួរនេះ"}
               </button>
-              <button type="button" className="btn danger" onClick={handleDelete} disabled={saving}>
+              <button type="button" className="btn danger" onClick={() => setConfirmModal({ isOpen: true, action: 'delete' })} disabled={saving}>
                 លុបកម្រងសំនួរនេះ
               </button>
             </div>
           </div>
         )}
       </div>
+
+      {confirmModal.isOpen && (
+        <div className="modal-overlay" onClick={() => setConfirmModal({ isOpen: false, action: null })}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 style={{ color: confirmModal.action === 'delete' ? 'var(--danger)' : 'var(--primary)', marginBottom: '16px' }}>
+              {confirmModal.action === 'delete' ? 'បញ្ជាក់ការលុប' : 'បញ្ជាក់ការរក្សាទុក'}
+            </h3>
+            <p style={{ marginBottom: '24px' }}>
+              {confirmModal.action === 'delete' 
+                ? 'តើអ្នកពិតជាចង់លុបកម្រងសំនួរនេះមែនទេ? សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។'
+                : 'តើអ្នកពិតជាចង់រក្សាទុកការផ្លាស់ប្តូរនៅលើកម្រងសំនួរនេះមែនទេ?'}
+            </p>
+            <div style={{ display: 'flex', gap: '16px', justifyContent: 'flex-end' }}>
+              <button type="button" className="btn" onClick={() => setConfirmModal({ isOpen: false, action: null })}>
+                បោះបង់
+              </button>
+              <button 
+                type="button" 
+                className={`btn ${confirmModal.action === 'delete' ? 'danger' : 'primary'}`} 
+                onClick={confirmModal.action === 'delete' ? handleDelete : handleSave}
+              >
+                យល់ព្រម
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
