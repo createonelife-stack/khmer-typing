@@ -22,6 +22,13 @@
   background: linear-gradient(rgba(30, 41, 59, 0.95), rgba(30, 41, 59, 0.95)), url('/qcm.jpg') center/cover no-repeat;
 }
 
+.quiz-card-bg {
+  background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('/question.png') center/cover no-repeat !important;
+}
+[data-theme='dark'] .quiz-card-bg {
+  background: linear-gradient(rgba(30, 41, 59, 0.85), rgba(30, 41, 59, 0.85)), url('/question.png') center/cover no-repeat !important;
+}
+
 .question-section {
   margin-bottom: 30px;
 }
