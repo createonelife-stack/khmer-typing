@@ -123,3 +123,52 @@ export function getResults(lessonId) {
   const q = lessonId ? `?lessonId=${lessonId}` : "";
   return fetch(`${BASE_URL}/results${q}`).then(handle);
 }
+
+// ---------- Quiz API ----------
+
+export function getQuizzes() {
+  return fetch(`${BASE_URL}/quizzes`).then(handle);
+}
+
+export function getQuiz(id) {
+  return fetch(`${BASE_URL}/quizzes/${id}`).then(handle);
+}
+
+export function updateQuiz(id, payload) {
+  return fetch(`${BASE_URL}/quizzes/${id}`, {
+    method: "PUT",
+    headers: { 
+      "Content-Type": "application/json",
+      ...getAuthHeaders()
+    },
+    body: JSON.stringify(payload),
+  }).then(handle);
+}
+
+export function createQuiz() {
+  return fetch(`${BASE_URL}/quizzes`, {
+    method: "POST",
+    headers: { 
+      "Content-Type": "application/json",
+      ...getAuthHeaders()
+    }
+  }).then(handle);
+}
+
+export function deleteQuiz(id) {
+  return fetch(`${BASE_URL}/quizzes/${id}`, {
+    method: "DELETE",
+    headers: {
+      ...getAuthHeaders()
+    }
+  }).then(handle);
+}
+
+export function seedQuizzes() {
+  return fetch(`${BASE_URL}/quizzes/seed`, {
+    method: "POST",
+    headers: {
+      ...getAuthHeaders()
+    }
+  }).then(handle);
+}

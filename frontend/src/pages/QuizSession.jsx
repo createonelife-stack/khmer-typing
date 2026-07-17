@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { quizLessons } from "../quizData";
+import { getQuiz } from "../api";
 import "./Quiz.css";
 
 export default function QuizSession() {
@@ -13,18 +13,23 @@ export default function QuizSession() {
   const [showScore, setShowScore] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState("");
 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   useEffect(() => {
-    const foundLesson = quizLessons.find(l => l.id === id);
-    if (foundLesson) {
-      setLesson(foundLesson);
-      setCurrentQuestion(0);
-      setScore(0);
-      setShowScore(false);
-      setSelectedAnswer("");
-    } else {
-      // If not found, go back
-      navigate("/quiz");
-    }
+    getQuiz(id)
+      .then(data => {
+        setLesson(data);
+        setCurrentQuestion(0);
+        setScore(0);
+        setShowScore(false);
+        setSelectedAnswer("");
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
   }, [id, navigate]);
 
   const handleAnswerOptionClick = (option) => {
@@ -33,7 +38,7 @@ export default function QuizSession() {
 
   const handleNext = () => {
     if (selectedAnswer === lesson.questions[currentQuestion].answer) {
-      setScore(score + 3); // 3 points per question
+      setScore(score + 4); // 4 points per correct answer
     }
     
     const nextQuestion = currentQuestion + 1;
@@ -52,7 +57,9 @@ export default function QuizSession() {
     setSelectedAnswer("");
   };
 
-  if (!lesson) return <div>កំពុងផ្ទុក...</div>;
+  if (loading) return <div style={{ textAlign: 'center', padding: '40px' }}>កំពុងផ្ទុកសំនួរ...</div>;
+  if (error) return <div style={{ textAlign: 'center', padding: '40px', color: 'red' }}>មានបញ្ហា៖ {error}</div>;
+  if (!lesson) return <div style={{ textAlign: 'center', padding: '40px' }}>រកមិនឃើញកម្រងសំនួរនេះទេ</div>;
 
   return (
     <div className="quiz-container">
@@ -65,7 +72,7 @@ export default function QuizSession() {
         {showScore ? (
           <div className="score-section">
             <h2>លទ្ធផលរបស់អ្នក</h2>
-            <p className="score-text">អ្នកទទួលបានពិន្ទុ {score} / {lesson.questions.length * 3}</p>
+            <p className="score-text">អ្នកទទួលបានពិន្ទុ {score} / {lesson.questions.length * 4}</p>
             <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
               <button className="btn" onClick={() => navigate("/quiz")}>ត្រលប់ទៅបញ្ជីមេរៀន</button>
               <button className="btn primary" onClick={restartQuiz}>ចាប់ផ្តើមម្តងទៀត</button>

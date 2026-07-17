@@ -9,6 +9,7 @@ const path = require('path');
 const User = require('./models/User');
 const Lesson = require('./models/Lesson');
 const Result = require('./models/Result');
+const Quiz = require('./models/Quiz');
 
 const app = express();
 app.use(cors());
@@ -247,6 +248,95 @@ app.delete('/api/lessons/:id', authenticateToken, isAdmin, async (req, res) => {
 });
 
 // ---------- result routes ----------
+
+// ---------- quiz routes ----------
+
+app.get('/api/quizzes', async (req, res) => {
+  try {
+    const quizzes = await Quiz.find({}, 'title description questions _id');
+    res.json(quizzes.map(q => ({ id: q._id, title: q.title, description: q.description, questions: q.questions })));
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/quizzes/seed', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const generateQuestions = (quizNumber) => {
+      const questions = [];
+      for (let i = 1; i <= 20; i++) {
+        questions.push({
+          question: `សំណួរទី ${i} សម្រាប់កម្រងសំណួរទី ${quizNumber} (សូមកែប្រែនៅពេលក្រោយ)`,
+          options: [
+            `ចម្លើយទី ១ (កម្រងទី ${quizNumber} សំណួរ ${i})`,
+            `ចម្លើយទី ២ (កម្រងទី ${quizNumber} សំណួរ ${i})`,
+            `ចម្លើយទី ៣ (កម្រងទី ${quizNumber} សំណួរ ${i})`,
+            `ចម្លើយទី ៤ (កម្រងទី ${quizNumber} សំណួរ ${i})`
+          ],
+          answer: `ចម្លើយទី ១ (កម្រងទី ${quizNumber} សំណួរ ${i})`
+        });
+      }
+      return questions;
+    };
+    
+    const quizzesToSeed = [
+      { title: "កម្រងសំនួរជ្រើសរើសទី១", description: "ចំណេះដឹងមូលដ្ឋាន និងការរៀបចំខ្លួន", questions: generateQuestions(1) },
+      { title: "កម្រងសំនួរជ្រើសរើសទី២", description: "ការប្រើប្រាស់ក្តារចុចកម្រិតមធ្យម", questions: generateQuestions(2) },
+      { title: "កម្រងសំនួរជ្រើសរើសទី៣", description: "ការប្រើប្រាស់ក្តារចុចកម្រិតខ្ពស់ និងផ្លូវកាត់", questions: generateQuestions(3) }
+    ];
+    
+    await Quiz.deleteMany({});
+    await Quiz.insertMany(quizzesToSeed);
+    res.json({ success: true, message: "បានបង្កើតកម្រងសំនួរដោយស្វ័យប្រវត្តិរួចរាល់!" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/quizzes/:id', async (req, res) => {
+  try {
+    const quiz = await Quiz.findById(req.params.id);
+    if (!quiz) return res.status(404).json({ error: 'Quiz not found' });
+    res.json({ id: quiz._id, title: quiz.title, description: quiz.description, questions: quiz.questions });
+  } catch (error) {
+    res.status(404).json({ error: 'Quiz not found' });
+  }
+});
+
+app.post('/api/quizzes', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const newQuiz = new Quiz({
+      title: "កម្រងសំនួរថ្មី",
+      description: "ការពិពណ៌នាសំនួរ",
+      questions: []
+    });
+    await newQuiz.save();
+    res.json({ id: newQuiz._id, title: newQuiz.title, description: newQuiz.description, questions: newQuiz.questions });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/quizzes/:id', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const { title, description, questions } = req.body;
+    const quiz = await Quiz.findByIdAndUpdate(req.params.id, { title, description, questions }, { new: true });
+    if (!quiz) return res.status(404).json({ error: 'Quiz not found' });
+    res.json({ id: quiz._id, title: quiz.title, description: quiz.description, questions: quiz.questions });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/quizzes/:id', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    await Quiz.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 app.post('/api/results', authenticateToken, async (req, res) => {
   try {

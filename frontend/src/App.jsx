@@ -7,6 +7,7 @@ import Owner from "./pages/Owner.jsx";
 import Auth from "./pages/Auth.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import QuizSession from "./pages/QuizSession.jsx";
+import QuizAdmin from "./pages/QuizAdmin.jsx";
 
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
@@ -34,14 +35,20 @@ function App() {
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6" y2="8"></line><line x1="10" y1="8" x2="10" y2="8"></line><line x1="14" y1="8" x2="14" y2="8"></line><line x1="18" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="6" y2="12"></line><line x1="10" y1="12" x2="10" y2="12"></line><line x1="14" y1="12" x2="14" y2="12"></line><line x1="18" y1="12" x2="18" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>
         <span>វាយពាក្យ</span>
       </NavLink>
-      <a href="#" onClick={(e) => { e.preventDefault(); setShowDevModal(true); }}>
+      <NavLink to="/quiz" className={({ isActive }) => (isActive ? "active" : "")}>
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
         <span>សំនួរ</span>
-      </a>
+      </NavLink>
       {(user?.role === "admin" || user?.role === "owner") && (
         <NavLink to="/admin" className={({ isActive }) => (isActive ? "active" : "")}>
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
           <span>គ្រប់គ្រង</span>
+        </NavLink>
+      )}
+      {(user?.role === "admin" || user?.role === "owner") && (
+        <NavLink to="/admin/quizzes" className={({ isActive }) => (isActive ? "active" : "")}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          <span>រៀបចំសំនួរ</span>
         </NavLink>
       )}
       {(user?.role === "admin" || user?.role === "owner") && (
@@ -104,6 +111,10 @@ function App() {
             element={(user?.role === "admin" || user?.role === "owner") ? <Admin /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>អ្នកមិនមានសិទ្ធិចូលទំព័រនេះទេ! (Access Denied)</h2></div>} 
           />
           <Route 
+            path="/admin/quizzes" 
+            element={(user?.role === "admin" || user?.role === "owner") ? <QuizAdmin /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>អ្នកមិនមានសិទ្ធិចូលទំព័រនេះទេ! (Access Denied)</h2></div>} 
+          />
+          <Route 
             path="/owner" 
             element={(user?.role === "admin" || user?.role === "owner") ? <Owner currentUser={user} /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>អ្នកមិនមានសិទ្ធិចូលទំព័រនេះទេ! (Access Denied)</h2></div>} 
           />
@@ -121,15 +132,6 @@ function App() {
       <nav className="nav mobile-nav">
         {navLinks}
       </nav>
-      {showDevModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2 style={{ color: 'var(--primary)', marginBottom: '16px' }}>កំពុងអភិវឌ្ឍ (Under Development)</h2>
-            <p style={{ marginBottom: '24px' }}>មុខងារ "ឆ្លើយសំណួរ" កំពុងស្ថិតក្នុងការអភិវឌ្ឍនៅឡើយ។ សូមរង់ចាំការធ្វើបច្ចុប្បន្នភាពនៅពេលក្រោយ!</p>
-            <button className="btn primary" onClick={() => setShowDevModal(false)}>បិទ (Close)</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

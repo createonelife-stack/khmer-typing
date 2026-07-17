@@ -1,15 +1,34 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { quizLessons } from "../quizData";
+import { getQuizzes } from "../api";
 import "./Quiz.css";
 
 export default function Quiz() {
+  const [quizzes, setQuizzes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    getQuizzes()
+      .then(data => {
+        setQuizzes(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <div className="home">
       <h1>ជ្រើសរើសមេរៀនសំណួរ</h1>
       <p className="subtitle">សាកល្បងចំណេះដឹងរបស់អ្នកអំពីការវាយអក្សរ</p>
 
       <div className="lesson-grid" style={{ marginTop: '40px' }}>
-        {quizLessons.map((lesson) => (
+        {loading && <p>កំពុងផ្ទុកទិន្នន័យ...</p>}
+        {error && <p className="error">មានបញ្ហា៖ {error}</p>}
+        {!loading && quizzes.map((lesson, index) => (
           <Link 
             to={`/quiz/${lesson.id}`} 
             key={lesson.id} 
@@ -24,7 +43,7 @@ export default function Quiz() {
             <div className="lesson-title">{lesson.title}</div>
             <div className="lesson-meta" style={{ marginTop: '8px' }}>
               {lesson.description}<br/>
-              <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{lesson.questions.length} សំណួរ</span>
+              <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{lesson.questions?.length || 0} សំណួរ</span>
             </div>
           </Link>
         ))}
