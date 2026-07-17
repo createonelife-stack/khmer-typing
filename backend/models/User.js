@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
   loginCount: {
     type: Number,
     default: 0
+  },
+  createdBy: {
+    type: String,
+    default: null
   }
 }, { timestamps: true });
 

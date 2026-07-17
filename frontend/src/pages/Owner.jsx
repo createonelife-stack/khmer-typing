@@ -19,7 +19,7 @@ export default function Owner({ currentUser }) {
   }, []);
 
   const fetchData = () => {
-    if (currentUser?.role !== 'owner') {
+    if (currentUser?.role !== 'owner' && currentUser?.role !== 'admin') {
       setLoading(false);
       return;
     }
@@ -169,9 +169,11 @@ export default function Owner({ currentUser }) {
             </form>
           </div>
 
-          {currentUser?.role === 'owner' && (
+          {(currentUser?.role === 'owner' || currentUser?.role === 'admin') && (
             <>
-              <h2 style={{ marginBottom: '16px' }}>បញ្ជីអ្នកប្រើប្រាស់</h2>
+              <h2 style={{ marginBottom: '16px' }}>
+                {currentUser?.role === 'owner' ? 'បញ្ជីអ្នកប្រើប្រាស់សរុប' : 'បញ្ជីគណនីដែលអ្នកបានបង្កើត'}
+              </h2>
               <div className="lesson-list" style={{ overflowX: 'auto', borderRadius: '12px' }}>
             <table style={{ width: "100%", minWidth: "700px", borderCollapse: "collapse", background: "var(--surface)", borderRadius: "12px", overflow: "hidden" }}>
               <thead>

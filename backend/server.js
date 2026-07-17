@@ -82,7 +82,8 @@ app.post('/api/auth/register', authenticateToken, isAdmin, async (req, res) => {
       username,
       passwordHash: bcrypt.hashSync(password, 10),
       role: 'user',
-      status: 'active'
+      status: 'active',
+      createdBy: req.user.username
     });
     
     await newUser.save();
@@ -116,16 +117,27 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
-app.get('/api/users', authenticateToken, isOwner, async (req, res) => {
+app.get('/api/users', authenticateToken, isAdmin, async (req, res) => {
   try {
-    const users = await User.find({}, 'username role status loginCount _id');
-    res.json(users.map(u => ({ id: u._id, username: u.username, role: u.role, status: u.status, loginCount: u.loginCount || 0 })));
+    let query = {};
+    if (req.user.role === 'admin') {
+      query = { createdBy: req.user.username };
+    }
+    const users = await User.find(query, 'username role status loginCount createdBy _id');
+    res.json(users.map(u => ({ 
+      id: u._id, 
+      username: u.username, 
+      role: u.role, 
+      status: u.status, 
+      loginCount: u.loginCount || 0,
+      createdBy: u.createdBy 
+    })));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-app.get('/api/stats', authenticateToken, isOwner, async (req, res) => {
+app.get('/api/stats', authenticateToken, isAdmin, async (req, res) => {
   try {
     const totalUsers = await User.countDocuments({ role: 'user' });
     const totalAdmins = await User.countDocuments({ role: { $in: ['admin', 'owner'] } });
