@@ -564,7 +564,8 @@ input[type="password"] {
   color: var(--text);
   padding: 12px 24px;
   border-radius: 10px;
-  font-size: 16px;
+  font-family: 'Noto Serif Khmer', serif;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s, transform 0.1s;
