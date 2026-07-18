@@ -128,6 +128,7 @@ export default function Owner({ currentUser }) {
                   value={newUsername} 
                   onChange={(e) => setNewUsername(e.target.value)} 
                   placeholder="username" 
+                  autoComplete="off"
                   style={{ width: '100%', height: '48px', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', boxSizing: 'border-box' }}
                 />
               </div>
@@ -139,6 +140,7 @@ export default function Owner({ currentUser }) {
                     value={newPassword} 
                     onChange={(e) => setNewPassword(e.target.value)} 
                     placeholder="password" 
+                    autoComplete="new-password"
                     style={{ width: '100%', height: '48px', padding: '12px', paddingRight: '40px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', boxSizing: 'border-box' }}
                   />
                   <button 
