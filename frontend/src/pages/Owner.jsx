@@ -217,14 +217,14 @@ export default function Owner({ currentUser }) {
                       {u.loginCount}
                     </td>
                     <td style={{ padding: "12px", textAlign: "center" }}>
-                      {u.role !== 'owner' && currentUser?.role === 'owner' && (
+                      {((currentUser?.role === 'owner' && u.role !== 'owner') || (currentUser?.role === 'admin' && u.role === 'user')) && (
                         <div style={{ display: "flex", gap: "8px", justifyContent: "center" }}>
-                          {u.role === 'user' && (
+                          {u.role === 'user' && currentUser?.role === 'owner' && (
                             <button onClick={() => handleRoleChange(u.username, 'admin')} className="btn" style={{ padding: "4px 8px", fontSize: "12px" }}>
                               ឡើងជា Admin
                             </button>
                           )}
-                          {u.role === 'admin' && (
+                          {u.role === 'admin' && currentUser?.role === 'owner' && (
                             <button onClick={() => handleRoleChange(u.username, 'user')} className="btn" style={{ padding: "4px 8px", fontSize: "12px", background: "var(--border)", color: "var(--text)" }}>
                               ទម្លាក់ជា User
                             </button>

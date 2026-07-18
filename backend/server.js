@@ -170,35 +170,49 @@ app.put('/api/users/:username/role', authenticateToken, isOwner, async (req, res
   }
 });
 
-app.put('/api/users/:username/status', authenticateToken, isOwner, async (req, res) => {
+app.put('/api/users/:username/status', authenticateToken, isAdmin, async (req, res) => {
   try {
     const { status } = req.body;
     if (!['active', 'suspended'].includes(status)) {
       return res.status(400).json({ error: 'Invalid status' });
     }
 
+    const targetUser = await User.findOne({ username: req.params.username });
+    if (!targetUser) return res.status(404).json({ error: 'User not found' });
+
+    if (req.user.role === 'admin' && targetUser.role !== 'user') {
+      return res.status(403).json({ error: 'Admins can only change status of regular users' });
+    }
+
     if (req.params.username === 'owner' && status === 'suspended') {
        return res.status(403).json({ error: 'Cannot suspend the main owner' });
     }
 
-    const user = await User.findOneAndUpdate({ username: req.params.username }, { status }, { new: true });
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    targetUser.status = status;
+    await targetUser.save();
     
-    res.json({ success: true, user: { username: user.username, status } });
+    res.json({ success: true, user: { username: targetUser.username, status } });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-app.delete('/api/users/:username', authenticateToken, isOwner, async (req, res) => {
+app.delete('/api/users/:username', authenticateToken, isAdmin, async (req, res) => {
   try {
     const usernameToRemove = req.params.username;
+    
+    const targetUser = await User.findOne({ username: usernameToRemove });
+    if (!targetUser) return res.status(404).json({ error: 'User not found' });
+
+    if (req.user.role === 'admin' && targetUser.role !== 'user') {
+      return res.status(403).json({ error: 'Admins can only delete regular users' });
+    }
+
     if (usernameToRemove === 'owner' || usernameToRemove === req.user.username) {
       return res.status(403).json({ error: 'Cannot delete the main owner or yourself' });
     }
 
-    const result = await User.deleteOne({ username: usernameToRemove });
-    if (result.deletedCount === 0) return res.status(404).json({ error: 'User not found' });
+    await User.deleteOne({ username: usernameToRemove });
     
     res.json({ success: true, message: 'User deleted' });
   } catch (error) {
