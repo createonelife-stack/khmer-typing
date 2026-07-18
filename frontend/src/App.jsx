@@ -71,8 +71,8 @@ function App() {
     <div className="app-shell">
       <header className="topbar">
         <div className="brand">
+          <img src="https://flagcdn.com/w40/kh.png" alt="Cambodia Flag" style={{ width: '28px', height: 'auto', marginRight: '12px', borderRadius: '3px', boxShadow: '0 2px 4px rgba(0,0,0,0.15)' }} />
           <span className="brand-kh">វាយអក្សរខ្មែរ</span>
-          <img src="https://flagcdn.com/w40/kh.png" alt="Cambodia Flag" style={{ width: '28px', height: 'auto', marginLeft: '12px', borderRadius: '3px', boxShadow: '0 2px 4px rgba(0,0,0,0.15)' }} />
         </div>
         <div className="header-actions">
           <nav className="nav desktop-nav">
