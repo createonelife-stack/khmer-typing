@@ -112,7 +112,7 @@ export default function Owner({ currentUser }) {
                 </>
               ) : (
                 <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
-                  <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>អ្នកប្រើប្រាស់ដែលអ្នកបានបង្កើត</h3>
+                  <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>សរុបអ្នកប្រើប្រាស់</h3>
                   <div style={{ fontSize: '36px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.totalUsers || 0}</div>
                 </div>
               )}
