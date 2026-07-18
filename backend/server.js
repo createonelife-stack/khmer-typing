@@ -139,12 +139,23 @@ app.get('/api/users', authenticateToken, isAdmin, async (req, res) => {
 
 app.get('/api/stats', authenticateToken, isAdmin, async (req, res) => {
   try {
-    const totalUsers = await User.countDocuments({ role: 'user' });
+    let totalUsers = 0;
+    let totalUsersByOwner = 0;
+    let totalUsersByAdmin = 0;
+
+    if (req.user.role === 'owner') {
+      totalUsersByOwner = await User.countDocuments({ role: 'user', createdBy: 'owner' });
+      totalUsersByAdmin = await User.countDocuments({ role: 'user', createdBy: { $ne: 'owner' } });
+      totalUsers = totalUsersByOwner + totalUsersByAdmin;
+    } else {
+      totalUsers = await User.countDocuments({ role: 'user', createdBy: req.user.username });
+    }
+
     const totalAdmins = await User.countDocuments({ role: { $in: ['admin', 'owner'] } });
     const totalSuspended = await User.countDocuments({ status: 'suspended' });
     const totalLessons = await Lesson.countDocuments();
     const totalQuizzes = await Quiz.countDocuments();
-    res.json({ totalUsers, totalAdmins, totalSuspended, totalLessons, totalQuizzes });
+    res.json({ totalUsers, totalUsersByOwner, totalUsersByAdmin, totalAdmins, totalSuspended, totalLessons, totalQuizzes });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
