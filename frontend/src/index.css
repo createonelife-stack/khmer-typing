@@ -272,7 +272,7 @@ input[type="password"] {
 .content {
   flex: 1;
   max-width: 1800px;
-  width: 100%;
+  width: 90%;
   margin: 0 auto;
   padding: 32px 48px 100px;
 }
