@@ -229,11 +229,9 @@ export default function Typing({ user }) {
             </div>
 
             <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-              {user && user.photo ? (
-                <img src={user.photo} alt="Profile" style={{ width: '120px', height: '160px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
-              ) : (
-                <div style={{ width: '120px', height: '160px', background: 'var(--bg)', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>គ្មានរូបថត</div>
-              )}
+              <div style={{ width: '120px', height: '160px', background: 'var(--bg)', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              </div>
             </div>
           </div>
 
