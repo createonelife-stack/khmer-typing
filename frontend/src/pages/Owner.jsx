@@ -87,7 +87,7 @@ export default function Owner({ currentUser }) {
   return (
     <div className="admin">
       <div className="admin-header" style={{ marginBottom: "24px" }}>
-        <h1>ផ្ទាំងគ្រប់គ្រង (Dashboard)</h1>
+        <h1 style={{ fontFamily: "'Moul', serif" }}>ផ្ទាំងគ្រប់គ្រង (Dashboard)</h1>
         <button onClick={fetchData} className="btn">ទាញយកទិន្នន័យថ្មី</button>
       </div>
 
