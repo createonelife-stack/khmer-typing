@@ -102,11 +102,11 @@ function App() {
       <main className="content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/lesson/:id" element={<Typing />} />
+          <Route path="/lesson/:id" element={user ? <Typing /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} />
           <Route path="/auth" element={<Auth setUser={setUser} />} />
           <Route path="/profile-setup" element={<ProfileSetup user={user} setUser={setUser} />} />
           <Route path="/quiz" element={<Quiz />} />
-          <Route path="/quiz/:id" element={<QuizSession />} />
+          <Route path="/quiz/:id" element={user ? <QuizSession /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} />
           <Route 
             path="/admin" 
             element={(user?.role === "admin" || user?.role === "owner") ? <Admin /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} 
