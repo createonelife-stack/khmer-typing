@@ -30,12 +30,6 @@ export default function Typing() {
   const [result, setResult] = useState(null);
 
   useEffect(() => {
-    const u = JSON.parse(localStorage.getItem("currentUser"));
-    if (u && u.role === 'user' && !u.profileCompleted) {
-      navigate('/profile-setup');
-      return;
-    }
-
     setLesson(null);
     setError("");
     getLesson(id)

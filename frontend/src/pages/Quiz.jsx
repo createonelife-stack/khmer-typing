@@ -11,12 +11,6 @@ export default function Quiz() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const u = JSON.parse(localStorage.getItem("currentUser"));
-    if (u && u.role === 'user' && !u.profileCompleted) {
-      navigate('/profile-setup');
-      return;
-    }
-
     getQuizzes()
       .then(data => {
         setQuizzes(data);

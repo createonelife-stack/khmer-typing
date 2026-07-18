@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, NavLink } from "react-router-dom";
+import { Routes, Route, NavLink, Navigate } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Typing from "./pages/Typing.jsx";
 import Admin from "./pages/Admin.jsx";
@@ -9,6 +9,13 @@ import Quiz from "./pages/Quiz.jsx";
 import QuizSession from "./pages/QuizSession.jsx";
 import QuizAdmin from "./pages/QuizAdmin.jsx";
 import ProfileSetup from "./pages/ProfileSetup.jsx";
+
+function RequireProfile({ user, children }) {
+  if (user && user.role === 'user' && user.profileCompleted !== true) {
+    return <Navigate to="/profile-setup" replace />;
+  }
+  return children;
+}
 
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
@@ -101,12 +108,12 @@ function App() {
 
       <main className="content">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/lesson/:id" element={user ? <Typing /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} />
+          <Route path="/" element={<RequireProfile user={user}><Home /></RequireProfile>} />
+          <Route path="/lesson/:id" element={user ? <RequireProfile user={user}><Typing /></RequireProfile> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} />
           <Route path="/auth" element={<Auth setUser={setUser} />} />
           <Route path="/profile-setup" element={<ProfileSetup user={user} setUser={setUser} />} />
-          <Route path="/quiz" element={<Quiz />} />
-          <Route path="/quiz/:id" element={user ? <QuizSession /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} />
+          <Route path="/quiz" element={<RequireProfile user={user}><Quiz /></RequireProfile>} />
+          <Route path="/quiz/:id" element={user ? <RequireProfile user={user}><QuizSession /></RequireProfile> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} />
           <Route 
             path="/admin" 
             element={(user?.role === "admin" || user?.role === "owner") ? <Admin /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} 

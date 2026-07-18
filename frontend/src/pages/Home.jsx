@@ -11,12 +11,6 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const u = JSON.parse(localStorage.getItem("currentUser"));
-    if (u && u.role === 'user' && !u.profileCompleted) {
-      navigate('/profile-setup');
-      return;
-    }
-
     getLessons()
       .then((data) => setLessons(data))
       .catch((e) => setError(e.message))

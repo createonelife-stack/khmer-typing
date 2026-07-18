@@ -17,12 +17,6 @@ export default function QuizSession() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const u = JSON.parse(localStorage.getItem("currentUser"));
-    if (u && u.role === 'user' && !u.profileCompleted) {
-      navigate('/profile-setup');
-      return;
-    }
-
     getQuiz(id)
       .then(data => {
         setLesson(data);
