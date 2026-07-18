@@ -200,7 +200,7 @@ export default function QuizSession({ user }) {
             </div>
             <div className="answer-section" style={{ display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'left', padding: '16px 0' }}>
               {lesson.questions[currentQuestion].options.map((option, index) => (
-                <label
+                <div
                   key={index}
                   className={`quiz-option-label ${userAnswers[currentQuestion] === option ? "selected" : ""}`}
                   style={{
@@ -208,7 +208,6 @@ export default function QuizSession({ user }) {
                     alignItems: 'center',
                     gap: '12px',
                     padding: '8px 0',
-                    cursor: 'pointer',
                     transition: 'all 0.2s ease'
                   }}
                 >
@@ -221,7 +220,7 @@ export default function QuizSession({ user }) {
                     style={{ width: '20px', height: '20px', cursor: 'pointer', accentColor: 'var(--primary)' }}
                   />
                   <span style={{ fontSize: '16px', color: 'var(--text)' }}>{option}</span>
-                </label>
+                </div>
               ))}
             </div>
             <div className="quiz-actions" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: allAnswered ? '24px' : '0' }}>
