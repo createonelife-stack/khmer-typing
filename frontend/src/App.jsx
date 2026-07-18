@@ -70,8 +70,8 @@ function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <div className="brand" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src="https://flagcdn.com/w40/kh.png" alt="Cambodia Flag" style={{ position: 'absolute', width: '40px', height: 'auto', opacity: 0.2, zIndex: 0, borderRadius: '2px' }} />
+        <div className="brand" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px 12px' }}>
+          <img src="https://flagcdn.com/w160/kh.png" alt="Cambodia Flag" style={{ position: 'absolute', width: '100%', height: '100%', objectFit: 'cover', opacity: 0.15, zIndex: 0, borderRadius: '8px' }} />
           <span className="brand-kh" style={{ position: 'relative', zIndex: 1 }}>វាយអក្សរខ្មែរ</span>
         </div>
         <div className="header-actions">
