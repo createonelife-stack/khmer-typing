@@ -17,7 +17,7 @@ export default function QuizSession() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
-  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [userAnswers, setUserAnswers] = useState({});
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -32,7 +32,7 @@ export default function QuizSession() {
         setCurrentQuestion(0);
         setScore(0);
         setShowScore(false);
-        setSelectedAnswer("");
+        setUserAnswers({});
         setTimeLeft(1200);
         setLoading(false);
       })
@@ -64,25 +64,43 @@ export default function QuizSession() {
   // Handle time's up
   useEffect(() => {
     if (timeLeft === 0 && !showScore) {
+      calculateAndSetScore();
       setShowScore(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft, showScore]);
 
+  const calculateAndSetScore = () => {
+    if (!lesson) return;
+    let finalScore = 0;
+    lesson.questions.forEach((q, index) => {
+      if (userAnswers[index] === q.answer) {
+        finalScore += 4;
+      }
+    });
+    setScore(finalScore);
+  };
+
   const handleAnswerOptionClick = (option) => {
-    setSelectedAnswer(option);
+    setUserAnswers(prev => ({
+      ...prev,
+      [currentQuestion]: option
+    }));
   };
 
   const handleNext = () => {
-    if (selectedAnswer === lesson.questions[currentQuestion].answer) {
-      setScore(score + 4); // 4 points per correct answer
-    }
-    
     const nextQuestion = currentQuestion + 1;
     if (nextQuestion < lesson.questions.length) {
       setCurrentQuestion(nextQuestion);
-      setSelectedAnswer("");
     } else {
+      calculateAndSetScore();
       setShowScore(true);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1);
     }
   };
 
@@ -90,7 +108,7 @@ export default function QuizSession() {
     setCurrentQuestion(0);
     setScore(0);
     setShowScore(false);
-    setSelectedAnswer("");
+    setUserAnswers({});
     setTimeLeft(1200);
   };
 
@@ -134,18 +152,25 @@ export default function QuizSession() {
               {lesson.questions[currentQuestion].options.map((option, index) => (
                 <button
                   key={index}
-                  className={`quiz-option-btn ${selectedAnswer === option ? "selected" : ""}`}
+                  className={`quiz-option-btn ${userAnswers[currentQuestion] === option ? "selected" : ""}`}
                   onClick={() => handleAnswerOptionClick(option)}
                 >
                   {option}
                 </button>
               ))}
             </div>
-            <div className="quiz-actions">
+            <div className="quiz-actions" style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <button 
+                className="btn" 
+                onClick={handlePrevious} 
+                disabled={currentQuestion === 0}
+              >
+                ថយក្រោយ
+              </button>
               <button 
                 className="btn primary" 
                 onClick={handleNext} 
-                disabled={!selectedAnswer}
+                disabled={!userAnswers[currentQuestion]}
               >
                 {currentQuestion === lesson.questions.length - 1 ? "បញ្ចប់" : "បន្ទាប់"}
               </button>
