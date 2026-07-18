@@ -1,7 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getQuiz } from "../api";
 import "./Quiz.css";
+
+function formatTime(totalSeconds) {
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  return `${m}:${String(s).padStart(2, "0")}`;
+}
 
 export default function QuizSession() {
   const { id } = useParams();
@@ -16,6 +22,9 @@ export default function QuizSession() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [timeLeft, setTimeLeft] = useState(1200); // 20 minutes = 1200 seconds
+  const timerRef = useRef(null);
+
   useEffect(() => {
     getQuiz(id)
       .then(data => {
@@ -24,6 +33,7 @@ export default function QuizSession() {
         setScore(0);
         setShowScore(false);
         setSelectedAnswer("");
+        setTimeLeft(1200);
         setLoading(false);
       })
       .catch(err => {
@@ -31,6 +41,32 @@ export default function QuizSession() {
         setLoading(false);
       });
   }, [id, navigate]);
+
+  // countdown timer
+  useEffect(() => {
+    if (loading || error || showScore) {
+      clearInterval(timerRef.current);
+      return;
+    }
+    
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timerRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timerRef.current);
+  }, [loading, error, showScore]);
+
+  // Handle time's up
+  useEffect(() => {
+    if (timeLeft === 0 && !showScore) {
+      setShowScore(true);
+    }
+  }, [timeLeft, showScore]);
 
   const handleAnswerOptionClick = (option) => {
     setSelectedAnswer(option);
@@ -55,6 +91,7 @@ export default function QuizSession() {
     setScore(0);
     setShowScore(false);
     setSelectedAnswer("");
+    setTimeLeft(1200);
   };
 
   if (loading) return <div style={{ textAlign: 'center', padding: '40px' }}>កំពុងផ្ទុកសំនួរ...</div>;
@@ -63,9 +100,16 @@ export default function QuizSession() {
 
   return (
     <div className="quiz-container">
-      <div style={{ textAlign: 'center', marginBottom: '24px', width: '100%' }}>
-        <h1 style={{ color: 'var(--primary)' }}>{lesson.title}</h1>
-        <p className="subtitle">{lesson.description}</p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', width: '100%' }}>
+        <div style={{ flex: 1 }}>
+          <h1 style={{ color: 'var(--primary)', textAlign: 'left', margin: 0 }}>{lesson.title}</h1>
+          <p className="subtitle" style={{ textAlign: 'left', margin: '4px 0 0 0' }}>{lesson.description}</p>
+        </div>
+        {!showScore && (
+          <div className={`timer ${timeLeft <= 60 ? "time-low" : ""}`} style={{ margin: 0 }}>
+            {formatTime(timeLeft)}
+          </div>
+        )}
       </div>
       
       <div className="quiz-card">

@@ -383,7 +383,7 @@ input[type="password"] {
   margin-bottom: 16px;
 }
 .timer {
-  display: none;
+  display: inline-block;
   font-size: 28px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
