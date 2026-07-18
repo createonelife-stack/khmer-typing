@@ -113,7 +113,7 @@ function App() {
           <Route path="/auth" element={<Auth setUser={setUser} />} />
           <Route path="/profile-setup" element={<ProfileSetup user={user} setUser={setUser} />} />
           <Route path="/quiz" element={<RequireProfile user={user}><Quiz /></RequireProfile>} />
-          <Route path="/quiz/:id" element={user ? <RequireProfile user={user}><QuizSession /></RequireProfile> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} />
+          <Route path="/quiz/:id" element={user ? <RequireProfile user={user}><QuizSession user={user} /></RequireProfile> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} />
           <Route 
             path="/admin" 
             element={(user?.role === "admin" || user?.role === "owner") ? <Admin /> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} 

@@ -9,7 +9,7 @@ function formatTime(totalSeconds) {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-export default function QuizSession() {
+export default function QuizSession({ user }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [lesson, setLesson] = useState(null);
@@ -135,9 +135,33 @@ export default function QuizSession() {
       <div className="quiz-card">
         {showScore ? (
           <div className="score-section">
-            <h2>លទ្ធផលរបស់អ្នក</h2>
-            <p className="score-text">អ្នកទទួលបានពិន្ទុ {score} / {lesson.questions.length * 4}</p>
-            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', gap: '20px' }}>
+              <div style={{ textAlign: 'left', flex: 1 }}>
+                {user && (
+                  <>
+                    <div style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '8px' }}>{user.fullName || user.username}</div>
+                    <div style={{ color: 'var(--text-muted)', marginBottom: '4px' }}>ភេទ៖ {user.gender || '-'}</div>
+                    <div style={{ color: 'var(--text-muted)' }}>តួនាទី៖ {user.jobRole || '-'}</div>
+                  </>
+                )}
+              </div>
+              
+              <div style={{ flex: 1, textAlign: 'center' }}>
+                <h2 style={{ marginBottom: '16px' }}>{timeLeft === 0 ? "អស់ពេល!" : "ចប់ការប្រឡង!"}</h2>
+                <div className="score-total" style={{ margin: 0, fontSize: '48px', color: 'var(--primary)', fontWeight: 'bold' }}>{score} ពិន្ទុ</div>
+                <p style={{ marginTop: '12px', color: 'var(--text-muted)' }}>ពិន្ទុពេញ៖ {lesson.questions.length * 4}</p>
+              </div>
+
+              <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                {user && user.photo ? (
+                  <img src={user.photo} alt="Profile" style={{ width: '120px', height: '160px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+                ) : (
+                  <div style={{ width: '120px', height: '160px', background: 'var(--bg)', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>គ្មានរូបថត</div>
+                )}
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', marginTop: '32px', borderTop: '1px solid var(--border)', paddingTop: '24px' }}>
               <button className="btn" onClick={() => navigate("/quiz")}>ត្រលប់ទៅបញ្ជីមេរៀន</button>
               <button className="btn primary" onClick={restartQuiz}>ចាប់ផ្តើមម្តងទៀត</button>
             </div>
