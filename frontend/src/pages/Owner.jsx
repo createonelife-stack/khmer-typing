@@ -103,29 +103,29 @@ export default function Owner({ currentUser }) {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px', marginBottom: '40px' }}>
               {currentUser?.role === 'owner' ? (
                 <>
-                  <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
-                    <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>អ្នកប្រើប្រាស់ (Owner បង្កើត)</h3>
-                    <div style={{ fontSize: '36px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.totalUsersByOwner || 0}</div>
+                  <div style={{ background: 'linear-gradient(135deg, #FF6B6B, #FF8E53)', padding: '24px', borderRadius: '16px', border: 'none', textAlign: 'center', boxShadow: '0 10px 20px rgba(255, 107, 107, 0.3)', color: 'white' }}>
+                    <h3 style={{ margin: '0 0 8px 0', color: 'rgba(255,255,255,0.9)' }}>អ្នកប្រើប្រាស់ (Owner បង្កើត)</h3>
+                    <div style={{ fontSize: '40px', fontWeight: 'bold', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>{stats.totalUsersByOwner || 0}</div>
                   </div>
-                  <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
-                    <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>អ្នកប្រើប្រាស់ (Admin បង្កើត)</h3>
-                    <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#00C49F' }}>{stats.totalUsersByAdmin || 0}</div>
+                  <div style={{ background: 'linear-gradient(135deg, #00c6ff, #0072ff)', padding: '24px', borderRadius: '16px', border: 'none', textAlign: 'center', boxShadow: '0 10px 20px rgba(0, 198, 255, 0.3)', color: 'white' }}>
+                    <h3 style={{ margin: '0 0 8px 0', color: 'rgba(255,255,255,0.9)' }}>អ្នកប្រើប្រាស់ (Admin បង្កើត)</h3>
+                    <div style={{ fontSize: '40px', fontWeight: 'bold', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>{stats.totalUsersByAdmin || 0}</div>
                   </div>
                 </>
               ) : (
-                <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
-                  <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>សរុបអ្នកប្រើប្រាស់</h3>
-                  <div style={{ fontSize: '36px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.totalUsers || 0}</div>
+                <div style={{ background: 'linear-gradient(135deg, #667eea, #764ba2)', padding: '24px', borderRadius: '16px', border: 'none', textAlign: 'center', boxShadow: '0 10px 20px rgba(102, 126, 234, 0.3)', color: 'white' }}>
+                  <h3 style={{ margin: '0 0 8px 0', color: 'rgba(255,255,255,0.9)' }}>សរុបអ្នកប្រើប្រាស់</h3>
+                  <div style={{ fontSize: '40px', fontWeight: 'bold', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>{stats.totalUsers || 0}</div>
                 </div>
               )}
 
-              <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
-                <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>មេរៀនវាយពាក្យសរុប</h3>
-                <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#8a2be2' }}>{stats.totalLessons}</div>
+              <div style={{ background: 'linear-gradient(135deg, #f093fb, #f5576c)', padding: '24px', borderRadius: '16px', border: 'none', textAlign: 'center', boxShadow: '0 10px 20px rgba(245, 87, 108, 0.3)', color: 'white' }}>
+                <h3 style={{ margin: '0 0 8px 0', color: 'rgba(255,255,255,0.9)' }}>មេរៀនវាយពាក្យសរុប</h3>
+                <div style={{ fontSize: '40px', fontWeight: 'bold', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>{stats.totalLessons}</div>
               </div>
-              <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
-                <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>មេរៀនសំណួរសរុប</h3>
-                <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#ff9f43' }}>{stats.totalQuizzes || 0}</div>
+              <div style={{ background: 'linear-gradient(135deg, #43e97b, #38f9d7)', padding: '24px', borderRadius: '16px', border: 'none', textAlign: 'center', boxShadow: '0 10px 20px rgba(67, 233, 123, 0.3)', color: 'white' }}>
+                <h3 style={{ margin: '0 0 8px 0', color: 'rgba(255,255,255,0.9)' }}>មេរៀនសំណួរសរុប</h3>
+                <div style={{ fontSize: '40px', fontWeight: 'bold', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>{stats.totalQuizzes || 0}</div>
               </div>
             </div>
           )}
