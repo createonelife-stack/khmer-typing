@@ -127,7 +127,7 @@ export default function Owner({ currentUser }) {
                   type="text" 
                   value={newUsername} 
                   onChange={(e) => setNewUsername(e.target.value)} 
-                  placeholder="បញ្ជូលឈ្មោះ..." 
+                  placeholder="username" 
                   style={{ width: '100%', height: '48px', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', boxSizing: 'border-box' }}
                 />
               </div>
@@ -138,7 +138,7 @@ export default function Owner({ currentUser }) {
                     type={showPassword ? "text" : "password"} 
                     value={newPassword} 
                     onChange={(e) => setNewPassword(e.target.value)} 
-                    placeholder="បញ្ជូលពាក្យសម្ងាត់..." 
+                    placeholder="password" 
                     style={{ width: '100%', height: '48px', padding: '12px', paddingRight: '40px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', boxSizing: 'border-box' }}
                   />
                   <button 
