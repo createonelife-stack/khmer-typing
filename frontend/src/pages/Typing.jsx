@@ -132,7 +132,6 @@ export default function Typing() {
     if (!lesson) return;
     const target = lesson.words[currentIndex];
     const typed = input.trim();
-    if (typed.length === 0) return;
 
     const isCorrect = typed === target;
     const nextCorrect = correctCount + (isCorrect ? 1 : 0);
