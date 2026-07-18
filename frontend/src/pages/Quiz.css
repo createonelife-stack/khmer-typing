@@ -60,6 +60,10 @@
   margin-bottom: 30px;
 }
 
+.quiz-option-text {
+  font-size: 16px;
+}
+
 .quiz-option-btn {
   width: 100%;
   text-align: left;
@@ -120,7 +124,11 @@
   }
   
   .question-text {
-    font-size: 18px;
+    font-size: 12px;
+  }
+  
+  .quiz-option-text {
+    font-size: 12px;
   }
   
   .quiz-option-btn {

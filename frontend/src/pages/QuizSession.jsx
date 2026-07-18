@@ -219,7 +219,7 @@ export default function QuizSession({ user }) {
                     onChange={() => handleAnswerOptionClick(option)}
                     style={{ width: '20px', height: '20px', cursor: 'pointer', accentColor: 'var(--primary)' }}
                   />
-                  <span style={{ fontSize: '16px', color: 'var(--text)' }}>{option}</span>
+                  <span className="quiz-option-text" style={{ color: 'var(--text)' }}>{option}</span>
                 </div>
               ))}
             </div>
