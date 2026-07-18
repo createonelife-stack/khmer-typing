@@ -165,6 +165,32 @@ export default function QuizSession({ user }) {
               <button className="btn" onClick={() => navigate("/quiz")}>ត្រលប់ទៅបញ្ជីមេរៀន</button>
               <button className="btn primary" onClick={restartQuiz}>ចាប់ផ្តើមម្តងទៀត</button>
             </div>
+
+            <div style={{ marginTop: '40px', borderTop: '1px solid var(--border)', paddingTop: '24px', textAlign: 'left' }}>
+              <h3 style={{ marginBottom: '16px', color: 'var(--text)' }}>លម្អិតចម្លើយរបស់អ្នក៖</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {lesson.questions.map((q, index) => {
+                  const userAnswer = userAnswers[index];
+                  const isCorrect = userAnswer === q.answer;
+                  const isUnanswered = !userAnswer;
+                  
+                  return (
+                    <div key={index} style={{ padding: '16px', borderRadius: '12px', background: isCorrect ? 'rgba(34, 197, 94, 0.05)' : 'rgba(255, 71, 87, 0.05)', border: `1px solid ${isCorrect ? 'rgba(34, 197, 94, 0.3)' : 'rgba(255, 71, 87, 0.3)'}`, borderLeft: `4px solid ${isCorrect ? 'var(--success)' : 'var(--danger)'}` }}>
+                      <div style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '16px' }}>សំណួរទី {index + 1}៖ {q.question}</div>
+                      <div style={{ color: isCorrect ? 'var(--success)' : 'var(--danger)' }}>
+                        ចម្លើយរបស់អ្នក៖ {isUnanswered ? 'មិនបានឆ្លើយ' : userAnswer}
+                        {isCorrect ? ' (ត្រឹមត្រូវ ✅)' : ' (ខុស ❌)'}
+                      </div>
+                      {!isCorrect && (
+                        <div style={{ color: 'var(--success)', marginTop: '4px', fontWeight: '500' }}>
+                          ចម្លើយដែលត្រឹមត្រូវគឺ៖ {q.answer}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         ) : (
           <>
