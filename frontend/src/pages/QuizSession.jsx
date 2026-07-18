@@ -207,11 +207,8 @@ export default function QuizSession({ user }) {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '12px',
-                    padding: '16px',
-                    border: `2px solid ${userAnswers[currentQuestion] === option ? 'var(--primary)' : 'var(--border)'}`,
-                    borderRadius: '12px',
+                    padding: '8px 0',
                     cursor: 'pointer',
-                    background: userAnswers[currentQuestion] === option ? 'rgba(91, 75, 255, 0.05)' : 'var(--surface)',
                     transition: 'all 0.2s ease'
                   }}
                 >
