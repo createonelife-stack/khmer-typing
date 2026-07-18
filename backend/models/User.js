@@ -28,6 +28,26 @@ const userSchema = new mongoose.Schema({
   createdBy: {
     type: String,
     default: null
+  },
+  fullName: {
+    type: String,
+    default: ""
+  },
+  gender: {
+    type: String,
+    default: ""
+  },
+  jobRole: {
+    type: String,
+    default: ""
+  },
+  photo: {
+    type: String,
+    default: ""
+  },
+  profileCompleted: {
+    type: Boolean,
+    default: false
   }
 }, { timestamps: true });
 

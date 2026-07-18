@@ -8,6 +8,7 @@ import Auth from "./pages/Auth.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import QuizSession from "./pages/QuizSession.jsx";
 import QuizAdmin from "./pages/QuizAdmin.jsx";
+import ProfileSetup from "./pages/ProfileSetup.jsx";
 
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
@@ -103,6 +104,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/lesson/:id" element={<Typing />} />
           <Route path="/auth" element={<Auth setUser={setUser} />} />
+          <Route path="/profile-setup" element={<ProfileSetup user={user} setUser={setUser} />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/quiz/:id" element={<QuizSession />} />
           <Route 

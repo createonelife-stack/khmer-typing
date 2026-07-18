@@ -111,7 +111,7 @@ app.post('/api/auth/login', async (req, res) => {
     await user.save();
     
     const token = jwt.sign({ id: user._id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
-    res.json({ token, user: { username: user.username, role: user.role } });
+    res.json({ token, user: { username: user.username, role: user.role, profileCompleted: user.profileCompleted } });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -123,15 +123,48 @@ app.get('/api/users', authenticateToken, isAdmin, async (req, res) => {
     if (req.user.role === 'admin') {
       query = { createdBy: req.user.username };
     }
-    const users = await User.find(query, 'username role status loginCount createdBy _id');
+    const users = await User.find(query, 'username role status loginCount createdBy fullName gender jobRole photo profileCompleted _id');
     res.json(users.map(u => ({ 
       id: u._id, 
       username: u.username, 
       role: u.role, 
       status: u.status, 
       loginCount: u.loginCount || 0,
-      createdBy: u.createdBy 
+      createdBy: u.createdBy,
+      fullName: u.fullName,
+      gender: u.gender,
+      jobRole: u.jobRole,
+      photo: u.photo,
+      profileCompleted: u.profileCompleted
     })));
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/users/:username/profile', authenticateToken, async (req, res) => {
+  try {
+    if (req.user.username !== req.params.username && req.user.role !== 'owner' && req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+    
+    const { fullName, gender, jobRole, photo } = req.body;
+    
+    const user = await User.findOneAndUpdate(
+      { username: req.params.username },
+      { 
+        fullName: fullName || "",
+        gender: gender || "",
+        jobRole: jobRole || "",
+        photo: photo || "",
+        profileCompleted: true
+      },
+      { new: true }
+    );
+    
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    
+    res.json({ success: true, user: { username: user.username, profileCompleted: user.profileCompleted } });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
