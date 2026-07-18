@@ -12,7 +12,7 @@ function formatTime(totalSeconds) {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-export default function Typing() {
+export default function Typing({ user }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const inputRef = useRef(null);
@@ -212,8 +212,30 @@ export default function Typing() {
 
       {status === "finished" && result && (
         <div className="result-panel">
-          <h2>{result.completedAll ? "ចប់មេរៀន!" : "អស់ពេល!"}</h2>
-          <div className="score-total">{result.score} ពិន្ទុ</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', gap: '20px' }}>
+            <div style={{ textAlign: 'left', flex: 1 }}>
+              {user && (
+                <>
+                  <div style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '8px' }}>{user.fullName || user.username}</div>
+                  <div style={{ color: 'var(--text-muted)', marginBottom: '4px' }}>ភេទ៖ {user.gender || '-'}</div>
+                  <div style={{ color: 'var(--text-muted)' }}>តួនាទី៖ {user.jobRole || '-'}</div>
+                </>
+              )}
+            </div>
+            
+            <div style={{ flex: 1, textAlign: 'center' }}>
+              <h2 style={{ marginBottom: '16px' }}>{result.completedAll ? "ចប់មេរៀន!" : "អស់ពេល!"}</h2>
+              <div className="score-total" style={{ margin: 0, fontSize: '48px' }}>{result.score} ពិន្ទុ</div>
+            </div>
+
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+              {user && user.photo ? (
+                <img src={user.photo} alt="Profile" style={{ width: '120px', height: '160px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+              ) : (
+                <div style={{ width: '120px', height: '160px', background: 'var(--bg)', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>គ្មានរូបថត</div>
+              )}
+            </div>
+          </div>
 
           <div className="result-grid">
             <div className="result-item">

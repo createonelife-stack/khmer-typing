@@ -111,7 +111,18 @@ app.post('/api/auth/login', async (req, res) => {
     await user.save();
     
     const token = jwt.sign({ id: user._id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
-    res.json({ token, user: { username: user.username, role: user.role, profileCompleted: user.profileCompleted } });
+    res.json({ 
+      token, 
+      user: { 
+        username: user.username, 
+        role: user.role, 
+        profileCompleted: user.profileCompleted,
+        fullName: user.fullName,
+        gender: user.gender,
+        jobRole: user.jobRole,
+        photo: user.photo
+      } 
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -164,7 +175,17 @@ app.put('/api/users/:username/profile', authenticateToken, async (req, res) => {
     
     if (!user) return res.status(404).json({ error: 'User not found' });
     
-    res.json({ success: true, user: { username: user.username, profileCompleted: user.profileCompleted } });
+    res.json({ 
+      success: true, 
+      user: { 
+        username: user.username, 
+        profileCompleted: user.profileCompleted,
+        fullName: user.fullName,
+        gender: user.gender,
+        jobRole: user.jobRole,
+        photo: user.photo
+      } 
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

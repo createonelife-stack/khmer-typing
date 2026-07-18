@@ -81,7 +81,14 @@ export default function ProfileSetup({ user, setUser }) {
     try {
       const res = await updateProfile(user.username, { fullName, gender, jobRole, photo });
       
-      const updatedUser = { ...user, profileCompleted: res.user.profileCompleted };
+      const updatedUser = { 
+        ...user, 
+        profileCompleted: res.user.profileCompleted,
+        fullName: res.user.fullName,
+        gender: res.user.gender,
+        jobRole: res.user.jobRole,
+        photo: res.user.photo
+      };
       setUser(updatedUser);
       localStorage.setItem("currentUser", JSON.stringify(updatedUser));
       

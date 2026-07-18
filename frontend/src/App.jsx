@@ -109,7 +109,7 @@ function App() {
       <main className="content">
         <Routes>
           <Route path="/" element={<RequireProfile user={user}><Home /></RequireProfile>} />
-          <Route path="/lesson/:id" element={user ? <RequireProfile user={user}><Typing /></RequireProfile> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} />
+          <Route path="/lesson/:id" element={user ? <RequireProfile user={user}><Typing user={user} /></RequireProfile> : <div style={{textAlign: 'center', padding: '64px'}}><h2>សូមធ្វើការ Login !</h2></div>} />
           <Route path="/auth" element={<Auth setUser={setUser} />} />
           <Route path="/profile-setup" element={<ProfileSetup user={user} setUser={setUser} />} />
           <Route path="/quiz" element={<RequireProfile user={user}><Quiz /></RequireProfile>} />
