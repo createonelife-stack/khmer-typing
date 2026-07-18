@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiFetch } from "../api";
+import { updateProfile } from "../api";
 
 export default function ProfileSetup({ user, setUser }) {
   const [fullName, setFullName] = useState("");
@@ -79,10 +79,7 @@ export default function ProfileSetup({ user, setUser }) {
     setError("");
     
     try {
-      const res = await apiFetch(`/users/${user.username}/profile`, {
-        method: "PUT",
-        body: JSON.stringify({ fullName, gender, jobRole, photo })
-      });
+      const res = await updateProfile(user.username, { fullName, gender, jobRole, photo });
       
       const updatedUser = { ...user, profileCompleted: res.user.profileCompleted };
       setUser(updatedUser);
