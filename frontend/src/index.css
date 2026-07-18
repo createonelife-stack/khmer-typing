@@ -1050,6 +1050,7 @@ input[type="password"] {
   }
   .content {
     padding: 16px 12px 120px;
+    width: 100%;
   }
   .admin-tab {
     width: 100%;
