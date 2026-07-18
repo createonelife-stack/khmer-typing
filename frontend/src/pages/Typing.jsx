@@ -4,10 +4,7 @@ import { getLesson, postResult } from "../api.js";
 
 const LESSON_SECONDS = 600; // 10 minutes
 const POINTS_PER_WORD = 3;
-const FAST_BONUS_SECONDS = 300; // under 5:00
-const FAST_BONUS_POINTS = 10;
-const MEDIUM_BONUS_SECONDS = 420; // under 7:00
-const MEDIUM_BONUS_POINTS = 5;
+
 
 function formatTime(totalSeconds) {
   const m = Math.floor(totalSeconds / 60);
@@ -65,12 +62,8 @@ export default function Typing() {
           : LESSON_SECONDS - timeLeft;
 
       const baseScore = finalCorrect * POINTS_PER_WORD;
-      let bonus = 0;
-      if (completedAll) {
-        if (timeUsed <= FAST_BONUS_SECONDS) bonus = FAST_BONUS_POINTS;
-        else if (timeUsed <= MEDIUM_BONUS_SECONDS) bonus = MEDIUM_BONUS_POINTS;
-      }
-      const totalScore = baseScore + bonus;
+      const bonus = 0;
+      const totalScore = baseScore;
       const totalWords = lesson ? lesson.words.length : 0;
       const attempted = finalCorrect + finalWrong;
       const accuracy = attempted > 0 ? Math.round((finalCorrect / attempted) * 100) : 0;
@@ -237,14 +230,7 @@ export default function Typing() {
               <span className="label">ពាក្យខុស</span>
               <span className="value">{wrongCount}</span>
             </div>
-            <div className="result-item">
-              <span className="label">ពិន្ទុមូលដ្ឋាន</span>
-              <span className="value">{result.baseScore}</span>
-            </div>
-            <div className="result-item">
-              <span className="label">ពិន្ទុបន្ថែម</span>
-              <span className="value">+{result.bonus}</span>
-            </div>
+
             <div className="result-item">
               <span className="label">ពេលវេលាប្រើ</span>
               <span className="value">{formatTime(result.timeUsed)}</span>
