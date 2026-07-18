@@ -115,6 +115,8 @@
   .quiz-card {
     padding: 20px;
     border-radius: 12px;
+    width: 95%;
+    max-width: 95%;
   }
   
   .question-text {
