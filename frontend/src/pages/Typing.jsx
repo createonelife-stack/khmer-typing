@@ -26,7 +26,7 @@ export default function Typing() {
   const [timeLeft, setTimeLeft] = useState(LESSON_SECONDS);
   const [correctCount, setCorrectCount] = useState(0);
   const [wrongCount, setWrongCount] = useState(0);
-  const [feedback, setFeedback] = useState(null); // 'correct' | 'wrong' | null
+
   const [result, setResult] = useState(null);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function Typing() {
     setTimeLeft(LESSON_SECONDS);
     setCorrectCount(0);
     setWrongCount(0);
-    setFeedback(null);
+
     setResult(null);
   }
 
@@ -137,7 +137,6 @@ export default function Typing() {
     const nextCorrect = correctCount + (isCorrect ? 1 : 0);
     const nextWrong = wrongCount + (isCorrect ? 0 : 1);
 
-    setFeedback(isCorrect ? "correct" : "wrong");
     setCorrectCount(nextCorrect);
     setWrongCount(nextWrong);
     setInput("");
@@ -149,7 +148,7 @@ export default function Typing() {
       return;
     }
     setCurrentIndex(nextIndex);
-    setTimeout(() => setFeedback(null), 250);
+
   }
 
   if (error) {
@@ -187,7 +186,7 @@ export default function Typing() {
 
       {status === "running" && (
         <div className="game-panel">
-          <div className={`target-word ${feedback ? feedback : ""}`}>
+          <div className="target-word">
             {lesson.words[currentIndex]}
           </div>
           <input
