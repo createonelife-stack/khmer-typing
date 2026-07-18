@@ -150,15 +150,13 @@ export default function ProfileSetup({ user, setUser }) {
               </div>
             )}
             
-            {!photo && cameraActive && (
-              <div style={{ textAlign: "center" }}>
-                <video ref={videoRef} autoPlay playsInline style={{ width: "100%", maxWidth: "320px", borderRadius: "8px", border: "1px solid var(--border)", marginBottom: "10px" }}></video>
-                <div>
-                  <button type="button" onClick={capturePhoto} className="btn" style={{ background: "#2ed573", color: "black", marginRight: "10px" }}>ថតរូបទីនេះ</button>
-                  <button type="button" onClick={stopCamera} className="btn" style={{ background: "var(--border)", color: "var(--text)" }}>បិទកាមេរ៉ា</button>
-                </div>
+            <div style={{ textAlign: "center", display: !photo && cameraActive ? "block" : "none" }}>
+              <video ref={videoRef} autoPlay playsInline style={{ width: "100%", maxWidth: "320px", borderRadius: "8px", border: "1px solid var(--border)", marginBottom: "10px" }}></video>
+              <div>
+                <button type="button" onClick={capturePhoto} className="btn" style={{ background: "#2ed573", color: "black", marginRight: "10px" }}>ថតរូបទីនេះ</button>
+                <button type="button" onClick={stopCamera} className="btn" style={{ background: "var(--border)", color: "var(--text)" }}>បិទកាមេរ៉ា</button>
               </div>
-            )}
+            </div>
             
             {photo && (
               <div style={{ textAlign: "center" }}>
