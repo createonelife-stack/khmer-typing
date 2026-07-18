@@ -166,7 +166,6 @@ export default function Typing() {
   }
 
   const total = lesson.words.length;
-  const progressPct = Math.round((currentIndex / total) * 100);
   const timeLowClass = timeLeft <= 30 ? "time-low" : "";
 
   return (
@@ -176,12 +175,6 @@ export default function Typing() {
         <div className={`timer ${timeLowClass}`}>{formatTime(timeLeft)}</div>
       </div>
 
-      <div className="progress-bar">
-        <div className="progress-fill" style={{ width: `${status === "finished" ? 100 : progressPct}%` }} />
-      </div>
-      <div className="progress-label">
-        {Math.min(currentIndex, total)} / {total} ពាក្យ
-      </div>
 
       {status === "idle" && (
         <div className="start-panel">
