@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getLesson, postResult } from "../api.js";
 
-const LESSON_SECONDS = 600; // 10 minutes
+const LESSON_SECONDS = 420; // 7 minutes
 const POINTS_PER_WORD = 3;
 
 
