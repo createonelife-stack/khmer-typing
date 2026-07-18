@@ -47,7 +47,8 @@
 }
 
 .question-text {
-  font-size: 22px;
+  font-family: 'Noto Serif Khmer', serif;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text);
   line-height: 1.5;
@@ -61,7 +62,8 @@
 }
 
 .quiz-option-text {
-  font-size: 16px;
+  font-family: 'Noto Serif Khmer', serif;
+  font-size: 14px;
 }
 
 .quiz-option-btn {
@@ -121,14 +123,6 @@
     border-radius: 12px;
     width: 100%;
     max-width: 100%;
-  }
-  
-  .question-text {
-    font-size: 12px;
-  }
-  
-  .quiz-option-text {
-    font-size: 12px;
   }
   
   .quiz-option-btn {
