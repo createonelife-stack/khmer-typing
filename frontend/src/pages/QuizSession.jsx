@@ -116,6 +116,8 @@ export default function QuizSession() {
   if (error) return <div style={{ textAlign: 'center', padding: '40px', color: 'red' }}>មានបញ្ហា៖ {error}</div>;
   if (!lesson) return <div style={{ textAlign: 'center', padding: '40px' }}>រកមិនឃើញកម្រងសំនួរនេះទេ</div>;
 
+  const allAnswered = lesson && Object.keys(userAnswers).length === lesson.questions.length;
+
   return (
     <div className="quiz-container">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', width: '100%' }}>
@@ -159,7 +161,7 @@ export default function QuizSession() {
                 </button>
               ))}
             </div>
-            <div className="quiz-actions" style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div className="quiz-actions" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: allAnswered ? '24px' : '0' }}>
               <button 
                 className="btn" 
                 onClick={handlePrevious} 
@@ -170,11 +172,27 @@ export default function QuizSession() {
               <button 
                 className="btn primary" 
                 onClick={handleNext} 
-                disabled={!userAnswers[currentQuestion]}
+                disabled={currentQuestion === lesson.questions.length - 1 || !userAnswers[currentQuestion]}
               >
-                {currentQuestion === lesson.questions.length - 1 ? "បញ្ចប់" : "បន្ទាប់"}
+                បន្ទាប់
               </button>
             </div>
+            
+            {allAnswered && (
+              <div style={{ textAlign: 'center', borderTop: '1px solid var(--border)', paddingTop: '24px' }}>
+                <p style={{ color: 'var(--success)', marginBottom: '16px', fontWeight: 'bold' }}>អ្នកបានឆ្លើយគ្រប់សំណួរអស់ហើយ!</p>
+                <button 
+                  className="btn primary" 
+                  onClick={() => {
+                    calculateAndSetScore();
+                    setShowScore(true);
+                  }}
+                  style={{ width: '100%', background: '#22c55e', borderColor: '#22c55e', padding: '14px', fontSize: '18px' }}
+                >
+                  បញ្ចប់ការប្រឡង
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>
