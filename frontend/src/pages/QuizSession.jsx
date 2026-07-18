@@ -198,15 +198,33 @@ export default function QuizSession({ user }) {
               </div>
               <div className="question-text">{lesson.questions[currentQuestion].question}</div>
             </div>
-            <div className="answer-section">
+            <div className="answer-section" style={{ display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'left', padding: '16px 0' }}>
               {lesson.questions[currentQuestion].options.map((option, index) => (
-                <button
+                <label
                   key={index}
-                  className={`quiz-option-btn ${userAnswers[currentQuestion] === option ? "selected" : ""}`}
-                  onClick={() => handleAnswerOptionClick(option)}
+                  className={`quiz-option-label ${userAnswers[currentQuestion] === option ? "selected" : ""}`}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '16px',
+                    border: `2px solid ${userAnswers[currentQuestion] === option ? 'var(--primary)' : 'var(--border)'}`,
+                    borderRadius: '12px',
+                    cursor: 'pointer',
+                    background: userAnswers[currentQuestion] === option ? 'rgba(91, 75, 255, 0.05)' : 'var(--surface)',
+                    transition: 'all 0.2s ease'
+                  }}
                 >
-                  {option}
-                </button>
+                  <input
+                    type="radio"
+                    name={`question-${currentQuestion}`}
+                    value={option}
+                    checked={userAnswers[currentQuestion] === option}
+                    onChange={() => handleAnswerOptionClick(option)}
+                    style={{ width: '20px', height: '20px', cursor: 'pointer', accentColor: 'var(--primary)' }}
+                  />
+                  <span style={{ fontSize: '16px', color: 'var(--text)' }}>{option}</span>
+                </label>
               ))}
             </div>
             <div className="quiz-actions" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: allAnswered ? '24px' : '0' }}>
