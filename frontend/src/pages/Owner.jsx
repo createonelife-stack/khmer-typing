@@ -88,8 +88,10 @@ export default function Owner({ currentUser }) {
     <div className="admin">
       <div className="admin-header" style={{ marginBottom: "24px" }}>
         <h1 style={{ fontFamily: "'Moul', serif" }}>ផ្ទាំងគ្រប់គ្រង (Dashboard)</h1>
-        <button onClick={fetchData} className="btn">ទាញយកទិន្នន័យថ្មី</button>
       </div>
+      <button onClick={fetchData} className="btn primary" style={{ position: 'fixed', bottom: '24px', right: '24px', borderRadius: '50%', width: '60px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(91, 75, 255, 0.4)', zIndex: 1000, padding: 0, transition: 'all 0.3s ease' }} title="ទាញយកទិន្នន័យថ្មី">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+      </button>
 
       {error && <div className="error" style={{ marginBottom: "16px" }}>{error}</div>}
       
