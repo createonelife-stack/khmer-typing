@@ -101,19 +101,19 @@ export default function Owner({ currentUser }) {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px', marginBottom: '40px' }}>
               <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
                 <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>អ្នកប្រើប្រាស់សរុប</h3>
-                <div style={{ fontSize: '36px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.totalUsers + stats.totalAdmins}</div>
+                <div style={{ fontSize: '36px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.totalUsers}</div>
               </div>
               <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
                 <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>អ្នកគ្រប់គ្រង (Admin)</h3>
-                <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#00C49F' }}>{stats.totalAdmins}</div>
+                <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#00C49F' }}>1</div>
               </div>
               <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
-                <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>គណនីត្រូវបានបិទ</h3>
-                <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#ff4757' }}>{stats.totalSuspended}</div>
-              </div>
-              <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
-                <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>មេរៀនសរុប</h3>
+                <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>មេរៀនវាយពាក្យសរុប</h3>
                 <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#8a2be2' }}>{stats.totalLessons}</div>
+              </div>
+              <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
+                <h3 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>មេរៀនសំណួរសរុប</h3>
+                <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#ff9f43' }}>{stats.totalQuizzes || 0}</div>
               </div>
             </div>
           )}

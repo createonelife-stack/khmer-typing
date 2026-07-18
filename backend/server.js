@@ -143,8 +143,8 @@ app.get('/api/stats', authenticateToken, isAdmin, async (req, res) => {
     const totalAdmins = await User.countDocuments({ role: { $in: ['admin', 'owner'] } });
     const totalSuspended = await User.countDocuments({ status: 'suspended' });
     const totalLessons = await Lesson.countDocuments();
-    
-    res.json({ totalUsers, totalAdmins, totalSuspended, totalLessons });
+    const totalQuizzes = await Quiz.countDocuments();
+    res.json({ totalUsers, totalAdmins, totalSuspended, totalLessons, totalQuizzes });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
