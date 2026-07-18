@@ -26,6 +26,7 @@ export default function Typing() {
   const [timeLeft, setTimeLeft] = useState(LESSON_SECONDS);
   const [correctCount, setCorrectCount] = useState(0);
   const [wrongCount, setWrongCount] = useState(0);
+  const [typedWords, setTypedWords] = useState([]);
 
   const [result, setResult] = useState(null);
 
@@ -47,6 +48,7 @@ export default function Typing() {
     setTimeLeft(LESSON_SECONDS);
     setCorrectCount(0);
     setWrongCount(0);
+    setTypedWords([]);
 
     setResult(null);
   }
@@ -139,6 +141,7 @@ export default function Typing() {
 
     setCorrectCount(nextCorrect);
     setWrongCount(nextWrong);
+    setTypedWords(prev => [...prev, { original: target, typed, isCorrect }]);
     setInput("");
 
     const nextIndex = currentIndex + 1;
@@ -236,7 +239,56 @@ export default function Typing() {
             </div>
           </div>
 
-          <div className="result-actions">
+          <div className="result-words-container" style={{ display: 'flex', gap: '20px', marginTop: '30px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+            <table className="results-table" style={{ flex: '1 1 300px' }}>
+              <thead>
+                <tr>
+                  <th>ល.រ</th>
+                  <th>ពាក្យដើម</th>
+                  <th>ពាក្យវាយ</th>
+                  <th>✔/✖</th>
+                </tr>
+              </thead>
+              <tbody>
+                {typedWords.slice(0, Math.ceil(typedWords.length / 2)).map((w, i) => (
+                  <tr key={i} className={!w.isCorrect ? "wrong-row" : ""}>
+                    <td style={{textAlign: 'center'}}>{i + 1}</td>
+                    <td>{w.original}</td>
+                    <td className={!w.isCorrect ? "wrong-cell" : ""}>{w.typed || "-"}</td>
+                    <td style={{textAlign: 'center'}}>{w.isCorrect ? "✔" : "✖"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {typedWords.length > 1 && (
+              <table className="results-table" style={{ flex: '1 1 300px' }}>
+                <thead>
+                  <tr>
+                    <th>ល.រ</th>
+                    <th>ពាក្យដើម</th>
+                    <th>ពាក្យវាយ</th>
+                    <th>✔/✖</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {typedWords.slice(Math.ceil(typedWords.length / 2)).map((w, i) => {
+                    const actualIndex = i + Math.ceil(typedWords.length / 2);
+                    return (
+                      <tr key={actualIndex} className={!w.isCorrect ? "wrong-row" : ""}>
+                        <td style={{textAlign: 'center'}}>{actualIndex + 1}</td>
+                        <td>{w.original}</td>
+                        <td className={!w.isCorrect ? "wrong-cell" : ""}>{w.typed || "-"}</td>
+                        <td style={{textAlign: 'center'}}>{w.isCorrect ? "✔" : "✖"}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          <div className="result-actions" style={{ marginTop: '30px' }}>
             <button className="btn primary" onClick={resetGame}>
               ព្យាយាមម្តងទៀត
             </button>
