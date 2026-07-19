@@ -441,7 +441,7 @@ input[type="password"] {
 .target-word {
   font-size: 72px;
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: 64px;
   padding: 12px;
   border-radius: 12px;
   transition: background 0.15s, color 0.15s;
