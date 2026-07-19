@@ -178,7 +178,7 @@ export default function Typing({ user }) {
   
   // Cap progress at 95% so the emoji doesn't completely overflow the right edge
   const progressPercent = Math.min(95, Math.max(timeProgress, wordProgress));
-  const isFast = currentWpm >= 30;
+  const isFast = currentWpm >= 15;
   const runnerEmoji = isFast ? "🐇" : "🐢";
 
   return (
