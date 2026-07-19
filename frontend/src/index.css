@@ -433,13 +433,13 @@ input[type="password"] {
 
 .game-panel {
   text-align: center;
-  background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('/angkor_wat_bg.png') center/cover no-repeat;
+  background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/angkor_wat_bg.png') center/cover no-repeat;
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 48px 24px;
 }
 [data-theme='dark'] .game-panel {
-  background: linear-gradient(rgba(30, 41, 59, 0.85), rgba(30, 41, 59, 0.85)), url('/angkor_wat_bg.png') center/cover no-repeat;
+  background: linear-gradient(rgba(30, 41, 59, 0.5), rgba(30, 41, 59, 0.5)), url('/angkor_wat_bg.png') center/cover no-repeat;
 }
 .target-word {
   font-size: 72px;
