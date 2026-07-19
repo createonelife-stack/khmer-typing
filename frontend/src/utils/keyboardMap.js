@@ -17,12 +17,18 @@ export const KHMER_KEYMAP = {
   '`': '«', '~': '»'
 };
 
-export function mapEnglishToKhmer(text) {
+export function mapEnglishToKhmer(text, layout = 'Khmer_NIDA') {
   if (!text) return "";
   let result = "";
   for (let i = 0; i < text.length; i++) {
     const char = text[i];
-    result += KHMER_KEYMAP[char] || char;
+    let mappedChar = KHMER_KEYMAP[char] || char;
+    
+    if (layout === 'Khmer' && char === ' ') {
+      mappedChar = '្';
+    }
+    
+    result += mappedChar;
   }
   return result;
 }

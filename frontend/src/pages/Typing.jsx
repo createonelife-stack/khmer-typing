@@ -130,7 +130,7 @@ export default function Typing({ user }) {
     
     // Only map if the layout is Khmer or Khmer_NIDA, and if the user types English characters
     if (layout === 'Khmer' || layout === 'Khmer_NIDA') {
-      newValue = mapEnglishToKhmer(newValue);
+      newValue = mapEnglishToKhmer(newValue, layout);
     }
     
     setInput(newValue);
