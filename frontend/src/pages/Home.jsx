@@ -8,9 +8,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showLayoutModal, setShowLayoutModal] = useState(false);
-  const [selectedLessonId, setSelectedLessonId] = useState(null);
-  const [selectedLayout, setSelectedLayout] = useState("Khmer");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,18 +31,16 @@ export default function Home() {
             className={`lesson-card ${lesson.words.length < 30 ? "disabled" : ""}`}
             style={lesson.words.length < 30 ? { opacity: 0.6, cursor: "not-allowed" } : {}}
             onClick={(e) => {
-              e.preventDefault();
               if (lesson.words.length < 30) {
+                e.preventDefault();
                 setShowModal(true);
                 return;
               }
               const token = localStorage.getItem("jwt_token");
               if (!token) {
+                e.preventDefault();
                 setShowAuthModal(true);
-                return;
               }
-              setSelectedLessonId(lesson.id);
-              setShowLayoutModal(true);
             }}
           >
             <div className="lesson-number">
@@ -89,50 +84,6 @@ export default function Home() {
               </button>
               <button type="button" className="btn primary" onClick={() => navigate("/auth")}>
                 ទៅកាន់ទំព័រ Login
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showLayoutModal && (
-        <div className="modal-overlay" onClick={() => setShowLayoutModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{textAlign: 'center', maxWidth: '400px'}}>
-            <h3 style={{marginBottom: '24px'}}>ជ្រើសរើសប្រភេទក្តារចុច (Keyboard Layout)</h3>
-            <div style={{display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-start', margin: '0 auto 24px auto', width: 'fit-content'}}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', fontSize: '18px' }}>
-                <input 
-                  type="radio" 
-                  name="keyboardLayout" 
-                  value="Khmer" 
-                  checked={selectedLayout === "Khmer"}
-                  onChange={(e) => setSelectedLayout(e.target.value)}
-                  style={{ width: '20px', height: '20px', cursor: 'pointer' }}
-                />
-                Khmer
-              </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', fontSize: '18px' }}>
-                <input 
-                  type="radio" 
-                  name="keyboardLayout" 
-                  value="Khmer_NIDA" 
-                  checked={selectedLayout === "Khmer_NIDA"}
-                  onChange={(e) => setSelectedLayout(e.target.value)}
-                  style={{ width: '20px', height: '20px', cursor: 'pointer' }}
-                />
-                Khmer NIDA
-              </label>
-            </div>
-            <div style={{display: 'flex', gap: '12px', justifyContent: 'center'}}>
-              <button type="button" className="btn" onClick={() => setShowLayoutModal(false)}>
-                បិទ (Close)
-              </button>
-              <button 
-                type="button" 
-                className="btn primary" 
-                onClick={() => navigate(`/lesson/${selectedLessonId}?layout=${selectedLayout}`)}
-              >
-                ចាប់ផ្តើម (Start)
               </button>
             </div>
           </div>
