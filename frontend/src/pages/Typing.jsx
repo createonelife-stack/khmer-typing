@@ -243,18 +243,65 @@ export default function Typing({ user }) {
                 backgroundSize: '12px 12px'
               }}></div>
               
-              {/* Mario GIF */}
-              <img 
-                src="https://media.tenor.com/6ZNJ831KhyQAAAAi/mario-running.gif" 
-                alt="Mario"
-                style={{
+              {/* Mario SVG */}
+              <div style={{
                   width: '32px',
-                  height: 'auto',
+                  height: '32px',
                   transform: isJumping ? 'translateY(-24px)' : 'none',
                   transition: 'transform 0.15s cubic-bezier(0.2, 0.8, 0.4, 1)',
                   filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
-                }}
-              />
+              }}>
+                <svg viewBox="0 0 16 16" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="4" y="1" width="5" height="1" fill="#FF0000"/>
+                  <rect x="3" y="2" width="9" height="1" fill="#FF0000"/>
+                  <rect x="3" y="3" width="3" height="1" fill="#653200"/>
+                  <rect x="6" y="3" width="2" height="1" fill="#FFCC99"/>
+                  <rect x="8" y="3" width="1" height="1" fill="#000000"/>
+                  <rect x="9" y="3" width="1" height="1" fill="#FFCC99"/>
+                  <rect x="2" y="4" width="1" height="1" fill="#653200"/>
+                  <rect x="3" y="4" width="1" height="1" fill="#FFCC99"/>
+                  <rect x="4" y="4" width="1" height="1" fill="#653200"/>
+                  <rect x="5" y="4" width="3" height="1" fill="#FFCC99"/>
+                  <rect x="8" y="4" width="1" height="1" fill="#000000"/>
+                  <rect x="9" y="4" width="3" height="1" fill="#FFCC99"/>
+                  <rect x="2" y="5" width="1" height="1" fill="#653200"/>
+                  <rect x="3" y="5" width="1" height="1" fill="#FFCC99"/>
+                  <rect x="4" y="5" width="2" height="1" fill="#653200"/>
+                  <rect x="6" y="5" width="3" height="1" fill="#FFCC99"/>
+                  <rect x="9" y="5" width="1" height="1" fill="#000000"/>
+                  <rect x="10" y="5" width="3" height="1" fill="#FFCC99"/>
+                  <rect x="2" y="6" width="2" height="1" fill="#653200"/>
+                  <rect x="4" y="6" width="4" height="1" fill="#FFCC99"/>
+                  <rect x="8" y="6" width="4" height="1" fill="#000000"/>
+                  <rect x="4" y="7" width="7" height="1" fill="#FFCC99"/>
+                  <rect x="3" y="8" width="2" height="1" fill="#FF0000"/>
+                  <rect x="5" y="8" width="1" height="1" fill="#0000FF"/>
+                  <rect x="6" y="8" width="2" height="1" fill="#FF0000"/>
+                  <rect x="8" y="8" width="2" height="1" fill="#0000FF"/>
+                  <rect x="10" y="8" width="1" height="1" fill="#FF0000"/>
+                  <rect x="2" y="9" width="3" height="1" fill="#FF0000"/>
+                  <rect x="5" y="9" width="1" height="1" fill="#0000FF"/>
+                  <rect x="6" y="9" width="2" height="1" fill="#FF0000"/>
+                  <rect x="8" y="9" width="1" height="1" fill="#0000FF"/>
+                  <rect x="9" y="9" width="3" height="1" fill="#FF0000"/>
+                  <rect x="1" y="10" width="4" height="1" fill="#FF0000"/>
+                  <rect x="5" y="10" width="4" height="1" fill="#0000FF"/>
+                  <rect x="9" y="10" width="4" height="1" fill="#FF0000"/>
+                  <rect x="3" y="11" width="1" height="1" fill="#FFCC99"/>
+                  <rect x="4" y="11" width="1" height="1" fill="#0000FF"/>
+                  <rect x="5" y="11" width="1" height="1" fill="#FFFF00"/>
+                  <rect x="6" y="11" width="2" height="1" fill="#0000FF"/>
+                  <rect x="8" y="11" width="1" height="1" fill="#FFFF00"/>
+                  <rect x="9" y="11" width="1" height="1" fill="#0000FF"/>
+                  <rect x="10" y="11" width="1" height="1" fill="#FFCC99"/>
+                  <rect x="3" y="12" width="8" height="1" fill="#0000FF"/>
+                  <rect x="2" y="13" width="10" height="1" fill="#0000FF"/>
+                  <rect x="2" y="14" width="3" height="1" fill="#653200"/>
+                  <rect x="9" y="14" width="3" height="1" fill="#653200"/>
+                  <rect x="1" y="15" width="4" height="1" fill="#653200"/>
+                  <rect x="9" y="15" width="4" height="1" fill="#653200"/>
+                </svg>
+              </div>
             </div>
             <input
               ref={inputRef}
