@@ -27,6 +27,8 @@ export default function Typing({ user }) {
   const [correctCount, setCorrectCount] = useState(0);
   const [wrongCount, setWrongCount] = useState(0);
   const [typedWords, setTypedWords] = useState([]);
+  const [isJumping, setIsJumping] = useState(false);
+  const [hitBrick, setHitBrick] = useState(false);
 
   const [result, setResult] = useState(null);
 
@@ -126,6 +128,15 @@ export default function Typing({ user }) {
     if (status !== "running") return;
     if (e.key === "Enter") {
       e.preventDefault();
+      
+      // Trigger Mario Jump
+      setIsJumping(true);
+      setTimeout(() => {
+        setHitBrick(true);
+        setTimeout(() => setHitBrick(false), 150);
+        setTimeout(() => setIsJumping(false), 150);
+      }, 150);
+
       submitWord();
     }
   }
@@ -206,15 +217,44 @@ export default function Typing({ user }) {
           <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto' }}>
             <div style={{
               position: 'absolute',
-              top: '-32px',
+              top: '-80px',
               left: `${progressPercent}%`,
               transform: 'translateX(-50%)',
-              fontSize: '28px',
               transition: 'left 1s linear',
               zIndex: 10,
-              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              height: '80px',
+              width: '40px'
             }}>
-              {runnerEmoji}
+              {/* Mario Brick */}
+              <div style={{
+                width: '24px', height: '24px',
+                backgroundColor: '#d66427',
+                border: '2px solid #5a2c11',
+                borderRadius: '2px',
+                marginBottom: 'auto',
+                boxShadow: 'inset -2px -2px 0px rgba(0,0,0,0.3), inset 2px 2px 0px rgba(255,255,255,0.4)',
+                transform: hitBrick ? 'translateY(-6px)' : 'none',
+                transition: 'transform 0.1s ease',
+                backgroundImage: 'linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px)',
+                backgroundSize: '12px 12px'
+              }}></div>
+              
+              {/* Mario GIF */}
+              <img 
+                src="https://media.tenor.com/6ZNJ831KhyQAAAAi/mario-running.gif" 
+                alt="Mario"
+                style={{
+                  width: '32px',
+                  height: 'auto',
+                  transform: isJumping ? 'translateY(-24px)' : 'none',
+                  transition: 'transform 0.15s cubic-bezier(0.2, 0.8, 0.4, 1)',
+                  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
+                }}
+              />
             </div>
             <input
               ref={inputRef}
