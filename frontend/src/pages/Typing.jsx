@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getLesson, postResult } from "../api.js";
+import { mapEnglishToKhmer } from "../utils/keyboardMap.js";
+import { useLocation } from "react-router-dom";
 
 const LESSON_SECONDS = 420; // 7 minutes
 const POINTS_PER_WORD = 3;
@@ -15,8 +17,12 @@ function formatTime(totalSeconds) {
 export default function Typing({ user }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const inputRef = useRef(null);
   const timerRef = useRef(null);
+
+  const searchParams = new URLSearchParams(location.search);
+  const layout = searchParams.get("layout");
 
   const [lesson, setLesson] = useState(null);
   const [error, setError] = useState("");
@@ -119,7 +125,15 @@ export default function Typing({ user }) {
 
   function handleChange(e) {
     if (status !== "running") return;
-    setInput(e.target.value);
+    
+    let newValue = e.target.value;
+    
+    // Only map if the layout is Khmer or Khmer_NIDA, and if the user types English characters
+    if (layout === 'Khmer' || layout === 'Khmer_NIDA') {
+      newValue = mapEnglishToKhmer(newValue);
+    }
+    
+    setInput(newValue);
   }
 
   function handleKeyDown(e) {
