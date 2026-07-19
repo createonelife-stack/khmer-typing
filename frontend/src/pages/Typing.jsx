@@ -64,6 +64,7 @@ export default function Typing({ user }) {
   const [typedWords, setTypedWords] = useState([]);
   const [isJumping, setIsJumping] = useState(false);
   const [hitBrick, setHitBrick] = useState(false);
+  const [coins, setCoins] = useState([]);
 
   const [result, setResult] = useState(null);
 
@@ -187,6 +188,12 @@ export default function Typing({ user }) {
 
     if (isCorrect) {
       playSound('correct');
+      // Spawn 5 coins
+      const newCoinGroup = { id: Date.now() };
+      setCoins(prev => [...prev, newCoinGroup]);
+      setTimeout(() => {
+        setCoins(prev => prev.filter(c => c.id !== newCoinGroup.id));
+      }, 600);
     } else {
       playSound('wrong');
     }
@@ -256,6 +263,52 @@ export default function Typing({ user }) {
             {lesson.words[currentIndex]}
           </div>
           <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+            <style>
+              {`
+              .mario-coin {
+                position: absolute;
+                top: 0;
+                left: -5px; /* center horizontally relative to parent */
+                width: 10px;
+                height: 14px;
+                background-color: #f8d020;
+                border: 2px solid #e08800;
+                border-radius: 50%;
+                opacity: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-sizing: border-box;
+                z-index: 5;
+              }
+              .mario-coin::after {
+                content: "";
+                width: 2px;
+                height: 6px;
+                background-color: #e08800;
+              }
+              @keyframes coinPop1 {
+                0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+                50% { transform: translate(-25px, -45px) scale(1); opacity: 1; }
+                100% { transform: translate(-30px, -15px) scale(1); opacity: 0; }
+              }
+              @keyframes coinPop2 {
+                0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+                50% { transform: translate(-10px, -55px) scale(1); opacity: 1; }
+                100% { transform: translate(-15px, -25px) scale(1); opacity: 0; }
+              }
+              @keyframes coinPop3 {
+                0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+                50% { transform: translate(10px, -55px) scale(1); opacity: 1; }
+                100% { transform: translate(15px, -25px) scale(1); opacity: 0; }
+              }
+              @keyframes coinPop4 {
+                0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+                50% { transform: translate(25px, -45px) scale(1); opacity: 1; }
+                100% { transform: translate(30px, -15px) scale(1); opacity: 0; }
+              }
+              `}
+            </style>
             <div style={{
               position: 'absolute',
               top: '-80px',
@@ -270,6 +323,17 @@ export default function Typing({ user }) {
               height: '80px',
               width: '40px'
             }}>
+              {/* Mario Coins Animation */}
+              {coins.map(coinGroup => (
+                <div key={coinGroup.id} style={{ position: 'absolute', top: '0', left: '50%' }}>
+                  <div className="mario-coin" style={{ animation: 'coinPop1 0.5s ease-out forwards' }}></div>
+                  <div className="mario-coin" style={{ animation: 'coinPop2 0.5s ease-out forwards', animationDelay: '0.05s' }}></div>
+                  <div className="mario-coin" style={{ animation: 'coinPop3 0.5s ease-out forwards', animationDelay: '0.1s' }}></div>
+                  <div className="mario-coin" style={{ animation: 'coinPop4 0.5s ease-out forwards', animationDelay: '0.15s' }}></div>
+                  <div className="mario-coin" style={{ animation: 'coinPop2 0.5s ease-out forwards', animationDelay: '0.2s' }}></div>
+                </div>
+              ))}
+
               {/* Mario Brick */}
               <div style={{
                 width: '24px', height: '24px',
