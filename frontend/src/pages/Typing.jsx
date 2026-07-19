@@ -170,6 +170,17 @@ export default function Typing({ user }) {
   const total = lesson.words.length;
   const timeLowClass = timeLeft <= 30 ? "time-low" : "";
 
+  // Progress and animation calculations
+  const timeUsedSoFar = LESSON_SECONDS - timeLeft;
+  const currentWpm = timeUsedSoFar > 0 ? Math.round((correctCount / timeUsedSoFar) * 60) : 0;
+  const timeProgress = (timeUsedSoFar / LESSON_SECONDS) * 100;
+  const wordProgress = total > 0 ? (currentIndex / total) * 100 : 0;
+  
+  // Cap progress at 95% so the emoji doesn't completely overflow the right edge
+  const progressPercent = Math.min(95, Math.max(timeProgress, wordProgress));
+  const isFast = currentWpm >= 30;
+  const runnerEmoji = isFast ? "🐇" : "🐢";
+
   return (
     <div className="typing-page">
       <div className="typing-header">
@@ -192,17 +203,32 @@ export default function Typing({ user }) {
           <div className="target-word">
             {lesson.words[currentIndex]}
           </div>
-          <input
-            ref={inputRef}
-            className="type-input"
-            type="text"
-            value={input}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            autoFocus
-            placeholder="វាយពាក្យខាងលើរួចចុច Enter"
-            lang="km"
-          />
+          <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+            <div style={{
+              position: 'absolute',
+              top: '-32px',
+              left: `${progressPercent}%`,
+              transform: 'translateX(-50%)',
+              fontSize: '28px',
+              transition: 'left 1s linear',
+              zIndex: 10,
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+            }}>
+              {runnerEmoji}
+            </div>
+            <input
+              ref={inputRef}
+              className="type-input"
+              type="text"
+              value={input}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              autoFocus
+              placeholder="វាយពាក្យខាងលើរួចចុច Enter"
+              lang="km"
+              style={{ width: '100%' }}
+            />
+          </div>
           <div className="stats-row">
             <span className="stat correct">ត្រឹមត្រូវ: {correctCount}</span>
             <span className="stat wrong">ខុស: {wrongCount}</span>
