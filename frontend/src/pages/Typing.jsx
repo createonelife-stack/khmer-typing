@@ -44,6 +44,29 @@ const playSound = (type) => {
     
     osc.start();
     osc.stop(ctx.currentTime + 0.2);
+  } else if (type === 'finish') {
+    // Mario Stage Clear Sound
+    osc.type = 'square';
+    const notes = [392.00, 523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98, 1318.51];
+    const duration = 0.12;
+    
+    let time = ctx.currentTime;
+    notes.forEach((freq, i) => {
+      osc.frequency.setValueAtTime(freq, time);
+      if (i === notes.length - 1) {
+        gain.gain.setValueAtTime(0.2, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.8);
+        time += 0.8;
+      } else {
+        gain.gain.setValueAtTime(0.2, time);
+        gain.gain.setValueAtTime(0.2, time + duration - 0.02);
+        gain.gain.linearRampToValueAtTime(0, time + duration);
+        time += duration;
+      }
+    });
+    
+    osc.start();
+    osc.stop(time);
   }
 };
 
@@ -95,6 +118,7 @@ export default function Typing({ user }) {
     (finalCorrect, finalWrong, completedAll, timeUsedOverride) => {
       clearInterval(timerRef.current);
       setStatus("finished");
+      playSound('finish');
 
       const timeUsed =
         timeUsedOverride !== undefined
