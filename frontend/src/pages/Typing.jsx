@@ -12,6 +12,41 @@ function formatTime(totalSeconds) {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
+const playSound = (type) => {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  
+  if (type === 'correct') {
+    // Mario Coin Sound
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(987.77, ctx.currentTime); // B5
+    osc.frequency.setValueAtTime(1318.51, ctx.currentTime + 0.1); // E6
+    
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+    
+    osc.start();
+    osc.stop(ctx.currentTime + 0.4);
+  } else if (type === 'wrong') {
+    // Mario Bump/Wrong Sound
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(150, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.1);
+    
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+    
+    osc.start();
+    osc.stop(ctx.currentTime + 0.2);
+  }
+};
+
 export default function Typing({ user }) {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -149,6 +184,12 @@ export default function Typing({ user }) {
     const isCorrect = typed === target;
     const nextCorrect = correctCount + (isCorrect ? 1 : 0);
     const nextWrong = wrongCount + (isCorrect ? 0 : 1);
+
+    if (isCorrect) {
+      playSound('correct');
+    } else {
+      playSound('wrong');
+    }
 
     setCorrectCount(nextCorrect);
     setWrongCount(nextWrong);
