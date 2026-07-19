@@ -67,6 +67,29 @@ const playSound = (type) => {
     
     osc.start();
     osc.stop(time);
+  } else if (type === 'start') {
+    // Mario Overworld Intro
+    osc.type = 'square';
+    const notes = [
+      { f: 659.25, d: 0.1, t: 0 },
+      { f: 659.25, d: 0.1, t: 0.15 },
+      { f: 659.25, d: 0.1, t: 0.3 },
+      { f: 523.25, d: 0.1, t: 0.45 },
+      { f: 659.25, d: 0.1, t: 0.6 },
+      { f: 783.99, d: 0.1, t: 0.75 },
+      { f: 392.00, d: 0.1, t: 1.05 }
+    ];
+    
+    let time = ctx.currentTime;
+    notes.forEach(note => {
+      osc.frequency.setValueAtTime(note.f, time + note.t);
+      gain.gain.setValueAtTime(0.2, time + note.t);
+      gain.gain.setValueAtTime(0.2, time + note.t + note.d - 0.01);
+      gain.gain.linearRampToValueAtTime(0, time + note.t + note.d);
+    });
+    
+    osc.start();
+    osc.stop(time + 1.2);
   }
 };
 
@@ -175,6 +198,7 @@ export default function Typing({ user }) {
   }, [timeLeft]);
 
   function startGame() {
+    playSound('start');
     setStatus("running");
     setTimeout(() => inputRef.current?.focus(), 0);
   }
