@@ -1476,6 +1476,11 @@ input[type="password"] {
     padding: 3px 4px;
   }
 
+  .result-panel {
+    border: none !important;
+    box-shadow: none !important;
+  }
+
   .print-footer {
     margin-top: 40px;
     text-align: right;
