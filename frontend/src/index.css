@@ -1368,4 +1368,62 @@ input[type="password"] {
     }
 }
 
-@media print { .no-print, .navbar { display: none !important; } }
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 1cm;
+  }
+  
+  .no-print, .navbar { 
+    display: none !important; 
+  }
+  
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: white;
+  }
+
+  /* Make sure container uses full width but scales down if needed */
+  .typing-container, .results-container, .result-words-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Scale down text and tables to fit on one A4 page */
+  .result-grid {
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .result-item {
+    padding: 10px;
+  }
+  
+  .result-item .label {
+    font-size: 0.8rem;
+  }
+  
+  .result-item .value {
+    font-size: 1.2rem;
+  }
+
+  .results-table {
+    font-size: 11px;
+  }
+  
+  .results-table th, .results-table td {
+    padding: 6px 4px;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    margin-top: 0;
+  }
+}
