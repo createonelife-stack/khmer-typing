@@ -544,6 +544,8 @@ export default function Typing({ user }) {
                 <div className="info-row">
                   <span className="info-label">តួនាទី:</span>
                   <span className="info-value">{user?.jobRole || ''}</span>
+                  <span className="info-label">ពិន្ទុ:</span>
+                  <span className="info-value">{result.score}</span>
                 </div>
               </div>
               <div className="print-photo-box">
