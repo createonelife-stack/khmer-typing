@@ -501,7 +501,7 @@ export default function Typing({ user }) {
             </div>
           </div>
 
-          <div className="result-grid">
+          <div className="result-grid hide-on-print">
             <div className="result-item">
               <span className="label">ពាក្យត្រឹមត្រូវ</span>
               <span className="value">{result.correctWords} / {result.totalWords}</span>
@@ -525,7 +525,32 @@ export default function Typing({ user }) {
             </div>
           </div>
 
-          <div className="result-words-container" style={{ display: 'flex', gap: '20px', marginTop: '30px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+          <div className="print-only">
+            <div className="print-title">លទ្ធផលប្រឡងតេស្តវាយពាក្យ</div>
+            <div className="print-header">
+              <div className="print-info">
+                <div className="info-row">
+                  <span className="info-label">ឈ្មោះ:</span>
+                  <span className="info-value"></span>
+                  <span className="info-label">ពាក្យខុស:</span>
+                  <span className="info-value">{wrongCount}</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">ភេទ:</span>
+                  <span className="info-value"></span>
+                  <span className="info-label">ពេលវេលាប្រើ:</span>
+                  <span className="info-value">{formatTime(result.timeUsed)}</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">តួនាទី:</span>
+                  <span className="info-value"></span>
+                </div>
+              </div>
+              <div className="print-photo-box"></div>
+            </div>
+          </div>
+
+          <div className="result-words-container" style={{ display: 'flex', gap: '20px', marginTop: '10px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
             <table className="results-table" style={{ flex: '1 1 300px' }}>
               <thead>
                 <tr>
@@ -572,6 +597,10 @@ export default function Typing({ user }) {
                 </tbody>
               </table>
             )}
+          </div>
+
+          <div className="print-only print-footer">
+            ហត្ថលេខាសាមីខ្លួន
           </div>
 
           <div className="result-actions" style={{ marginTop: '30px' }}>
