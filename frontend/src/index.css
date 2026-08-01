@@ -1476,6 +1476,24 @@ input[type="password"] {
     padding: 3px 4px;
   }
 
+  .results-table th:nth-child(1), .results-table td:nth-child(1) {
+    width: 8%;
+    text-align: center;
+  }
+
+  .results-table th:nth-child(2), .results-table td:nth-child(2) {
+    width: 42%;
+  }
+
+  .results-table th:nth-child(3), .results-table td:nth-child(3) {
+    width: 42%;
+  }
+
+  .results-table th:nth-child(4), .results-table td:nth-child(4) {
+    width: 8%;
+    text-align: center;
+  }
+
   .result-panel {
     border: none !important;
     box-shadow: none !important;
