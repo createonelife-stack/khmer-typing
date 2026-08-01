@@ -575,11 +575,14 @@ export default function Typing({ user }) {
           </div>
 
           <div className="result-actions" style={{ marginTop: '30px' }}>
-            <button className="btn primary" onClick={resetGame}>
+            <button className="btn primary no-print" onClick={resetGame}>
               ព្យាយាមម្តងទៀត
             </button>
-            <button className="btn" onClick={() => navigate("/")}>
+            <button className="btn no-print" onClick={() => navigate("/")}>
               ត្រឡប់ទៅមេរៀន
+            </button>
+            <button className="btn no-print" onClick={() => window.print()} style={{ backgroundColor: '#10b981', color: 'white' }}>
+              រក្សាទុកជា PDF
             </button>
           </div>
         </div>

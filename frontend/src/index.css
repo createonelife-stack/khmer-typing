@@ -1367,3 +1367,5 @@ input[type="password"] {
         justify-content: space-between;
     }
 }
+
+@media print { .no-print, .navbar { display: none !important; } }
