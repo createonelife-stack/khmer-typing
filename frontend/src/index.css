@@ -1393,12 +1393,12 @@ input[type="password"] {
   }
 
   /* Make sure container uses full width but scales down if needed */
-  .typing-container, .results-container, .result-words-container {
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
-    box-shadow: none;
+  .content, .typing-page, .result-panel, .typing-container, .results-container, .result-words-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
     page-break-inside: avoid;
     break-inside: avoid;
   }
