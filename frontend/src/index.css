@@ -1451,6 +1451,11 @@ input[type="password"] {
   }
 
   /* Tables */
+  .result-words-container {
+    flex-wrap: nowrap !important;
+    gap: 10px !important;
+  }
+
   table.results-table, .results-table th, .results-table td {
     border: 1px solid black !important;
     border-collapse: collapse;
@@ -1458,7 +1463,7 @@ input[type="password"] {
   }
 
   .results-table {
-    font-size: 12pt;
+    font-size: 10pt;
     width: 100%;
   }
   
@@ -1468,7 +1473,7 @@ input[type="password"] {
   }
 
   .results-table th, .results-table td {
-    padding: 6px;
+    padding: 3px 4px;
   }
 
   .print-footer {
