@@ -1452,7 +1452,6 @@ input[type="password"] {
 
   /* Tables */
   .result-words-container {
-    flex-wrap: nowrap !important;
     gap: 10px !important;
   }
 

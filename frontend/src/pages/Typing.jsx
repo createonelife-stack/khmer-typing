@@ -554,8 +554,8 @@ export default function Typing({ user }) {
             </div>
           </div>
 
-          <div className="result-words-container" style={{ display: 'flex', gap: '20px', marginTop: '10px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-            <table className="results-table" style={{ flex: '1 1 300px' }}>
+          <div className="result-words-container" style={{ display: 'grid', gridTemplateColumns: typedWords.length > 1 ? '1fr 1fr' : '1fr', gap: '20px', marginTop: '10px', alignItems: 'start' }}>
+            <table className="results-table">
               <thead>
                 <tr>
                   <th>ល.រ</th>
@@ -577,7 +577,7 @@ export default function Typing({ user }) {
             </table>
 
             {typedWords.length > 1 && (
-              <table className="results-table" style={{ flex: '1 1 300px' }}>
+              <table className="results-table">
                 <thead>
                   <tr>
                     <th>ល.រ</th>
