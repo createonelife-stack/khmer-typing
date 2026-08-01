@@ -1382,7 +1382,7 @@ input[type="password"] {
     display: block;
   }
   
-  .hide-on-print, .no-print, .navbar { 
+  .hide-on-print, .no-print, .navbar, .topbar, .footer, .mobile-nav, .desktop-nav { 
     display: none !important; 
   }
   
@@ -1443,8 +1443,11 @@ input[type="password"] {
   .print-photo-box {
     width: 3cm;
     height: 4cm;
-    background-color: #4a80d4 !important;
     border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
   }
 
   /* Tables */

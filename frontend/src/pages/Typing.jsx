@@ -290,7 +290,7 @@ export default function Typing({ user }) {
 
   return (
     <div className="typing-page">
-      <div className="typing-header">
+      <div className="typing-header hide-on-print">
         <h1>{lesson.title}</h1>
         <div className={`timer ${timeLowClass}`}>{formatTime(timeLeft)}</div>
       </div>
@@ -478,7 +478,7 @@ export default function Typing({ user }) {
 
       {status === "finished" && result && (
         <div className="result-panel">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', gap: '20px' }}>
+          <div className="hide-on-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', gap: '20px' }}>
             <div style={{ textAlign: 'left', flex: 1 }}>
               {user && (
                 <>
@@ -531,22 +531,24 @@ export default function Typing({ user }) {
               <div className="print-info">
                 <div className="info-row">
                   <span className="info-label">ឈ្មោះ:</span>
-                  <span className="info-value"></span>
+                  <span className="info-value">{user ? (user.fullName || user.username) : ''}</span>
                   <span className="info-label">ពាក្យខុស:</span>
                   <span className="info-value">{wrongCount}</span>
                 </div>
                 <div className="info-row">
                   <span className="info-label">ភេទ:</span>
-                  <span className="info-value"></span>
+                  <span className="info-value">{user?.gender || ''}</span>
                   <span className="info-label">ពេលវេលាប្រើ:</span>
                   <span className="info-value">{formatTime(result.timeUsed)}</span>
                 </div>
                 <div className="info-row">
                   <span className="info-label">តួនាទី:</span>
-                  <span className="info-value"></span>
+                  <span className="info-value">{user?.jobRole || ''}</span>
                 </div>
               </div>
-              <div className="print-photo-box"></div>
+              <div className="print-photo-box">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              </div>
             </div>
           </div>
 
