@@ -9,6 +9,10 @@ const lessonSchema = new mongoose.Schema({
     type: [String],
     required: true,
     default: []
+  },
+  isLocked: {
+    type: Boolean,
+    default: false
   }
 }, { timestamps: true });
 

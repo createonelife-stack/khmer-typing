@@ -7,6 +7,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showLockedModal, setShowLockedModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const navigate = useNavigate();
 
@@ -28,9 +29,14 @@ export default function Home() {
           <Link 
             to={`/lesson/${lesson.id}`} 
             key={lesson.id} 
-            className={`lesson-card ${lesson.words.length < 30 ? "disabled" : ""}`}
-            style={lesson.words.length < 30 ? { opacity: 0.6, cursor: "not-allowed" } : {}}
+            className={`lesson-card ${(lesson.words.length < 30 || lesson.isLocked) ? "disabled" : ""}`}
+            style={(lesson.words.length < 30 || lesson.isLocked) ? { opacity: 0.6, cursor: "not-allowed" } : {}}
             onClick={(e) => {
+              if (lesson.isLocked) {
+                e.preventDefault();
+                setShowLockedModal(true);
+                return;
+              }
               if (lesson.words.length < 30) {
                 e.preventDefault();
                 setShowModal(true);
@@ -44,16 +50,20 @@ export default function Home() {
             }}
           >
             <div className="lesson-number">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"></path>
-                <path d="M6 10h.01"></path>
-                <path d="M10 10h.01"></path>
-                <path d="M14 10h.01"></path>
-                <path d="M18 10h.01"></path>
-                <path d="M6 14h.01"></path>
-                <path d="M18 14h.01"></path>
-                <path d="M10 14h4"></path>
-              </svg>
+              {lesson.isLocked ? (
+                <span style={{ fontSize: '20px' }}>🔒</span>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"></path>
+                  <path d="M6 10h.01"></path>
+                  <path d="M10 10h.01"></path>
+                  <path d="M14 10h.01"></path>
+                  <path d="M18 10h.01"></path>
+                  <path d="M6 14h.01"></path>
+                  <path d="M18 14h.01"></path>
+                  <path d="M10 14h4"></path>
+                </svg>
+              )}
             </div>
             <div className="lesson-title">{lesson.title}</div>
           </Link>
@@ -66,6 +76,18 @@ export default function Home() {
             <h3>បដិសេធការចូលប្រើប្រាស់</h3>
             <p>សូមទាក់ទង admin ដើម្បី ទទួលសិទ្ធ</p>
             <button type="button" className="btn primary" onClick={() => setShowModal(false)}>
+              យល់ព្រម
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showLockedModal && (
+        <div className="modal-overlay" onClick={() => setShowLockedModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>មេរៀននេះត្រូវបានចាក់សោរ</h3>
+            <p>អ្នកមិនអាចចូលរៀនមេរៀននេះបានទេ រហូតដល់ Admin ដោះសោរជាមុនសិន។</p>
+            <button type="button" className="btn primary" onClick={() => setShowLockedModal(false)}>
               យល់ព្រម
             </button>
           </div>

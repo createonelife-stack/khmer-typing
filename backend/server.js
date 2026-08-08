@@ -289,8 +289,8 @@ app.delete('/api/users/:username', authenticateToken, isAdmin, async (req, res) 
 
 app.get('/api/lessons', async (req, res) => {
   try {
-    const lessons = await Lesson.find({}, 'title words _id');
-    res.json(lessons.map(l => ({ id: l._id, title: l.title, words: l.words })));
+    const lessons = await Lesson.find({}, 'title words isLocked _id');
+    res.json(lessons.map(l => ({ id: l._id, title: l.title, words: l.words, isLocked: l.isLocked })));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -300,7 +300,7 @@ app.get('/api/lessons/:id', async (req, res) => {
   try {
     const lesson = await Lesson.findById(req.params.id);
     if (!lesson) return res.status(404).json({ error: 'Lesson not found' });
-    res.json({ id: lesson._id, title: lesson.title, words: lesson.words });
+    res.json({ id: lesson._id, title: lesson.title, words: lesson.words, isLocked: lesson.isLocked });
   } catch (error) {
     res.status(404).json({ error: 'Lesson not found' });
   }
@@ -321,10 +321,10 @@ app.post('/api/lessons', authenticateToken, isAdmin, async (req, res) => {
 
 app.put('/api/lessons/:id', authenticateToken, isAdmin, async (req, res) => {
   try {
-    const { title, words } = req.body;
-    const lesson = await Lesson.findByIdAndUpdate(req.params.id, { title, words }, { new: true });
+    const { title, words, isLocked } = req.body;
+    const lesson = await Lesson.findByIdAndUpdate(req.params.id, { title, words, isLocked }, { new: true });
     if (!lesson) return res.status(404).json({ error: 'Lesson not found' });
-    res.json({ id: lesson._id, title: lesson.title, words: lesson.words });
+    res.json({ id: lesson._id, title: lesson.title, words: lesson.words, isLocked: lesson.isLocked });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -345,8 +345,8 @@ app.delete('/api/lessons/:id', authenticateToken, isAdmin, async (req, res) => {
 
 app.get('/api/quizzes', async (req, res) => {
   try {
-    const quizzes = await Quiz.find({}, 'title description questions _id');
-    res.json(quizzes.map(q => ({ id: q._id, title: q.title, description: q.description, questions: q.questions })));
+    const quizzes = await Quiz.find({}, 'title description questions isLocked _id');
+    res.json(quizzes.map(q => ({ id: q._id, title: q.title, description: q.description, questions: q.questions, isLocked: q.isLocked })));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -366,7 +366,7 @@ app.get('/api/quizzes/:id', async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
     if (!quiz) return res.status(404).json({ error: 'Quiz not found' });
-    res.json({ id: quiz._id, title: quiz.title, description: quiz.description, questions: quiz.questions });
+    res.json({ id: quiz._id, title: quiz.title, description: quiz.description, questions: quiz.questions, isLocked: quiz.isLocked });
   } catch (error) {
     res.status(404).json({ error: 'Quiz not found' });
   }
@@ -388,10 +388,10 @@ app.post('/api/quizzes', authenticateToken, isAdmin, async (req, res) => {
 
 app.put('/api/quizzes/:id', authenticateToken, isAdmin, async (req, res) => {
   try {
-    const { title, description, questions } = req.body;
-    const quiz = await Quiz.findByIdAndUpdate(req.params.id, { title, description, questions }, { new: true });
+    const { title, description, questions, isLocked } = req.body;
+    const quiz = await Quiz.findByIdAndUpdate(req.params.id, { title, description, questions, isLocked }, { new: true });
     if (!quiz) return res.status(404).json({ error: 'Quiz not found' });
-    res.json({ id: quiz._id, title: quiz.title, description: quiz.description, questions: quiz.questions });
+    res.json({ id: quiz._id, title: quiz.title, description: quiz.description, questions: quiz.questions, isLocked: quiz.isLocked });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

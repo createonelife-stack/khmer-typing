@@ -8,6 +8,7 @@ export default function Quiz() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showLockedModal, setShowLockedModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,8 +35,14 @@ export default function Quiz() {
           <Link 
             to={`/quiz/${lesson.id}`} 
             key={lesson.id} 
-            className="lesson-card quiz-card-bg"
+            className={`lesson-card quiz-card-bg ${lesson.isLocked ? "disabled" : ""}`}
+            style={lesson.isLocked ? { opacity: 0.6, cursor: "not-allowed" } : {}}
             onClick={(e) => {
+              if (lesson.isLocked) {
+                e.preventDefault();
+                setShowLockedModal(true);
+                return;
+              }
               const token = localStorage.getItem("jwt_token");
               if (!token) {
                 e.preventDefault();
@@ -44,10 +51,14 @@ export default function Quiz() {
             }}
           >
             <div className="lesson-number">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 11l3 3L22 4"></path>
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-              </svg>
+              {lesson.isLocked ? (
+                <span style={{ fontSize: '20px' }}>🔒</span>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 11l3 3L22 4"></path>
+                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                </svg>
+              )}
             </div>
             <div className="lesson-title">{lesson.title}</div>
             <div className="lesson-meta" style={{ marginTop: '8px' }}>
@@ -72,6 +83,16 @@ export default function Quiz() {
                 ទៅកាន់ទំព័រ Login
               </button>
             </div>
+          </div>
+        </div>
+      {showLockedModal && (
+        <div className="modal-overlay" onClick={() => setShowLockedModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>មេរៀននេះត្រូវបានចាក់សោរ</h3>
+            <p>អ្នកមិនអាចចូលឆ្លើយសំណួរនេះបានទេ រហូតដល់ Admin ដោះសោរជាមុនសិន។</p>
+            <button type="button" className="btn primary" onClick={() => setShowLockedModal(false)}>
+              យល់ព្រម
+            </button>
           </div>
         </div>
       )}

@@ -6,6 +6,7 @@ export default function Admin() {
   const [activeId, setActiveId] = useState(1);
   const [title, setTitle] = useState("");
   const [words, setWords] = useState([]);
+  const [isLocked, setIsLocked] = useState(false);
   const [bulkText, setBulkText] = useState("");
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
@@ -26,6 +27,7 @@ export default function Admin() {
     setActiveId(lesson.id);
     setTitle(lesson.title);
     setWords(lesson.words);
+    setIsLocked(lesson.isLocked || false);
     setBulkText(lesson.words.join("\n"));
     setStatus("");
   }
@@ -65,10 +67,11 @@ export default function Admin() {
     setError("");
     const cleanWords = words.map((w) => w.trim()).filter((w) => w.length > 0);
     try {
-      const updated = await updateLesson(activeId, { title, words: cleanWords });
+      const updated = await updateLesson(activeId, { title, words: cleanWords, isLocked });
       setWords(updated.words);
+      setIsLocked(updated.isLocked || false);
       setLessons((prev) =>
-        prev.map((l) => (l.id === activeId ? { ...l, title: updated.title, words: updated.words } : l))
+        prev.map((l) => (l.id === activeId ? { ...l, title: updated.title, words: updated.words, isLocked: updated.isLocked } : l))
       );
       setStatus(`បានរក្សាទុក ${updated.words.length} ពាក្យសម្រាប់ ${updated.title}`);
     } catch (e) {
@@ -111,6 +114,7 @@ export default function Admin() {
           setActiveId(null);
           setTitle("");
           setWords([]);
+          setIsLocked(false);
           setBulkText("");
         }
         return next;
@@ -140,7 +144,7 @@ export default function Admin() {
               onClick={() => selectLesson(lesson.id)}
               type="button"
             >
-              {lesson.title}
+              {lesson.isLocked ? "🔒 " : ""}{lesson.title}
             </button>
           ))}
           <button className="admin-tab new-tab" onClick={handleCreateLesson} type="button">
@@ -153,6 +157,11 @@ export default function Admin() {
           <label className="field" style={{ flex: 1, margin: 0 }}>
             <span>ចំណងជើងមេរៀន</span>
             <input value={title} onChange={(e) => setTitle(e.target.value)} lang="km" />
+          </label>
+
+          <label className="field" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', background: 'var(--surface)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+            <input type="checkbox" checked={isLocked} onChange={(e) => setIsLocked(e.target.checked)} style={{ width: '20px', height: '20px', margin: 0 }} />
+            <span style={{ fontWeight: 'bold', color: isLocked ? '#ff4757' : 'inherit' }}>{isLocked ? "🔒 បានចាក់សោរ (Locked)" : "🔓 មិនបានចាក់សោរ (Unlocked)"}</span>
           </label>
 
           <div className={`word-count ${wordCountWarning ? "warn" : "ok"}`} style={{ margin: 0 }}>

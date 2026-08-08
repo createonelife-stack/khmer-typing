@@ -8,6 +8,7 @@ export default function QuizAdmin() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [questions, setQuestions] = useState([]);
+  const [isLocked, setIsLocked] = useState(false);
   
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
@@ -39,6 +40,7 @@ export default function QuizAdmin() {
     setTitle(quiz.title);
     setDescription(quiz.description);
     setQuestions(quiz.questions || []);
+    setIsLocked(quiz.isLocked || false);
     setStatus("");
     setError("");
   };
@@ -70,9 +72,10 @@ export default function QuizAdmin() {
     setStatus("");
     setError("");
     try {
-      const payload = { title, description, questions };
+      const payload = { title, description, questions, isLocked };
       const updated = await updateQuiz(activeId, payload);
       setQuizzes(prev => prev.map(q => q.id === activeId ? updated : q));
+      setIsLocked(updated.isLocked || false);
       loadIntoForm(updated);
       setStatus("បានរក្សាទុកជោគជ័យ។");
     } catch (e) {
@@ -98,6 +101,7 @@ export default function QuizAdmin() {
         setTitle("");
         setDescription("");
         setQuestions([]);
+        setIsLocked(false);
       }
       setStatus("បានលុបជោគជ័យ។");
     } catch (e) {
@@ -164,7 +168,7 @@ export default function QuizAdmin() {
               onClick={() => selectQuiz(quiz.id)}
               type="button"
             >
-              {quiz.title}
+              {quiz.isLocked ? "🔒 " : ""}{quiz.title}
             </button>
           ))}
           <button className="admin-tab new-tab" onClick={handleCreateQuiz} type="button">
@@ -186,6 +190,11 @@ export default function QuizAdmin() {
               <label className="field" style={{ margin: 0 }}>
                 <span>ការពិពណ៌នា</span>
                 <input value={description} onChange={(e) => setDescription(e.target.value)} lang="km" />
+              </label>
+
+              <label className="field" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', background: 'var(--surface)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                <input type="checkbox" checked={isLocked} onChange={(e) => setIsLocked(e.target.checked)} style={{ width: '20px', height: '20px', margin: 0 }} />
+                <span style={{ fontWeight: 'bold', color: isLocked ? '#ff4757' : 'inherit' }}>{isLocked ? "🔒 បានចាក់សោរ (Locked)" : "🔓 មិនបានចាក់សោរ (Unlocked)"}</span>
               </label>
             </div>
 
