@@ -85,6 +85,8 @@ export default function Quiz() {
             </div>
           </div>
         </div>
+      )}
+
       {showLockedModal && (
         <div className="modal-overlay" onClick={() => setShowLockedModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
