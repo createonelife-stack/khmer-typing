@@ -51,6 +51,20 @@ if (!MONGODB_URI) {
         await electionQuiz.save();
         console.log('Seeded Election 2027 quiz successfully');
       }
+
+      // Auto-seed the General Knowledge 2023 quiz
+      const gkQuizCount = await Quiz.countDocuments({ title: "ចំណេះដឹងទូទៅអំពីការបោះឆ្នោត និងរដ្ឋបាល" });
+      if (gkQuizCount === 0) {
+        const gkQuizData = require('./seed_quiz_2_data.js');
+        const gkQuiz = new Quiz({
+          title: "ចំណេះដឹងទូទៅអំពីការបោះឆ្នោត និងរដ្ឋបាល",
+          description: "កម្រងសំណួរអំពីលទ្ធផលបោះឆ្នោត និងរដ្ឋបាលថ្នាក់ក្រោមជាតិ ២០២៣",
+          questions: gkQuizData,
+          isLocked: false
+        });
+        await gkQuiz.save();
+        console.log('Seeded General Knowledge 2023 quiz successfully');
+      }
     })
     .catch(err => console.error('MongoDB connection error:', err));
 }
