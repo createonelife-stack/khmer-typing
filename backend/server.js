@@ -37,62 +37,6 @@ if (!MONGODB_URI) {
         await owner.save();
         console.log('Seeded default owner account');
       }
-      
-      // Auto-seed the 2027 Election quiz
-      const electionQuizCount = await Quiz.countDocuments({ title: "នីតិវិធីនៃការបោះឆ្នោត (2027)" });
-      if (electionQuizCount === 0) {
-        const electionQuizData = require('./seed_20_questions_data.js');
-        const electionQuiz = new Quiz({
-          title: "នីតិវិធីនៃការបោះឆ្នោត (2027)",
-          description: "កម្រងសំណួរអំពីកាលបរិច្ឆេទ និងរយៈពេលទាក់ទងនឹងការបោះឆ្នោត",
-          questions: electionQuizData,
-          isLocked: false
-        });
-        await electionQuiz.save();
-        console.log('Seeded Election 2027 quiz successfully');
-      }
-
-      // Auto-seed the General Knowledge 2023 quiz
-      const gkQuizCount = await Quiz.countDocuments({ title: "ចំណេះដឹងទូទៅអំពីការបោះឆ្នោត និងរដ្ឋបាល" });
-      if (gkQuizCount === 0) {
-        const gkQuizData = require('./seed_quiz_2_data.js');
-        const gkQuiz = new Quiz({
-          title: "ចំណេះដឹងទូទៅអំពីការបោះឆ្នោត និងរដ្ឋបាល",
-          description: "កម្រងសំណួរអំពីលទ្ធផលបោះឆ្នោត និងរដ្ឋបាលថ្នាក់ក្រោមជាតិ ២០២៣",
-          questions: gkQuizData,
-          isLocked: false
-        });
-        await gkQuiz.save();
-        console.log('Seeded General Knowledge 2023 quiz successfully');
-      }
-
-      // Auto-seed the Computer Science & Network quiz
-      const csQuizCount = await Quiz.countDocuments({ title: "វិទ្យាសាស្ត្រកុំព្យូទ័រ និងបណ្តាញ (Beginner)" });
-      if (csQuizCount === 0) {
-        const csQuizData = require('./seed_quiz_3_data.js');
-        const csQuiz = new Quiz({
-          title: "វិទ្យាសាស្ត្រកុំព្យូទ័រ និងបណ្តាញ (Beginner)",
-          description: "កម្រងសំណួរកម្រិតដំបូងអំពី Computer Science, Network, VPN, Hardware សម្រាប់អ្នកចាប់ផ្តើម។",
-          questions: csQuizData,
-          isLocked: false
-        });
-        await csQuiz.save();
-        console.log('Seeded CS & Network quiz successfully');
-      }
-
-      // Auto-seed the Computer Science & Network Part 2 quiz
-      const cs2QuizCount = await Quiz.countDocuments({ title: "វិទ្យាសាស្ត្រកុំព្យូទ័រ និងបណ្តាញ វគ្គ២ (Beginner)" });
-      if (cs2QuizCount === 0) {
-        const cs2QuizData = require('./seed_quiz_4_data.js');
-        const cs2Quiz = new Quiz({
-          title: "វិទ្យាសាស្ត្រកុំព្យូទ័រ និងបណ្តាញ វគ្គ២ (Beginner)",
-          description: "កម្រងសំណួរកម្រិតដំបូងភាគ២ អំពី Hardware, Software, Security, Web, និង Network។",
-          questions: cs2QuizData,
-          isLocked: false
-        });
-        await cs2Quiz.save();
-        console.log('Seeded CS & Network Part 2 quiz successfully');
-      }
     })
     .catch(err => console.error('MongoDB connection error:', err));
 }
@@ -410,8 +354,14 @@ app.get('/api/quizzes', async (req, res) => {
 
 app.post('/api/quizzes/seed', authenticateToken, isAdmin, async (req, res) => {
   try {
-    await Quiz.deleteMany({});
-    await Quiz.insertMany(quizzesToSeed);
+    // Prevent deleting existing quizzes to avoid wiping user edits
+    // await Quiz.deleteMany({});
+    
+    // Check if the typing quizzes already exist to prevent duplication
+    const existingCount = await Quiz.countDocuments({ title: quizzesToSeed[0].title });
+    if (existingCount === 0) {
+      await Quiz.insertMany(quizzesToSeed);
+    }
     res.json({ success: true, message: "បានបង្កើតកម្រងសំនួរដោយស្វ័យប្រវត្តិរួចរាល់!" });
   } catch (error) {
     res.status(500).json({ error: error.message });
