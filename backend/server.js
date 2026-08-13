@@ -79,6 +79,20 @@ if (!MONGODB_URI) {
         await csQuiz.save();
         console.log('Seeded CS & Network quiz successfully');
       }
+
+      // Auto-seed the Computer Science & Network Part 2 quiz
+      const cs2QuizCount = await Quiz.countDocuments({ title: "វិទ្យាសាស្ត្រកុំព្យូទ័រ និងបណ្តាញ វគ្គ២ (Beginner)" });
+      if (cs2QuizCount === 0) {
+        const cs2QuizData = require('./seed_quiz_4_data.js');
+        const cs2Quiz = new Quiz({
+          title: "វិទ្យាសាស្ត្រកុំព្យូទ័រ និងបណ្តាញ វគ្គ២ (Beginner)",
+          description: "កម្រងសំណួរកម្រិតដំបូងភាគ២ អំពី Hardware, Software, Security, Web, និង Network។",
+          questions: cs2QuizData,
+          isLocked: false
+        });
+        await cs2Quiz.save();
+        console.log('Seeded CS & Network Part 2 quiz successfully');
+      }
     })
     .catch(err => console.error('MongoDB connection error:', err));
 }
