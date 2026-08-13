@@ -37,20 +37,6 @@ if (!MONGODB_URI) {
         await owner.save();
         console.log('Seeded default owner account');
       }
-
-      // Auto-seed Quiz 5
-      const q5Count = await Quiz.countDocuments({ title: "កាលវិភាគនៃការបោះឆ្នោត (២០២៦-២០២៧)" });
-      if (q5Count === 0) {
-        const q5Data = require('./seed_quiz_5_data.js');
-        const q5 = new Quiz({
-          title: "កាលវិភាគនៃការបោះឆ្នោត (២០២៦-២០២៧)",
-          description: "កម្រងសំណួរអំពីកាលបរិច្ឆេទសំខាន់ៗ ទាក់ទងនឹងការចុះឈ្មោះ និងការបោះឆ្នោត ២០២៦-២០២៧។",
-          questions: q5Data,
-          isLocked: false
-        });
-        await q5.save();
-        console.log('Seeded Quiz 5 successfully');
-      }
     })
     .catch(err => console.error('MongoDB connection error:', err));
 }
