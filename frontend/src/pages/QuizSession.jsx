@@ -75,7 +75,7 @@ export default function QuizSession({ user }) {
     let finalScore = 0;
     lesson.questions.forEach((q, index) => {
       if (userAnswers[index] === q.answer) {
-        finalScore += 4;
+        finalScore += 1;
       }
     });
     setScore(finalScore);
@@ -149,7 +149,7 @@ export default function QuizSession({ user }) {
               <div style={{ flex: 1, textAlign: 'center' }}>
                 <h2 style={{ marginBottom: '16px' }}>{timeLeft === 0 ? "អស់ពេល!" : "ចប់ការប្រឡង!"}</h2>
                 <div className="score-total" style={{ margin: 0, fontSize: '48px', color: 'var(--primary)', fontWeight: 'bold' }}>{score} ពិន្ទុ</div>
-                <p style={{ marginTop: '12px', color: 'var(--text-muted)' }}>ពិន្ទុពេញ៖ {lesson.questions.length * 4}</p>
+                <p style={{ marginTop: '12px', color: 'var(--text-muted)' }}>ពិន្ទុពេញ៖ {lesson.questions.length}</p>
               </div>
 
               <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
