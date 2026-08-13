@@ -3,7 +3,6 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { getLesson, postResult } from "../api.js";
 
 const LESSON_SECONDS = 420; // 7 minutes
-const POINTS_PER_WORD = 3;
 
 
 function formatTime(totalSeconds) {
@@ -148,10 +147,10 @@ export default function Typing({ user }) {
           ? timeUsedOverride
           : LESSON_SECONDS - timeLeft;
 
-      const baseScore = finalCorrect * POINTS_PER_WORD;
+      const totalWords = lesson ? lesson.words.length : 0;
+      const baseScore = totalWords > 0 ? Math.round((finalCorrect / totalWords) * 20) : 0;
       const bonus = 0;
       const totalScore = baseScore;
-      const totalWords = lesson ? lesson.words.length : 0;
       const attempted = finalCorrect + finalWrong;
       const accuracy = attempted > 0 ? Math.round((finalCorrect / attempted) * 100) : 0;
       const minutesUsed = timeUsed / 60;
