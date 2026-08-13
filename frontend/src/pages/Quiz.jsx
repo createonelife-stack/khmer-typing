@@ -3,13 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { getQuizzes } from "../api";
 import "./Quiz.css";
 
-export default function Quiz() {
+export default function Quiz({ user }) {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLockedModal, setShowLockedModal] = useState(false);
   const navigate = useNavigate();
+
+  const isAdminOrOwner = user?.role === "admin" || user?.role === "owner";
 
   useEffect(() => {
     getQuizzes()
@@ -35,10 +37,10 @@ export default function Quiz() {
           <Link 
             to={`/quiz/${lesson.id}`} 
             key={lesson.id} 
-            className={`lesson-card quiz-card-bg ${lesson.isLocked ? "disabled" : ""}`}
-            style={lesson.isLocked ? { opacity: 0.6, cursor: "not-allowed" } : {}}
+            className={`lesson-card quiz-card-bg ${(lesson.isLocked && !isAdminOrOwner) ? "disabled" : ""}`}
+            style={(lesson.isLocked && !isAdminOrOwner) ? { opacity: 0.6, cursor: "not-allowed" } : {}}
             onClick={(e) => {
-              if (lesson.isLocked) {
+              if (lesson.isLocked && !isAdminOrOwner) {
                 e.preventDefault();
                 setShowLockedModal(true);
                 return;
@@ -51,7 +53,7 @@ export default function Quiz() {
             }}
           >
             <div className="lesson-number">
-              {lesson.isLocked ? (
+              {(lesson.isLocked && !isAdminOrOwner) ? (
                 <span style={{ fontSize: '20px' }}>🔒</span>
               ) : (
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getLessons } from "../api.js";
 
-export default function Home() {
+export default function Home({ user }) {
   const [lessons, setLessons] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -10,6 +10,8 @@ export default function Home() {
   const [showLockedModal, setShowLockedModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const navigate = useNavigate();
+
+  const isAdminOrOwner = user?.role === "admin" || user?.role === "owner";
 
   useEffect(() => {
     getLessons()
@@ -29,10 +31,10 @@ export default function Home() {
           <Link 
             to={`/lesson/${lesson.id}`} 
             key={lesson.id} 
-            className={`lesson-card ${(lesson.words.length < 30 || lesson.isLocked) ? "disabled" : ""}`}
-            style={(lesson.words.length < 30 || lesson.isLocked) ? { opacity: 0.6, cursor: "not-allowed" } : {}}
+            className={`lesson-card ${(lesson.words.length < 30 || (lesson.isLocked && !isAdminOrOwner)) ? "disabled" : ""}`}
+            style={(lesson.words.length < 30 || (lesson.isLocked && !isAdminOrOwner)) ? { opacity: 0.6, cursor: "not-allowed" } : {}}
             onClick={(e) => {
-              if (lesson.isLocked) {
+              if (lesson.isLocked && !isAdminOrOwner) {
                 e.preventDefault();
                 setShowLockedModal(true);
                 return;
@@ -50,7 +52,7 @@ export default function Home() {
             }}
           >
             <div className="lesson-number">
-              {lesson.isLocked ? (
+              {(lesson.isLocked && !isAdminOrOwner) ? (
                 <span style={{ fontSize: '20px' }}>🔒</span>
               ) : (
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

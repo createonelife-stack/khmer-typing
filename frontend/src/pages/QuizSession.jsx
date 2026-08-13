@@ -116,6 +116,17 @@ export default function QuizSession({ user }) {
   if (error) return <div style={{ textAlign: 'center', padding: '40px', color: 'red' }}>មានបញ្ហា៖ {error}</div>;
   if (!lesson) return <div style={{ textAlign: 'center', padding: '40px' }}>រកមិនឃើញកម្រងសំនួរនេះទេ</div>;
 
+  const isAdminOrOwner = user?.role === "admin" || user?.role === "owner";
+  if (lesson.isLocked && !isAdminOrOwner) {
+    return (
+      <div className="quiz-container" style={{ textAlign: 'center', padding: '64px' }}>
+        <h2>🔒 មេរៀននេះត្រូវបានចាក់សោរ</h2>
+        <p style={{ marginTop: '16px', color: 'var(--text-muted)' }}>អ្នកមិនអាចចូលឆ្លើយសំណួរនេះបានទេ រហូតដល់ Admin ដោះសោរជាមុនសិន។</p>
+        <button className="btn primary" onClick={() => navigate("/quiz")} style={{ marginTop: '24px' }}>ត្រឡប់ក្រោយ</button>
+      </div>
+    );
+  }
+
   const allAnswered = lesson && Object.keys(userAnswers).length === lesson.questions.length;
 
   return (

@@ -274,6 +274,17 @@ export default function Typing({ user }) {
     return <div className="typing-page">កំពុងផ្ទុកមេរៀន...</div>;
   }
 
+  const isAdminOrOwner = user?.role === "admin" || user?.role === "owner";
+  if (lesson.isLocked && !isAdminOrOwner) {
+    return (
+      <div className="typing-page" style={{ textAlign: 'center', padding: '64px' }}>
+        <h2>🔒 មេរៀននេះត្រូវបានចាក់សោរ</h2>
+        <p style={{ marginTop: '16px', color: 'var(--text-muted)' }}>អ្នកមិនអាចចូលរៀនមេរៀននេះបានទេ រហូតដល់ Admin ដោះសោរជាមុនសិន។</p>
+        <button className="btn primary" onClick={() => navigate("/")} style={{ marginTop: '24px' }}>ត្រឡប់ក្រោយ</button>
+      </div>
+    );
+  }
+
   const total = lesson.words.length;
   const timeLowClass = timeLeft <= 30 ? "time-low" : "";
 
