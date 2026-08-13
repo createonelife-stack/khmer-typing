@@ -37,6 +37,20 @@ if (!MONGODB_URI) {
         await owner.save();
         console.log('Seeded default owner account');
       }
+      
+      // Auto-seed the 2027 Election quiz
+      const electionQuizCount = await Quiz.countDocuments({ title: "នីតិវិធីនៃការបោះឆ្នោត (2027)" });
+      if (electionQuizCount === 0) {
+        const electionQuizData = require('./seed_20_questions_data.js');
+        const electionQuiz = new Quiz({
+          title: "នីតិវិធីនៃការបោះឆ្នោត (2027)",
+          description: "កម្រងសំណួរអំពីកាលបរិច្ឆេទ និងរយៈពេលទាក់ទងនឹងការបោះឆ្នោត",
+          questions: electionQuizData,
+          isLocked: false
+        });
+        await electionQuiz.save();
+        console.log('Seeded Election 2027 quiz successfully');
+      }
     })
     .catch(err => console.error('MongoDB connection error:', err));
 }
