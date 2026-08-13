@@ -65,6 +65,20 @@ if (!MONGODB_URI) {
         await gkQuiz.save();
         console.log('Seeded General Knowledge 2023 quiz successfully');
       }
+
+      // Auto-seed the Computer Science & Network quiz
+      const csQuizCount = await Quiz.countDocuments({ title: "វិទ្យាសាស្ត្រកុំព្យូទ័រ និងបណ្តាញ (Beginner)" });
+      if (csQuizCount === 0) {
+        const csQuizData = require('./seed_quiz_3_data.js');
+        const csQuiz = new Quiz({
+          title: "វិទ្យាសាស្ត្រកុំព្យូទ័រ និងបណ្តាញ (Beginner)",
+          description: "កម្រងសំណួរកម្រិតដំបូងអំពី Computer Science, Network, VPN, Hardware សម្រាប់អ្នកចាប់ផ្តើម។",
+          questions: csQuizData,
+          isLocked: false
+        });
+        await csQuiz.save();
+        console.log('Seeded CS & Network quiz successfully');
+      }
     })
     .catch(err => console.error('MongoDB connection error:', err));
 }
