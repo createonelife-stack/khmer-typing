@@ -37,20 +37,6 @@ if (!MONGODB_URI) {
         await owner.save();
         console.log('Seeded default owner account');
       }
-
-      // Auto-seed Quiz 8
-      const q8Count = await Quiz.countDocuments({ title: "ចំណេះដឹងអំពីប្រព័ន្ធប្រតិបត្តិការ (Operating Systems)" });
-      if (q8Count === 0) {
-        const q8Data = require('./seed_quiz_8_data.js');
-        const q8 = new Quiz({
-          title: "ចំណេះដឹងអំពីប្រព័ន្ធប្រតិបត្តិការ (Operating Systems)",
-          description: "២០ សំណួរទាក់ទងនឹងប្រព័ន្ធប្រតិបត្តិការ (OS) ដូចជា Windows, macOS, Linux, Android, និង iOS។",
-          questions: q8Data,
-          isLocked: false
-        });
-        await q8.save();
-        console.log('Seeded Quiz 8 successfully');
-      }
     })
     .catch(err => console.error('MongoDB connection error:', err));
 }
