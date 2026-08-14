@@ -37,20 +37,6 @@ if (!MONGODB_URI) {
         await owner.save();
         console.log('Seeded default owner account');
       }
-
-      // Auto-seed Quiz 6
-      const q6Count = await Quiz.countDocuments({ title: "Computer Shortcut Keys - កម្រិតដំបូង" });
-      if (q6Count === 0) {
-        const q6Data = require('./seed_quiz_6_data.js');
-        const q6 = new Quiz({
-          title: "Computer Shortcut Keys - កម្រិតដំបូង",
-          description: "២០ សំណួរទាក់ទងនឹងការប្រើប្រាស់ Shortcut Keys ជាមូលដ្ឋាននៅលើកុំព្យូទ័រ។",
-          questions: q6Data,
-          isLocked: false
-        });
-        await q6.save();
-        console.log('Seeded Quiz 6 successfully');
-      }
     })
     .catch(err => console.error('MongoDB connection error:', err));
 }
