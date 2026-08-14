@@ -37,6 +37,20 @@ if (!MONGODB_URI) {
         await owner.save();
         console.log('Seeded default owner account');
       }
+
+      // Auto-seed Quiz 7
+      const q7Count = await Quiz.countDocuments({ title: "ចំណេះដឹងកុំព្យូទ័រទូទៅ - កម្រិតដំបូង (ភាគ ២)" });
+      if (q7Count === 0) {
+        const q7Data = require('./seed_quiz_7_data.js');
+        const q7 = new Quiz({
+          title: "ចំណេះដឹងកុំព្យូទ័រទូទៅ - កម្រិតដំបូង (ភាគ ២)",
+          description: "២០ សំណួរទាក់ទងនឹងចំណេះដឹងទូទៅអំពីបច្ចេកវិទ្យា និងកុំព្យូទ័រ (Software, Hardware, Internet)។",
+          questions: q7Data,
+          isLocked: false
+        });
+        await q7.save();
+        console.log('Seeded Quiz 7 successfully');
+      }
     })
     .catch(err => console.error('MongoDB connection error:', err));
 }
