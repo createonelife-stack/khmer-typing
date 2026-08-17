@@ -32,7 +32,7 @@ export default function Home({ user }) {
             to={`/lesson/${lesson.id}`} 
             key={lesson.id} 
             className={`lesson-card ${(lesson.words.length < 30 || (lesson.isLocked && !isAdminOrOwner)) ? "disabled" : ""}`}
-            style={(lesson.words.length < 30 || (lesson.isLocked && !isAdminOrOwner)) ? { opacity: 0.6, cursor: "not-allowed" } : {}}
+            style={(lesson.words.length < 30 || (lesson.isLocked && !isAdminOrOwner)) ? { opacity: 0.6, cursor: (lesson.isLocked && isAdminOrOwner) ? "pointer" : "not-allowed" } : {}}
             onClick={(e) => {
               if (lesson.isLocked && !isAdminOrOwner) {
                 e.preventDefault();
@@ -52,8 +52,8 @@ export default function Home({ user }) {
             }}
           >
             <div className="lesson-number">
-              {(lesson.isLocked && !isAdminOrOwner) ? (
-                <span style={{ fontSize: '20px' }}>🔒</span>
+              {lesson.isLocked ? (
+                <span style={{ fontSize: '20px', filter: isAdminOrOwner ? 'opacity(0.8)' : 'none' }}>🔒</span>
               ) : (
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"></path>

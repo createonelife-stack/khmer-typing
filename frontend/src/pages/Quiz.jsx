@@ -38,7 +38,7 @@ export default function Quiz({ user }) {
             to={`/quiz/${lesson.id}`} 
             key={lesson.id} 
             className={`lesson-card quiz-card-bg ${(lesson.isLocked && !isAdminOrOwner) ? "disabled" : ""}`}
-            style={(lesson.isLocked && !isAdminOrOwner) ? { opacity: 0.6, cursor: "not-allowed" } : {}}
+            style={(lesson.isLocked && !isAdminOrOwner) ? { opacity: 0.6, cursor: (lesson.isLocked && isAdminOrOwner) ? "pointer" : "not-allowed" } : {}}
             onClick={(e) => {
               if (lesson.isLocked && !isAdminOrOwner) {
                 e.preventDefault();
@@ -53,8 +53,8 @@ export default function Quiz({ user }) {
             }}
           >
             <div className="lesson-number">
-              {(lesson.isLocked && !isAdminOrOwner) ? (
-                <span style={{ fontSize: '20px' }}>🔒</span>
+              {lesson.isLocked ? (
+                <span style={{ fontSize: '20px', filter: isAdminOrOwner ? 'opacity(0.8)' : 'none' }}>🔒</span>
               ) : (
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9 11l3 3L22 4"></path>
