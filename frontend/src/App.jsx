@@ -36,6 +36,37 @@ function App() {
     localStorage.removeItem("jwt_token");
   };
 
+  // Auto logout after 1 minute of inactivity
+  useEffect(() => {
+    if (!user) return; // Only track if logged in
+
+    let timeoutId;
+
+    const resetTimer = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        handleLogout();
+        // Optional: show a message that they were logged out due to inactivity
+        alert("គណនីរបស់អ្នកត្រូវបាន Logout ដោយស្វ័យប្រវត្តិ ដោយសារមិនមានសកម្មភាពរយៈពេល ១ នាទី។");
+      }, 60000); // 1 minute = 60,000 ms
+    };
+
+    // Events to track user activity
+    const events = ['mousemove', 'mousedown', 'keypress', 'keydown', 'touchstart', 'scroll'];
+
+    // Add listeners
+    events.forEach(event => window.addEventListener(event, resetTimer));
+
+    // Initialize timer
+    resetTimer();
+
+    // Cleanup
+    return () => {
+      clearTimeout(timeoutId);
+      events.forEach(event => window.removeEventListener(event, resetTimer));
+    };
+  }, [user]);
+
   const navLinks = (
     <>
       <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")}>
