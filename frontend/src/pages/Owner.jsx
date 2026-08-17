@@ -405,7 +405,7 @@ export default function Owner({ currentUser }) {
                         onChange={() => handleLessonPermissionToggle(l.id)}
                       />
                       <span>
-                        {l.isLocked ? "🔒 " : "🔓 "} {l.title}
+                        {l.isLocked && !(permissionsModal.user.allowedLessons || []).includes(l.id) ? "🔒 " : "🔓 "} {l.title}
                       </span>
                     </label>
                   ))}
@@ -424,7 +424,7 @@ export default function Owner({ currentUser }) {
                         onChange={() => handleQuizPermissionToggle(q.id)}
                       />
                       <span>
-                        {q.isLocked ? "🔒 " : "🔓 "} {q.title}
+                        {q.isLocked && !(permissionsModal.user.allowedQuizzes || []).includes(q.id) ? "🔒 " : "🔓 "} {q.title}
                       </span>
                     </label>
                   ))}
