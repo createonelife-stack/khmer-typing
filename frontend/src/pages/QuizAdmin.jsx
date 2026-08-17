@@ -85,6 +85,31 @@ export default function QuizAdmin() {
     }
   };
 
+  const handleToggleLock = async (checked) => {
+    setIsLocked(checked);
+    if (!activeId) return;
+    setStatus("");
+    setError("");
+    
+    const originalQuiz = quizzes.find(q => q.id === activeId);
+    if (!originalQuiz) return;
+
+    try {
+      const payload = { 
+        title: originalQuiz.title, 
+        description: originalQuiz.description, 
+        questions: originalQuiz.questions || [], 
+        isLocked: checked 
+      };
+      const updated = await updateQuiz(activeId, payload);
+      setQuizzes(prev => prev.map(q => q.id === activeId ? updated : q));
+      setStatus("ស្ថានភាពចាក់សោរត្រូវបានរក្សាទុកដោយស្វ័យប្រវត្តិ!");
+    } catch (e) {
+      setError(e.message);
+      setIsLocked(!checked);
+    }
+  };
+
   const handleDelete = async () => {
     setConfirmModal({ isOpen: false, action: null });
     setSaving(true);
@@ -193,7 +218,7 @@ export default function QuizAdmin() {
               </label>
 
               <label className="field" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', background: 'var(--surface)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
-                <input type="checkbox" checked={isLocked} onChange={(e) => setIsLocked(e.target.checked)} style={{ width: '20px', height: '20px', margin: 0 }} />
+                <input type="checkbox" checked={isLocked} onChange={(e) => handleToggleLock(e.target.checked)} style={{ width: '20px', height: '20px', margin: 0 }} />
                 <span style={{ fontWeight: 'bold', color: isLocked ? '#ff4757' : 'inherit' }}>{isLocked ? "🔒 បានចាក់សោរ (Locked)" : "🔓 មិនបានចាក់សោរ (Unlocked)"}</span>
               </label>
             </div>

@@ -81,6 +81,31 @@ export default function Admin() {
     }
   }
 
+  async function handleToggleLock(checked) {
+    setIsLocked(checked);
+    if (!activeId) return;
+    setStatus("");
+    setError("");
+    
+    const originalLesson = lessons.find(l => l.id === activeId);
+    if (!originalLesson) return;
+
+    try {
+      const updated = await updateLesson(activeId, { 
+        title: originalLesson.title, 
+        words: originalLesson.words, 
+        isLocked: checked 
+      });
+      setLessons((prev) =>
+        prev.map((l) => (l.id === activeId ? { ...l, isLocked: updated.isLocked } : l))
+      );
+      setStatus("ស្ថានភាពចាក់សោរត្រូវបានរក្សាទុកដោយស្វ័យប្រវត្តិ!");
+    } catch (e) {
+      setError(e.message);
+      setIsLocked(!checked);
+    }
+  }
+
   async function handleCreateLesson() {
     setSaving(true);
     setError("");
@@ -160,7 +185,7 @@ export default function Admin() {
           </label>
 
           <label className="field" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', background: 'var(--surface)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
-            <input type="checkbox" checked={isLocked} onChange={(e) => setIsLocked(e.target.checked)} style={{ width: '20px', height: '20px', margin: 0 }} />
+            <input type="checkbox" checked={isLocked} onChange={(e) => handleToggleLock(e.target.checked)} style={{ width: '20px', height: '20px', margin: 0 }} />
             <span style={{ fontWeight: 'bold', color: isLocked ? '#ff4757' : 'inherit' }}>{isLocked ? "🔒 បានចាក់សោរ (Locked)" : "🔓 មិនបានចាក់សោរ (Unlocked)"}</span>
           </label>
 
