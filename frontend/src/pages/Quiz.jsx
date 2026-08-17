@@ -42,14 +42,18 @@ export default function Quiz({ user }) {
       <div className="lesson-grid" style={{ marginTop: '40px' }}>
         {loading && <p>កំពុងផ្ទុកទិន្នន័យ...</p>}
         {error && <p className="error">មានបញ្ហា៖ {error}</p>}
-        {!loading && quizzes.map((lesson, index) => (
-          <Link 
-            to={`/quiz/${lesson.id}`} 
-            key={lesson.id} 
-            className={`lesson-card quiz-card-bg ${(lesson.isLocked && !isAdminOrOwner) ? "disabled" : ""}`}
-            style={(lesson.isLocked && !isAdminOrOwner) ? { opacity: 0.6, cursor: (lesson.isLocked && isAdminOrOwner) ? "pointer" : "not-allowed" } : {}}
-            onClick={(e) => {
-              if (lesson.isLocked && !isAdminOrOwner) {
+        {!loading && quizzes.map((lesson) => {
+          const isAllowed = user?.allowedQuizzes?.includes(lesson.id) || false;
+          const isEffectivelyLocked = lesson.isLocked && !isAdminOrOwner && !isAllowed;
+          
+          return (
+            <Link 
+              to={`/quiz/${lesson.id}`} 
+              key={lesson.id} 
+              className={`lesson-card quiz-card-bg ${isEffectivelyLocked ? "disabled" : ""}`}
+              style={isEffectivelyLocked ? { opacity: 0.6, cursor: "not-allowed" } : {}}
+              onClick={(e) => {
+                if (isEffectivelyLocked) {
                 e.preventDefault();
                 setShowLockedModal(true);
                 return;
@@ -60,11 +64,13 @@ export default function Quiz({ user }) {
                 setShowAuthModal(true);
               }
             }}
-          >
-            <div className="lesson-number">
-              {lesson.isLocked ? (
-                <span style={{ fontSize: '20px', filter: isAdminOrOwner ? 'opacity(0.8)' : 'none' }}>🔒</span>
-              ) : (
+            >
+              <div className="lesson-number">
+                {lesson.isLocked ? (
+                  <span style={{ fontSize: '20px', filter: (isAdminOrOwner || isAllowed) ? 'opacity(0.8)' : 'none' }}>
+                    {(isAdminOrOwner || isAllowed) ? "🔓" : "🔒"}
+                  </span>
+                ) : (
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9 11l3 3L22 4"></path>
                   <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
@@ -72,12 +78,12 @@ export default function Quiz({ user }) {
               )}
             </div>
             <div className="lesson-title">{lesson.title}</div>
-            <div className="lesson-meta" style={{ marginTop: '8px' }}>
-              {lesson.description}<br/>
-              <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{lesson.questions?.length || 0} សំណួរ</span>
-            </div>
-          </Link>
-        ))}
+              <div className="lesson-meta" style={{ marginTop: '8px' }}>
+                {lesson.description}<br/>
+                <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{lesson.questions?.length || 0} សំណួរ</span>
+              </div>
+            </Link>
+          )})}
       </div>
 
       {showAuthModal && (

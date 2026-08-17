@@ -117,6 +117,7 @@ export default function QuizSession({ user }) {
   if (!lesson) return <div style={{ textAlign: 'center', padding: '40px' }}>រកមិនឃើញកម្រងសំនួរនេះទេ</div>;
 
   const isAdminOrOwner = user?.role === "admin" || user?.role === "owner";
+  const isAllowed = user?.allowedQuizzes?.includes(id);
   
   if (user && user.permissions?.canQuiz === false && !isAdminOrOwner) {
     return (
@@ -128,7 +129,7 @@ export default function QuizSession({ user }) {
     );
   }
 
-  if (lesson.isLocked && !isAdminOrOwner) {
+  if (lesson.isLocked && !isAdminOrOwner && !isAllowed) {
     return (
       <div className="quiz-container" style={{ textAlign: 'center', padding: '64px' }}>
         <h2>🔒 មេរៀននេះត្រូវបានចាក់សោរ</h2>

@@ -274,6 +274,7 @@ export default function Typing({ user }) {
   }
 
   const isAdminOrOwner = user?.role === "admin" || user?.role === "owner";
+  const isAllowed = user?.allowedLessons?.includes(id);
   
   if (user && user.permissions?.canTyping === false && !isAdminOrOwner) {
     return (
@@ -285,7 +286,7 @@ export default function Typing({ user }) {
     );
   }
 
-  if (lesson.isLocked && !isAdminOrOwner) {
+  if (lesson.isLocked && !isAdminOrOwner && !isAllowed) {
     return (
       <div className="typing-page" style={{ textAlign: 'center', padding: '64px' }}>
         <h2>🔒 មេរៀននេះត្រូវបានចាក់សោរ</h2>

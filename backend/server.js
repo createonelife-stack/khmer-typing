@@ -84,12 +84,14 @@ app.post('/api/auth/register', authenticateToken, isAdmin, async (req, res) => {
         role: 'user',
         status: 'active',
         createdBy: req.user.username,
-        permissions: { canTyping: true, canQuiz: true }
+        permissions: { canTyping: true, canQuiz: true },
+        allowedLessons: [],
+        allowedQuizzes: []
       });
       
       await newUser.save();
 
-      res.json({ success: true, message: 'User created successfully', user: { username: newUser.username, role: newUser.role, permissions: newUser.permissions } });
+      res.json({ success: true, message: 'User created successfully', user: { username: newUser.username, role: newUser.role, permissions: newUser.permissions, allowedLessons: newUser.allowedLessons, allowedQuizzes: newUser.allowedQuizzes } });
     } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -111,7 +113,7 @@ app.post('/api/auth/login', async (req, res) => {
     user.loginCount = (user.loginCount || 0) + 1;
     await user.save();
     
-    const token = jwt.sign({ id: user._id, username: user.username, role: user.role, permissions: user.permissions }, JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ id: user._id, username: user.username, role: user.role, permissions: user.permissions, allowedLessons: user.allowedLessons, allowedQuizzes: user.allowedQuizzes }, JWT_SECRET, { expiresIn: '24h' });
     res.json({ 
       token, 
       user: { 
@@ -122,7 +124,9 @@ app.post('/api/auth/login', async (req, res) => {
         gender: user.gender,
         jobRole: user.jobRole,
         photo: user.photo,
-        permissions: user.permissions
+        permissions: user.permissions,
+        allowedLessons: user.allowedLessons || [],
+        allowedQuizzes: user.allowedQuizzes || []
       } 
     });
   } catch (error) {
@@ -136,7 +140,7 @@ app.get('/api/users', authenticateToken, isAdmin, async (req, res) => {
       if (req.user.role === 'admin') {
         query = { createdBy: req.user.username };
       }
-      const users = await User.find(query, 'username role status loginCount createdBy fullName gender jobRole photo profileCompleted permissions _id');
+      const users = await User.find(query, 'username role status loginCount createdBy fullName gender jobRole photo profileCompleted permissions allowedLessons allowedQuizzes _id');
       res.json(users.map(u => ({ 
         id: u._id, 
         username: u.username, 
@@ -149,7 +153,9 @@ app.get('/api/users', authenticateToken, isAdmin, async (req, res) => {
         jobRole: u.jobRole,
         photo: u.photo,
         profileCompleted: u.profileCompleted,
-        permissions: u.permissions
+        permissions: u.permissions,
+        allowedLessons: u.allowedLessons || [],
+        allowedQuizzes: u.allowedQuizzes || []
       })));
     } catch (error) {
     res.status(500).json({ error: error.message });
@@ -267,7 +273,7 @@ app.put('/api/users/:username/status', authenticateToken, isAdmin, async (req, r
 
   app.put('/api/users/:username/permissions', authenticateToken, isAdmin, async (req, res) => {
     try {
-      const { permissions } = req.body;
+      const { permissions, allowedLessons, allowedQuizzes } = req.body;
       const targetUser = await User.findOne({ username: req.params.username });
       if (!targetUser) return res.status(404).json({ error: 'User not found' });
   
@@ -275,14 +281,22 @@ app.put('/api/users/:username/status', authenticateToken, isAdmin, async (req, r
         return res.status(403).json({ error: 'Admins can only change permissions of regular users' });
       }
 
-      targetUser.permissions = {
-        canTyping: permissions.canTyping !== undefined ? permissions.canTyping : targetUser.permissions?.canTyping,
-        canQuiz: permissions.canQuiz !== undefined ? permissions.canQuiz : targetUser.permissions?.canQuiz
-      };
+      if (permissions) {
+        targetUser.permissions = {
+          canTyping: permissions.canTyping !== undefined ? permissions.canTyping : targetUser.permissions?.canTyping,
+          canQuiz: permissions.canQuiz !== undefined ? permissions.canQuiz : targetUser.permissions?.canQuiz
+        };
+      }
+      if (allowedLessons !== undefined) {
+        targetUser.allowedLessons = allowedLessons;
+      }
+      if (allowedQuizzes !== undefined) {
+        targetUser.allowedQuizzes = allowedQuizzes;
+      }
       
       await targetUser.save();
       
-      res.json({ success: true, user: { username: targetUser.username, permissions: targetUser.permissions } });
+      res.json({ success: true, user: { username: targetUser.username, permissions: targetUser.permissions, allowedLessons: targetUser.allowedLessons, allowedQuizzes: targetUser.allowedQuizzes } });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

@@ -58,7 +58,13 @@ const userSchema = new mongoose.Schema({
       type: Boolean,
       default: true
     }
-  }
+  },
+  allowedLessons: [{
+    type: String
+  }],
+  allowedQuizzes: [{
+    type: String
+  }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

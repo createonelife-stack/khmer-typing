@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUsers, updateUserRole, deleteUser, updateUserStatus, getStats, register, updateUserPermissions } from "../api";
+import { getUsers, updateUserRole, deleteUser, updateUserStatus, getStats, register, updateUserPermissions, getLessons, getQuizzes } from "../api";
 
 export default function Owner({ currentUser }) {
   const [users, setUsers] = useState([]);
@@ -13,7 +13,10 @@ export default function Owner({ currentUser }) {
   const [isCreating, setIsCreating] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [successPopup, setSuccessPopup] = useState(null);
-
+  const [lessons, setLessons] = useState([]);
+  const [quizzes, setQuizzes] = useState([]);
+  const [permissionsModal, setPermissionsModal] = useState({ isOpen: false, user: null });
+  
   useEffect(() => {
     fetchData();
   }, []);
@@ -24,10 +27,12 @@ export default function Owner({ currentUser }) {
       return;
     }
     setLoading(true);
-    Promise.all([getUsers(), getStats()])
-      .then(([usersData, statsData]) => {
+    Promise.all([getUsers(), getStats(), getLessons(), getQuizzes()])
+      .then(([usersData, statsData, lessonsData, quizzesData]) => {
         setUsers(usersData);
         setStats(statsData);
+        setLessons(lessonsData);
+        setQuizzes(quizzesData);
         setError("");
       })
       .catch(err => setError(err.message))
@@ -81,6 +86,40 @@ export default function Owner({ currentUser }) {
     try {
       await updateUserPermissions(username, newPermissions);
       fetchData(); // Refresh the list
+    } catch (err) {
+      alert("មានបញ្ហា៖ " + err.message);
+    }
+  };
+
+  const handleLessonPermissionToggle = async (lessonId) => {
+    if (!permissionsModal.user) return;
+    const user = permissionsModal.user;
+    const currentAllowed = user.allowedLessons || [];
+    const newAllowed = currentAllowed.includes(lessonId) 
+      ? currentAllowed.filter(id => id !== lessonId)
+      : [...currentAllowed, lessonId];
+    
+    try {
+      const res = await updateUserPermissions(user.username, { allowedLessons: newAllowed });
+      setPermissionsModal(prev => ({ ...prev, user: res.user }));
+      setUsers(users.map(u => u.username === user.username ? res.user : u));
+    } catch (err) {
+      alert("មានបញ្ហា៖ " + err.message);
+    }
+  };
+
+  const handleQuizPermissionToggle = async (quizId) => {
+    if (!permissionsModal.user) return;
+    const user = permissionsModal.user;
+    const currentAllowed = user.allowedQuizzes || [];
+    const newAllowed = currentAllowed.includes(quizId) 
+      ? currentAllowed.filter(id => id !== quizId)
+      : [...currentAllowed, quizId];
+    
+    try {
+      const res = await updateUserPermissions(user.username, { allowedQuizzes: newAllowed });
+      setPermissionsModal(prev => ({ ...prev, user: res.user }));
+      setUsers(users.map(u => u.username === user.username ? res.user : u));
     } catch (err) {
       alert("មានបញ្ហា៖ " + err.message);
     }
@@ -268,6 +307,14 @@ export default function Owner({ currentUser }) {
                           />
                           ឆ្លើយសំណួរ
                         </label>
+                        <button 
+                          onClick={() => setPermissionsModal({ isOpen: true, user: u })}
+                          className="btn small"
+                          style={{ fontSize: '12px', padding: '4px 8px', width: '100%' }}
+                          disabled={(currentUser?.role === 'admin' && u.role === 'owner') || u.role === 'owner'}
+                        >
+                          កំណត់មេរៀន
+                        </button>
                       </div>
                     </td>
                     <td style={{ padding: "12px", textAlign: "center", fontWeight: "bold" }}>
@@ -332,6 +379,63 @@ export default function Owner({ currentUser }) {
               </div>
             </div>
             <button className="btn primary" onClick={() => setSuccessPopup(null)} style={{ width: '100%', padding: '12px', borderRadius: '8px' }}>បិទ (Close)</button>
+          </div>
+        </div>
+      )}
+
+      {permissionsModal.isOpen && permissionsModal.user && (
+        <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+          <div className="modal-content" style={{ background: 'var(--surface)', padding: '32px', borderRadius: '16px', maxWidth: '600px', width: '90%', maxHeight: '80vh', overflowY: 'auto', boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
+            <h2 style={{ marginBottom: '16px', color: 'var(--primary)' }}>
+              កំណត់សិទ្ធិមេរៀន និងសំណួរ (Assign Lessons)
+            </h2>
+            <p style={{ marginBottom: '24px', color: 'var(--text-muted)' }}>
+              សម្រាប់អ្នកប្រើប្រាស់៖ <strong>{permissionsModal.user.username}</strong>
+            </p>
+
+            <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
+              <div style={{ flex: 1, minWidth: '250px' }}>
+                <h3 style={{ marginBottom: '12px', paddingBottom: '8px', borderBottom: '1px solid var(--border)' }}>មេរៀនវាយពាក្យ</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {lessons.map(l => (
+                    <label key={l.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', background: 'var(--bg)', padding: '8px', borderRadius: '8px' }}>
+                      <input 
+                        type="checkbox" 
+                        checked={(permissionsModal.user.allowedLessons || []).includes(l.id)} 
+                        onChange={() => handleLessonPermissionToggle(l.id)}
+                      />
+                      <span>
+                        {l.isLocked ? "🔒 " : "🔓 "} {l.title}
+                      </span>
+                    </label>
+                  ))}
+                  {lessons.length === 0 && <span style={{ color: 'var(--text-muted)' }}>មិនមានមេរៀនទេ</span>}
+                </div>
+              </div>
+
+              <div style={{ flex: 1, minWidth: '250px' }}>
+                <h3 style={{ marginBottom: '12px', paddingBottom: '8px', borderBottom: '1px solid var(--border)' }}>មេរៀនសំណួរ</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {quizzes.map(q => (
+                    <label key={q.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', background: 'var(--bg)', padding: '8px', borderRadius: '8px' }}>
+                      <input 
+                        type="checkbox" 
+                        checked={(permissionsModal.user.allowedQuizzes || []).includes(q.id)} 
+                        onChange={() => handleQuizPermissionToggle(q.id)}
+                      />
+                      <span>
+                        {q.isLocked ? "🔒 " : "🔓 "} {q.title}
+                      </span>
+                    </label>
+                  ))}
+                  {quizzes.length === 0 && <span style={{ color: 'var(--text-muted)' }}>មិនមានសំណួរទេ</span>}
+                </div>
+              </div>
+            </div>
+
+            <div style={{ marginTop: '32px', display: 'flex', justifyContent: 'flex-end' }}>
+              <button className="btn primary" onClick={() => setPermissionsModal({ isOpen: false, user: null })}>រួចរាល់ (Done)</button>
+            </div>
           </div>
         </div>
       )}
