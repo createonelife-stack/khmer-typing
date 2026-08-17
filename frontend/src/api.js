@@ -66,6 +66,17 @@ export function updateUserStatus(username, status) {
   }).then(handle);
 }
 
+export function updateUserPermissions(username, permissions) {
+  return fetch(`${BASE_URL}/users/${username}/permissions`, {
+    method: "PUT",
+    headers: { 
+      "Content-Type": "application/json",
+      ...getAuthHeaders()
+    },
+    body: JSON.stringify({ permissions })
+  }).then(handle);
+}
+
 export function updateProfile(username, data) {
   return fetch(`${BASE_URL}/users/${username}/profile`, {
     method: "PUT",

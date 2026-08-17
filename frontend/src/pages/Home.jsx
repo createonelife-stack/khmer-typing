@@ -13,6 +13,15 @@ export default function Home({ user }) {
 
   const isAdminOrOwner = user?.role === "admin" || user?.role === "owner";
 
+  if (user && user.permissions?.canTyping === false && !isAdminOrOwner) {
+    return (
+      <div className="home" style={{ textAlign: 'center', padding: '64px' }}>
+        <h2>🚫 មិនមានសិទ្ធិប្រើប្រាស់</h2>
+        <p style={{ marginTop: '16px', color: 'var(--text-muted)' }}>គណនីរបស់អ្នកមិនត្រូវបានអនុញ្ញាតឲ្យចូលប្រើប្រាស់មុខងារវាយពាក្យទេ។ សូមទាក់ទង Admin។</p>
+      </div>
+    );
+  }
+
   useEffect(() => {
     getLessons()
       .then((data) => setLessons(data))

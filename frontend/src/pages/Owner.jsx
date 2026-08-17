@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUsers, updateUserRole, deleteUser, updateUserStatus, getStats, register } from "../api";
+import { getUsers, updateUserRole, deleteUser, updateUserStatus, getStats, register, updateUserPermissions } from "../api";
 
 export default function Owner({ currentUser }) {
   const [users, setUsers] = useState([]);
@@ -59,6 +59,28 @@ export default function Owner({ currentUser }) {
     try {
       await deleteUser(username);
       fetchData(); // Refresh the list & stats
+    } catch (err) {
+      alert("មានបញ្ហា៖ " + err.message);
+    }
+  };
+
+  const handlePermissionChange = async (username, type, value) => {
+    const user = users.find(u => u.username === username);
+    if (!user) return;
+    
+    if (user.role === 'owner' && currentUser?.role === 'admin') {
+      alert("Admin មិនអាចកែប្រែសិទ្ធិ Owner បានទេ។");
+      return;
+    }
+
+    const newPermissions = {
+      ...user.permissions,
+      [type]: value
+    };
+
+    try {
+      await updateUserPermissions(username, newPermissions);
+      fetchData(); // Refresh the list
     } catch (err) {
       alert("មានបញ្ហា៖ " + err.message);
     }
@@ -196,6 +218,7 @@ export default function Owner({ currentUser }) {
                   <th style={{ padding: "12px", textAlign: "left" }}>ឈ្មោះអ្នកប្រើ (Username)</th>
                   <th style={{ padding: "12px", textAlign: "left" }}>សិទ្ធិ (Role)</th>
                   <th style={{ padding: "12px", textAlign: "left" }}>ស្ថានភាព (Status)</th>
+                  <th style={{ padding: "12px", textAlign: "center" }}>សិទ្ធិប្រើប្រាស់ (Permissions)</th>
                   <th style={{ padding: "12px", textAlign: "center" }}>ចំនួនដង Login</th>
                   <th style={{ padding: "12px", textAlign: "center" }}>សកម្មភាព (Actions)</th>
                 </tr>
@@ -224,6 +247,28 @@ export default function Owner({ currentUser }) {
                       }}>
                         {u.status === 'suspended' ? 'បិទ' : 'សកម្ម'}
                       </span>
+                    </td>
+                    <td style={{ padding: "12px", textAlign: "center" }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '12px' }}>
+                          <input 
+                            type="checkbox" 
+                            checked={u.permissions?.canTyping ?? true} 
+                            onChange={(e) => handlePermissionChange(u.username, 'canTyping', e.target.checked)}
+                            disabled={(currentUser?.role === 'admin' && u.role === 'owner') || u.role === 'owner'}
+                          />
+                          វាយពាក្យ
+                        </label>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '12px' }}>
+                          <input 
+                            type="checkbox" 
+                            checked={u.permissions?.canQuiz ?? true} 
+                            onChange={(e) => handlePermissionChange(u.username, 'canQuiz', e.target.checked)}
+                            disabled={(currentUser?.role === 'admin' && u.role === 'owner') || u.role === 'owner'}
+                          />
+                          ឆ្លើយសំណួរ
+                        </label>
+                      </div>
                     </td>
                     <td style={{ padding: "12px", textAlign: "center", fontWeight: "bold" }}>
                       {u.loginCount}

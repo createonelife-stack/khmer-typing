@@ -48,6 +48,16 @@ const userSchema = new mongoose.Schema({
   profileCompleted: {
     type: Boolean,
     default: false
+  },
+  permissions: {
+    canTyping: {
+      type: Boolean,
+      default: true
+    },
+    canQuiz: {
+      type: Boolean,
+      default: true
+    }
   }
 }, { timestamps: true });
 

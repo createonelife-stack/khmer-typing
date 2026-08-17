@@ -274,6 +274,17 @@ export default function Typing({ user }) {
   }
 
   const isAdminOrOwner = user?.role === "admin" || user?.role === "owner";
+  
+  if (user && user.permissions?.canTyping === false && !isAdminOrOwner) {
+    return (
+      <div className="typing-page" style={{ textAlign: 'center', padding: '64px' }}>
+        <h2>🚫 មិនមានសិទ្ធិប្រើប្រាស់</h2>
+        <p style={{ marginTop: '16px', color: 'var(--text-muted)' }}>គណនីរបស់អ្នកមិនត្រូវបានអនុញ្ញាតឲ្យចូលប្រើប្រាស់មុខងារវាយពាក្យទេ។ សូមទាក់ទង Admin។</p>
+        <button className="btn primary" onClick={() => navigate("/")} style={{ marginTop: '24px' }}>ត្រឡប់ក្រោយ</button>
+      </div>
+    );
+  }
+
   if (lesson.isLocked && !isAdminOrOwner) {
     return (
       <div className="typing-page" style={{ textAlign: 'center', padding: '64px' }}>

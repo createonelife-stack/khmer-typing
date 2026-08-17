@@ -71,25 +71,26 @@ function isOwner(req, res, next) {
 
 // Routes
 app.post('/api/auth/register', authenticateToken, isAdmin, async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
+    try {
+      const { username, password } = req.body;
+      if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
 
-    const existingUser = await User.findOne({ username });
-    if (existingUser) return res.status(400).json({ error: 'Username already exists' });
+      const existingUser = await User.findOne({ username });
+      if (existingUser) return res.status(400).json({ error: 'Username already exists' });
 
-    const newUser = new User({
-      username,
-      passwordHash: bcrypt.hashSync(password, 10),
-      role: 'user',
-      status: 'active',
-      createdBy: req.user.username
-    });
-    
-    await newUser.save();
+      const newUser = new User({
+        username,
+        passwordHash: bcrypt.hashSync(password, 10),
+        role: 'user',
+        status: 'active',
+        createdBy: req.user.username,
+        permissions: { canTyping: true, canQuiz: true }
+      });
+      
+      await newUser.save();
 
-    res.json({ success: true, message: 'User created successfully', user: { username: newUser.username, role: newUser.role } });
-  } catch (error) {
+      res.json({ success: true, message: 'User created successfully', user: { username: newUser.username, role: newUser.role, permissions: newUser.permissions } });
+    } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
@@ -110,7 +111,7 @@ app.post('/api/auth/login', async (req, res) => {
     user.loginCount = (user.loginCount || 0) + 1;
     await user.save();
     
-    const token = jwt.sign({ id: user._id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ id: user._id, username: user.username, role: user.role, permissions: user.permissions }, JWT_SECRET, { expiresIn: '24h' });
     res.json({ 
       token, 
       user: { 
@@ -120,7 +121,8 @@ app.post('/api/auth/login', async (req, res) => {
         fullName: user.fullName,
         gender: user.gender,
         jobRole: user.jobRole,
-        photo: user.photo
+        photo: user.photo,
+        permissions: user.permissions
       } 
     });
   } catch (error) {
@@ -130,25 +132,26 @@ app.post('/api/auth/login', async (req, res) => {
 
 app.get('/api/users', authenticateToken, isAdmin, async (req, res) => {
   try {
-    let query = {};
-    if (req.user.role === 'admin') {
-      query = { createdBy: req.user.username };
-    }
-    const users = await User.find(query, 'username role status loginCount createdBy fullName gender jobRole photo profileCompleted _id');
-    res.json(users.map(u => ({ 
-      id: u._id, 
-      username: u.username, 
-      role: u.role, 
-      status: u.status, 
-      loginCount: u.loginCount || 0,
-      createdBy: u.createdBy,
-      fullName: u.fullName,
-      gender: u.gender,
-      jobRole: u.jobRole,
-      photo: u.photo,
-      profileCompleted: u.profileCompleted
-    })));
-  } catch (error) {
+      let query = {};
+      if (req.user.role === 'admin') {
+        query = { createdBy: req.user.username };
+      }
+      const users = await User.find(query, 'username role status loginCount createdBy fullName gender jobRole photo profileCompleted permissions _id');
+      res.json(users.map(u => ({ 
+        id: u._id, 
+        username: u.username, 
+        role: u.role, 
+        status: u.status, 
+        loginCount: u.loginCount || 0,
+        createdBy: u.createdBy,
+        fullName: u.fullName,
+        gender: u.gender,
+        jobRole: u.jobRole,
+        photo: u.photo,
+        profileCompleted: u.profileCompleted,
+        permissions: u.permissions
+      })));
+    } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
@@ -253,14 +256,37 @@ app.put('/api/users/:username/status', authenticateToken, isAdmin, async (req, r
        return res.status(403).json({ error: 'Cannot suspend the main owner' });
     }
 
-    targetUser.status = status;
-    await targetUser.save();
-    
-    res.json({ success: true, user: { username: targetUser.username, status } });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+      targetUser.status = status;
+      await targetUser.save();
+      
+      res.json({ success: true, user: { username: targetUser.username, status } });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.put('/api/users/:username/permissions', authenticateToken, isAdmin, async (req, res) => {
+    try {
+      const { permissions } = req.body;
+      const targetUser = await User.findOne({ username: req.params.username });
+      if (!targetUser) return res.status(404).json({ error: 'User not found' });
+  
+      if (req.user.role === 'admin' && targetUser.role !== 'user') {
+        return res.status(403).json({ error: 'Admins can only change permissions of regular users' });
+      }
+
+      targetUser.permissions = {
+        canTyping: permissions.canTyping !== undefined ? permissions.canTyping : targetUser.permissions?.canTyping,
+        canQuiz: permissions.canQuiz !== undefined ? permissions.canQuiz : targetUser.permissions?.canQuiz
+      };
+      
+      await targetUser.save();
+      
+      res.json({ success: true, user: { username: targetUser.username, permissions: targetUser.permissions } });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 
 app.delete('/api/users/:username', authenticateToken, isAdmin, async (req, res) => {
   try {
