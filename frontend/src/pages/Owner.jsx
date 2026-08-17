@@ -101,8 +101,8 @@ export default function Owner({ currentUser }) {
     
     try {
       const res = await updateUserPermissions(user.username, { allowedLessons: newAllowed });
-      setPermissionsModal(prev => ({ ...prev, user: res.user }));
-      setUsers(users.map(u => u.username === user.username ? res.user : u));
+      setPermissionsModal(prev => ({ ...prev, user: { ...prev.user, ...res.user } }));
+      setUsers(users.map(u => u.username === user.username ? { ...u, ...res.user } : u));
     } catch (err) {
       alert("មានបញ្ហា៖ " + err.message);
     }
@@ -118,8 +118,8 @@ export default function Owner({ currentUser }) {
     
     try {
       const res = await updateUserPermissions(user.username, { allowedQuizzes: newAllowed });
-      setPermissionsModal(prev => ({ ...prev, user: res.user }));
-      setUsers(users.map(u => u.username === user.username ? res.user : u));
+      setPermissionsModal(prev => ({ ...prev, user: { ...prev.user, ...res.user } }));
+      setUsers(users.map(u => u.username === user.username ? { ...u, ...res.user } : u));
     } catch (err) {
       alert("មានបញ្ហា៖ " + err.message);
     }
