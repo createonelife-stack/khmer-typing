@@ -66,14 +66,14 @@ export function updateUserStatus(username, status) {
   }).then(handle);
 }
 
-export function updateUserPermissions(username, permissions) {
+export function updateUserPermissions(username, payload) {
   return fetch(`${BASE_URL}/users/${username}/permissions`, {
     method: "PUT",
     headers: { 
       "Content-Type": "application/json",
       ...getAuthHeaders()
     },
-    body: JSON.stringify({ permissions })
+    body: JSON.stringify(payload)
   }).then(handle);
 }
 

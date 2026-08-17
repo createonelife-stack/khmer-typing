@@ -84,7 +84,7 @@ export default function Owner({ currentUser }) {
     };
 
     try {
-      await updateUserPermissions(username, newPermissions);
+      await updateUserPermissions(username, { permissions: newPermissions });
       fetchData(); // Refresh the list
     } catch (err) {
       alert("មានបញ្ហា៖ " + err.message);
