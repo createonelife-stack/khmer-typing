@@ -329,7 +329,10 @@ export default function Typing({ user }) {
       )}
 
       {status === "running" && (
-        <div className="game-panel">
+        <div className="distraction-free-typing">
+          <div className="typing-progress-container hide-on-print">
+            <div className="typing-progress-bar" style={{ width: `${progressPercent}%` }}></div>
+          </div>
           <div className="target-word">
             {lesson.words[currentIndex]}
           </div>

@@ -1,0 +1,275 @@
+/* ---------- EdTech Roadmap Styles ---------- */
+
+.roadmap-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.roadmap-container::before {
+  content: '';
+  position: absolute;
+  top: 80px;
+  bottom: 80px;
+  left: 50%;
+  width: 6px;
+  background: var(--border);
+  transform: translateX(-50%);
+  border-radius: 4px;
+  z-index: 0;
+}
+
+.roadmap-node-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Stagger nodes left and right */
+.roadmap-node-wrapper:nth-child(odd) {
+  padding-right: 140px;
+}
+.roadmap-node-wrapper:nth-child(even) {
+  padding-left: 140px;
+}
+
+@media (max-width: 600px) {
+  .roadmap-node-wrapper:nth-child(odd),
+  .roadmap-node-wrapper:nth-child(even) {
+    padding: 0;
+  }
+}
+
+.roadmap-node {
+  background: var(--surface);
+  border: 4px solid var(--border);
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--text);
+  box-shadow: var(--shadow);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+}
+
+.roadmap-node:hover {
+  transform: scale(1.1) translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(91, 75, 255, 0.3);
+}
+
+.roadmap-node.current {
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: 0 0 0 4px rgba(91, 75, 255, 0.2);
+}
+.roadmap-node.current .lesson-icon svg {
+  stroke: var(--primary);
+}
+
+.roadmap-node.completed {
+  border-color: var(--success);
+  background: var(--success-bg);
+  color: var(--success);
+}
+.roadmap-node.completed .lesson-icon svg {
+  stroke: var(--success);
+}
+
+.roadmap-node.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--bg);
+  border-color: var(--border);
+}
+.roadmap-node.locked:hover {
+  transform: none;
+  box-shadow: var(--shadow);
+}
+.roadmap-node.locked .lesson-icon svg {
+  stroke: var(--text-muted);
+}
+
+.roadmap-node .lesson-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.roadmap-node .lesson-number-text {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: var(--en);
+  margin-top: 4px;
+}
+
+.roadmap-node .lesson-title-tooltip {
+  position: absolute;
+  top: 50%;
+  background: var(--text);
+  color: var(--bg);
+  padding: 8px 16px;
+  border-radius: 12px;
+  white-space: nowrap;
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  box-shadow: var(--shadow);
+  z-index: 10;
+}
+
+.roadmap-node-wrapper:nth-child(odd) .lesson-title-tooltip {
+  left: 110px;
+  transform: translateY(-50%) translateX(-10px);
+}
+.roadmap-node-wrapper:nth-child(even) .lesson-title-tooltip {
+  right: 110px;
+  transform: translateY(-50%) translateX(10px);
+}
+
+@media (max-width: 600px) {
+  .roadmap-node-wrapper:nth-child(odd) .lesson-title-tooltip,
+  .roadmap-node-wrapper:nth-child(even) .lesson-title-tooltip {
+    top: -50px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) translateY(10px);
+  }
+  .roadmap-node:hover .lesson-title-tooltip {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.roadmap-node:hover .lesson-title-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.roadmap-node-wrapper:nth-child(odd) .roadmap-node:hover .lesson-title-tooltip {
+  transform: translateY(-50%) translateX(0);
+}
+.roadmap-node-wrapper:nth-child(even) .roadmap-node:hover .lesson-title-tooltip {
+  transform: translateY(-50%) translateX(0);
+}
+
+/* EdTech Typing Progress Bar */
+.typing-progress-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 32px auto;
+  background: var(--border);
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.typing-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), #818cf8);
+  border-radius: 6px;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Distraction free typing */
+.distraction-free-typing {
+  font-size: 32px !important;
+  line-height: 2 !important;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px;
+  background: var(--surface);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.distraction-free-typing .word {
+  margin: 0 14px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.distraction-free-typing .word.active {
+  background: rgba(91, 75, 255, 0.1);
+  color: var(--primary);
+  border-bottom: 3px solid var(--primary);
+}
+
+.student-dashboard {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  padding: 32px;
+  border-radius: 24px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 12px 24px -8px rgba(91, 75, 255, 0.4);
+}
+
+.student-dashboard h2 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.student-dashboard p {
+  opacity: 0.9;
+  font-size: 16px;
+}
+
+.student-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.stat-box {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  padding: 16px 24px;
+  border-radius: 16px;
+  text-align: center;
+  min-width: 120px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  font-family: var(--en);
+}
+
+.stat-label {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .student-dashboard {
+    flex-direction: column;
+    text-align: center;
+    gap: 24px;
+  }
+  .student-stats {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}

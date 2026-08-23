@@ -36,55 +36,86 @@ export default function Home({ user }) {
       {loading && <p>កំពុងផ្ទុក...</p>}
       {error && <p className="error">មានបញ្ហា៖ {error}</p>}
 
-      <div className="lesson-grid">
-        {lessons.map((lesson) => {
+      {user && !isAdminOrOwner && (
+        <div className="student-dashboard">
+          <div>
+            <h2>សួស្តី, {user.username}! 👋</h2>
+            <p>សូមស្វាគមន៍មកកាន់ប្រព័ន្ធរៀនវាយអក្សរខ្មែរ</p>
+          </div>
+          <div className="student-stats">
+            <div className="stat-box">
+              <div className="stat-value">{lessons.filter(l => user?.allowedLessons?.includes(l.id)).length}</div>
+              <div className="stat-label">មេរៀនដែលបើកសោរ</div>
+            </div>
+            <div className="stat-box">
+              <div className="stat-value">{lessons.length}</div>
+              <div className="stat-label">មេរៀនសរុប</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="roadmap-container">
+        {lessons.map((lesson, index) => {
           const isAllowed = user?.allowedLessons?.includes(lesson.id) || false;
           const isEffectivelyLocked = lesson.isLocked && !isAdminOrOwner && !isAllowed;
+          const isInsufficientWords = lesson.words.length < 30;
           
+          let nodeClass = "roadmap-node ";
+          if (isEffectivelyLocked || isInsufficientWords) {
+            nodeClass += "locked";
+          } else {
+            // For now, unlocked lessons are shown as "current" or "completed"
+            // Let's just make the first unlocked one "current" and the rest "completed" (for visual mockup)
+            nodeClass += "current";
+          }
+
           return (
-          <Link 
-            to={`/lesson/${lesson.id}`} 
-            key={lesson.id} 
-            className={`lesson-card ${(lesson.words.length < 30 || isEffectivelyLocked) ? "disabled" : ""}`}
-            style={(lesson.words.length < 30 || isEffectivelyLocked) ? { opacity: 0.6, cursor: (lesson.isLocked && (isAdminOrOwner || isAllowed)) ? "pointer" : "not-allowed" } : {}}
-            onClick={(e) => {
-              if (isEffectivelyLocked) {
-                e.preventDefault();
-                setShowLockedModal(true);
-                return;
-              }
-              if (lesson.words.length < 30) {
-                e.preventDefault();
-                setShowModal(true);
-                return;
-              }
-              const token = localStorage.getItem("jwt_token");
-              if (!token) {
-                e.preventDefault();
-                setShowAuthModal(true);
-              }
-            }}
-          >
-            <div className="lesson-number">
-              {lesson.isLocked ? (
-                <span style={{ fontSize: '20px', filter: (isAdminOrOwner || isAllowed) ? 'opacity(0.8)' : 'none' }}>
-                  {(isAdminOrOwner || isAllowed) ? <UnlockIcon size={20} /> : <LockIcon size={20} />}
-                </span>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"></path>
-                  <path d="M6 10h.01"></path>
-                  <path d="M10 10h.01"></path>
-                  <path d="M14 10h.01"></path>
-                  <path d="M18 10h.01"></path>
-                  <path d="M6 14h.01"></path>
-                  <path d="M18 14h.01"></path>
-                  <path d="M10 14h4"></path>
-                </svg>
-              )}
-            </div>
-            <div className="lesson-title">{lesson.title}</div>
-          </Link>
+          <div key={lesson.id} className="roadmap-node-wrapper">
+            <Link 
+              to={`/lesson/${lesson.id}`} 
+              className={nodeClass}
+              style={(isInsufficientWords || isEffectivelyLocked) ? { cursor: (lesson.isLocked && (isAdminOrOwner || isAllowed)) ? "pointer" : "not-allowed" } : {}}
+              onClick={(e) => {
+                if (isEffectivelyLocked) {
+                  e.preventDefault();
+                  setShowLockedModal(true);
+                  return;
+                }
+                if (isInsufficientWords) {
+                  e.preventDefault();
+                  setShowModal(true);
+                  return;
+                }
+                const token = localStorage.getItem("jwt_token");
+                if (!token) {
+                  e.preventDefault();
+                  setShowAuthModal(true);
+                }
+              }}
+            >
+              <div className="lesson-icon">
+                {lesson.isLocked ? (
+                  <span style={{ fontSize: '24px', filter: (isAdminOrOwner || isAllowed) ? 'opacity(0.8)' : 'none', display: 'flex' }}>
+                    {(isAdminOrOwner || isAllowed) ? <UnlockIcon size={24} /> : <LockIcon size={24} />}
+                  </span>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"></path>
+                    <path d="M6 10h.01"></path>
+                    <path d="M10 10h.01"></path>
+                    <path d="M14 10h.01"></path>
+                    <path d="M18 10h.01"></path>
+                    <path d="M6 14h.01"></path>
+                    <path d="M18 14h.01"></path>
+                    <path d="M10 14h4"></path>
+                  </svg>
+                )}
+              </div>
+              <div className="lesson-number-text">{index + 1}</div>
+              <div className="lesson-title-tooltip">{lesson.title}</div>
+            </Link>
+          </div>
         )})}
       </div>
 
