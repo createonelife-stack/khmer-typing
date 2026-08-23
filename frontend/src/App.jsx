@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Routes, Route, NavLink, Navigate } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Typing from "./pages/Typing.jsx";
@@ -20,6 +20,39 @@ function RequireProfile({ user, children }) {
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("currentUser")) || null);
+  const audioRef = useRef(null);
+  const [isMusicMuted, setIsMusicMuted] = useState(false);
+
+  useEffect(() => {
+    audioRef.current = new Audio("/bg-music.mp3");
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.3;
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (user && audioRef.current && !isMusicMuted) {
+      // Small delay to ensure interaction context is established if clicking login
+      setTimeout(() => {
+        audioRef.current.play().catch(e => console.warn("Global autoplay blocked:", e));
+      }, 100);
+    } else if (audioRef.current) {
+      audioRef.current.pause();
+      if (!user) {
+        audioRef.current.currentTime = 0;
+      }
+    }
+  }, [user, isMusicMuted]);
+
+  const toggleMusicGlobal = () => {
+    setIsMusicMuted(prev => !prev);
+  };
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -124,6 +157,18 @@ function App() {
               ចូលប្រើប្រាស់
             </NavLink>
           )}
+          <button 
+            onClick={toggleMusicGlobal} 
+            className="btn-theme" 
+            title={isMusicMuted ? "បើកសម្លេងចម្រៀង" : "បិទសម្លេងចម្រៀង"}
+            style={{ marginRight: '8px' }}
+          >
+            {isMusicMuted ? (
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            )}
+          </button>
           <button 
             onClick={toggleTheme} 
             className="btn-theme" 
