@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Routes, Route, NavLink, Navigate } from "react-router-dom";
+import { Routes, Route, NavLink, Navigate, useLocation } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Typing from "./pages/Typing.jsx";
 import Admin from "./pages/Admin.jsx";
@@ -23,6 +23,8 @@ function App() {
   const audioRef = useRef(null);
   const [isMusicMuted, setIsMusicMuted] = useState(false);
 
+  const location = useLocation();
+
   useEffect(() => {
     audioRef.current = new Audio("/bg-music.mp3");
     audioRef.current.loop = true;
@@ -35,6 +37,24 @@ function App() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+    
+    const isQuizPath = location.pathname.startsWith('/quiz');
+    const expectedSrc = isQuizPath ? "/chines_song.mp3" : "/bg-music.mp3";
+    
+    // Check if we need to change src
+    const currentSrcPath = new URL(audioRef.current.src, window.location.origin).pathname;
+    
+    if (currentSrcPath !== expectedSrc) {
+      const wasPlaying = !audioRef.current.paused;
+      audioRef.current.src = expectedSrc;
+      if (user && !isMusicMuted) {
+        audioRef.current.play().catch(e => console.warn("Global autoplay blocked:", e));
+      }
+    }
+  }, [location.pathname, user, isMusicMuted]);
 
   useEffect(() => {
     if (user && audioRef.current && !isMusicMuted) {
