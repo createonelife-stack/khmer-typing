@@ -148,7 +148,7 @@ export default function Typing({ user }) {
           : LESSON_SECONDS - timeLeft;
 
       const totalWords = lesson ? lesson.words.length : 0;
-      const baseScore = totalWords > 0 ? Math.round((finalCorrect / totalWords) * 20) : 0;
+      const baseScore = finalCorrect * 3;
       const bonus = 0;
       const totalScore = baseScore;
       const attempted = finalCorrect + finalWrong;
