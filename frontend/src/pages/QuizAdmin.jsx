@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getQuizzes, createQuiz, updateQuiz, deleteQuiz, seedQuizzes } from "../api";
+import { LockIcon, UnlockIcon } from "../components/Icons";
 
 export default function QuizAdmin() {
   const [quizzes, setQuizzes] = useState([]);
@@ -193,7 +194,7 @@ export default function QuizAdmin() {
               onClick={() => selectQuiz(quiz.id)}
               type="button"
             >
-              {quiz.isLocked ? "🔒 " : ""}{quiz.title}
+              {quiz.isLocked ? <LockIcon size={16} style={{ marginRight: '4px' }} /> : ""}{quiz.title}
             </button>
           ))}
           <button className="admin-tab new-tab" onClick={handleCreateQuiz} type="button">
@@ -219,7 +220,7 @@ export default function QuizAdmin() {
 
               <label className="field" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', background: 'var(--surface)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
                 <input type="checkbox" checked={isLocked} onChange={(e) => handleToggleLock(e.target.checked)} style={{ width: '20px', height: '20px', margin: 0 }} />
-                <span style={{ fontWeight: 'bold', color: isLocked ? '#ff4757' : 'inherit' }}>{isLocked ? "🔒 បានចាក់សោរ (Locked)" : "🔓 មិនបានចាក់សោរ (Unlocked)"}</span>
+                <span style={{ fontWeight: 'bold', color: isLocked ? '#ff4757' : 'inherit' }}>{isLocked ? <><LockIcon size={16} style={{ marginRight: '4px' }} /> បានចាក់សោរ (Locked)</> : <><UnlockIcon size={16} style={{ marginRight: '4px' }} /> មិនបានចាក់សោរ (Unlocked)</>}</span>
               </label>
             </div>
 

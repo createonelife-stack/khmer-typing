@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getLesson, postResult } from "../api.js";
+import { LockIcon } from "../components/Icons";
 
 const LESSON_SECONDS = 420; // 7 minutes
 
@@ -289,7 +290,7 @@ export default function Typing({ user }) {
   if (lesson.isLocked && !isAdminOrOwner && !isAllowed) {
     return (
       <div className="typing-page" style={{ textAlign: 'center', padding: '64px' }}>
-        <h2>🔒 មេរៀននេះត្រូវបានចាក់សោរ</h2>
+        <h2 style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><LockIcon size={28} style={{ marginRight: '8px' }} /> មេរៀននេះត្រូវបានចាក់សោរ</h2>
         <p style={{ marginTop: '16px', color: 'var(--text-muted)' }}>អ្នកមិនអាចចូលរៀនមេរៀននេះបានទេ រហូតដល់ Admin ដោះសោរជាមុនសិន។</p>
         <button className="btn primary" onClick={() => navigate("/")} style={{ marginTop: '24px' }}>ត្រឡប់ក្រោយ</button>
       </div>

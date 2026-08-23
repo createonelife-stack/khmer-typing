@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getLessons, updateLesson, createLesson, deleteLesson } from "../api.js";
+import { LockIcon, UnlockIcon } from "../components/Icons";
 
 export default function Admin() {
   const [lessons, setLessons] = useState([]);
@@ -169,7 +170,7 @@ export default function Admin() {
               onClick={() => selectLesson(lesson.id)}
               type="button"
             >
-              {lesson.isLocked ? "🔒 " : ""}{lesson.title}
+              {lesson.isLocked ? <LockIcon size={16} style={{ marginRight: '4px' }} /> : ""}{lesson.title}
             </button>
           ))}
           <button className="admin-tab new-tab" onClick={handleCreateLesson} type="button">
@@ -186,7 +187,7 @@ export default function Admin() {
 
           <label className="field" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', background: 'var(--surface)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
             <input type="checkbox" checked={isLocked} onChange={(e) => handleToggleLock(e.target.checked)} style={{ width: '20px', height: '20px', margin: 0 }} />
-            <span style={{ fontWeight: 'bold', color: isLocked ? '#ff4757' : 'inherit' }}>{isLocked ? "🔒 បានចាក់សោរ (Locked)" : "🔓 មិនបានចាក់សោរ (Unlocked)"}</span>
+            <span style={{ fontWeight: 'bold', color: isLocked ? '#ff4757' : 'inherit' }}>{isLocked ? <><LockIcon size={16} style={{ marginRight: '4px' }} /> បានចាក់សោរ (Locked)</> : <><UnlockIcon size={16} style={{ marginRight: '4px' }} /> មិនបានចាក់សោរ (Unlocked)</>}</span>
           </label>
 
           <div className={`word-count ${wordCountWarning ? "warn" : "ok"}`} style={{ margin: 0 }}>

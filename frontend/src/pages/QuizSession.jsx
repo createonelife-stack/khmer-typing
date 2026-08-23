@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getQuiz } from "../api";
+import { LockIcon } from "../components/Icons";
 import "./Quiz.css";
 
 function formatTime(totalSeconds) {
@@ -132,7 +133,7 @@ export default function QuizSession({ user }) {
   if (lesson.isLocked && !isAdminOrOwner && !isAllowed) {
     return (
       <div className="quiz-container" style={{ textAlign: 'center', padding: '64px' }}>
-        <h2>🔒 មេរៀននេះត្រូវបានចាក់សោរ</h2>
+        <h2 style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><LockIcon size={28} style={{ marginRight: '8px' }} /> មេរៀននេះត្រូវបានចាក់សោរ</h2>
         <p style={{ marginTop: '16px', color: 'var(--text-muted)' }}>អ្នកមិនអាចចូលឆ្លើយសំណួរនេះបានទេ រហូតដល់ Admin ដោះសោរជាមុនសិន។</p>
         <button className="btn primary" onClick={() => navigate("/quiz")} style={{ marginTop: '24px' }}>ត្រឡប់ក្រោយ</button>
       </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getLessons } from "../api.js";
+import { LockIcon, UnlockIcon } from "../components/Icons";
 
 export default function Home({ user }) {
   const [lessons, setLessons] = useState([]);
@@ -67,7 +68,7 @@ export default function Home({ user }) {
             <div className="lesson-number">
               {lesson.isLocked ? (
                 <span style={{ fontSize: '20px', filter: (isAdminOrOwner || isAllowed) ? 'opacity(0.8)' : 'none' }}>
-                  {(isAdminOrOwner || isAllowed) ? "🔓" : "🔒"}
+                  {(isAdminOrOwner || isAllowed) ? <UnlockIcon size={20} /> : <LockIcon size={20} />}
                 </span>
               ) : (
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

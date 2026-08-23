@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getUsers, updateUserRole, deleteUser, updateUserStatus, getStats, register, updateUserPermissions, getLessons, getQuizzes } from "../api";
+import { LockIcon, UnlockIcon } from "../components/Icons";
 
 export default function Owner({ currentUser }) {
   const [users, setUsers] = useState([]);
@@ -405,7 +406,7 @@ export default function Owner({ currentUser }) {
                         onChange={() => handleLessonPermissionToggle(l.id)}
                       />
                       <span>
-                        {l.isLocked && !(permissionsModal.user.allowedLessons || []).includes(l.id) ? "🔒 " : "🔓 "} {l.title}
+                        {l.isLocked && !(permissionsModal.user.allowedLessons || []).includes(l.id) ? <LockIcon size={16} style={{ marginRight: '4px' }} /> : <UnlockIcon size={16} style={{ marginRight: '4px' }} />} {l.title}
                       </span>
                     </label>
                   ))}
@@ -424,7 +425,7 @@ export default function Owner({ currentUser }) {
                         onChange={() => handleQuizPermissionToggle(q.id)}
                       />
                       <span>
-                        {q.isLocked && !(permissionsModal.user.allowedQuizzes || []).includes(q.id) ? "🔒 " : "🔓 "} {q.title}
+                        {q.isLocked && !(permissionsModal.user.allowedQuizzes || []).includes(q.id) ? <LockIcon size={16} style={{ marginRight: '4px' }} /> : <UnlockIcon size={16} style={{ marginRight: '4px' }} />} {q.title}
                       </span>
                     </label>
                   ))}
